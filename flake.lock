@@ -1,0 +1,59 @@
+{
+  "nodes": {
+    "nix2nvimrc": {
+      "locked": {
+        "lastModified": 1636644345,
+        "narHash": "sha256-r4xP8Xi+FFAFWzgKdZFVikDCDbaf5wq682QJ5/d9XTw=",
+        "owner": "ck3d",
+        "repo": "nix2nvimrc",
+        "rev": "28c77083c83a9a951e68627478c8c65b6ad11a78",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ck3d",
+        "repo": "nix2nvimrc",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1636443933,
+        "narHash": "sha256-ABJmNQdzFWWxaqkb0C0kd9f/MmUtmnQrxm9sZPhgm/s=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "9e70e9f732fbb15872cb4ea11bd43c14328a0b69",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nix2nvimrc": "nix2nvimrc",
+        "nixpkgs": "nixpkgs",
+        "utils": "utils"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1634851050,
+        "narHash": "sha256-N83GlSGPJJdcqhUxSCS/WwW5pksYf3VP1M13cDRTSVA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c91f3de5adaf1de973b797ef7485e441a65b8935",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

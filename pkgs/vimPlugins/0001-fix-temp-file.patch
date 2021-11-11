@@ -1,0 +1,27 @@
+From e38da4f6952af377a8a2f1f7d5f7317e2b5a1c1f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Christian=20K=C3=B6gler?= <ck3d@gmx.de>
+Date: Sun, 21 Mar 2021 23:56:34 +0100
+Subject: [PATCH] fix temp file
+
+---
+ lua/luapad/tools.lua | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/lua/luapad/tools.lua b/lua/luapad/tools.lua
+index 14110cd..fb282cc 100644
+--- a/lua/luapad/tools.lua
++++ b/lua/luapad/tools.lua
+@@ -13,9 +13,7 @@ end
+ local sep = vim.api.nvim_call_function('has', {'win32'}) == 0 and '/' or '\\'
+ 
+ local function path(...)
+-  local str = debug.getinfo(2, "S").source:sub(2)
+-  root = str:match(("(.*)lua%sluapad.lua"):format(sep))
+-  return root .. table.concat({...}, (sep))
++  return vim.api.nvim_eval('tempname()')
+ end
+ 
+ local function create_file(f)
+-- 
+2.29.3
+

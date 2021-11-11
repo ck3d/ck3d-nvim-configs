@@ -1,0 +1,4 @@
+[
+  "lemminx"
+  "vimPlugins"
+]
