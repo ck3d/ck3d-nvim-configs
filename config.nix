@@ -1,9 +1,30 @@
 { config, pkgs, lib, ... }:
+let
+  hasLang = lang: builtins.any (i: i == lang) config.languages;
+  silent_noremap = lib.toKeymap { noremap = true; silent = true; };
+in
 {
+  imports = [
+    {
+      options = with lib; {
+        languages = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+        };
+      };
+    }
+    ./devicons.nix
+  ];
+
   configs = with pkgs.vimPlugins; [
     {
+      name = builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages);
+      treesitter.languages = builtins.filter
+        (type: builtins.hasAttr "tree-sitter-${type}" config.treesitter.grammars)
+        config.languages;
+    }
+    {
       name = "global";
-      treesitter.languages = [ "lua" "nix" "yaml" "markdown" "bash" "json" "rust" "javascript" "html" "c" "cpp" "css" "toml" ];
       plugins = [
         ale # replaced Syntastic
         # TODO: test:
@@ -14,21 +35,16 @@
         surround
         vim-speeddating # CTRL-A/CTRL-X on dates
 
-        jq-vim
-
         registers-nvim
-
-        playground
-        plantuml-syntax
-        vim-beancount
-        vim-graphql
-        pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
         # TODO: test neuron-vim
         # TODO: test rust-vim
-
-        gruvbox-nvim
-        lush-nvim
-      ];
+      ]
+      ++ lib.optional (hasLang "beancount") vim-beancount
+      ++ lib.optional (hasLang "jq") jq-vim
+      ++ lib.optional (hasLang "lua") pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
+      ++ lib.optional (hasLang "graphql") vim-graphql
+      ++ lib.optional (hasLang "plantuml") plantuml-syntax
+      ;
       opts = {
         wrapscan = false;
         hidden = true;
@@ -62,7 +78,7 @@
         background = "light";
         completeopt = "menu,menuone,noselect";
       };
-      keymaps = map (lib.toKeymap { noremap = true; silent = true; }) [
+      keymaps = map silent_noremap [
         [ "" "<C-h>" "<C-w>h" { } ]
         [ "" "<C-j>" "<C-w>j" { } ]
         [ "" "<C-k>" "<C-w>k" { } ]
@@ -71,9 +87,9 @@
         [ "n" "<Leader>cd" "<Cmd>lcd %:p:h<CR>" { } ]
         [ "n" "<Leader>n" "<Cmd>bnext<CR>" { } ]
         [ "n" "<Leader>p" "<Cmd>bprevious<CR>" { } ]
-        [ "n" "Y" "yg$" { } ]
-        [ "n" "n" "nzzzv" { } ]
-        [ "n" "N" "Nzzzv" { } ]
+        [ "n" "Y" "y$" { } ]
+        [ "n" "n" "nzz" { } ]
+        [ "n" "N" "Nzz" { } ]
         [ "n" "<Leader>y" "\"+y" { } ]
         [ "v" "<Leader>y" "\"+y" { } ]
         [ "n" "<Leader>Y" "gg\"+yG" { } ]
@@ -101,6 +117,9 @@
       name = "nvim-tree";
       plugins = [ nvim-tree-lua ];
       setup = { };
+      keymaps = map silent_noremap [
+        [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
+      ];
     }
     {
       name = "which-key";
@@ -118,28 +137,21 @@
       setup = { open_mapping = "<c-t>"; };
     }
     {
-      name = "nvim-web-devicons";
-      plugins = [ nvim-web-devicons ];
-      setup = { default = true; };
-    }
-    {
       name = "bufferline";
       plugins = [ bufferline-nvim ];
       setup = { options.diagnostics = "nvim_lsp"; };
-      keymaps = map (lib.toKeymap { noremap = true; silent = true; }) [
+      keymaps = map silent_noremap [
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
       ];
     }
     {
       name = "vim-rooter";
       plugins = [ vim-rooter ];
-      vars.rooter_patterns = [
-        ".git"
-        "Cargo.toml"
-        ".lua-format"
-        "default.nix"
-        "flake.nix"
-      ];
+      vars.rooter_patterns = [ ".git" ]
+        ++ lib.optional (hasLang "lua") ".lua-format"
+        ++ lib.optional (hasLang "rust") "Cargo.toml"
+        ++ lib.optionals (hasLang "nix") [ "default.nix" "flake.nix" ]
+      ;
     }
     {
       name = "telescope";
@@ -149,7 +161,7 @@
         file_sorter = lib.luaExpr "require'telescope.sorters'.get_fzy_sorter";
         generic_sorter = lib.luaExpr "require'telescope.sorters'.get_fzy_sorter";
       };
-      keymaps = map (lib.toKeymap { noremap = true; silent = true; }) [
+      keymaps = map silent_noremap [
         [ "n" "<Leader>ff" "<Cmd>Telescope find_files<CR>" { } ]
         [ "n" "<Leader>fF" "<Cmd>Telescope git_files<CR>" { } ]
         [ "n" "<Leader>fg" "<Cmd>Telescope live_grep<CR>" { } ]
@@ -164,14 +176,9 @@
       ];
     }
     {
-      name = "neoscroll";
-      plugins = [ neoscroll-nvim ];
-      setup = { };
-    }
-    {
       name = "nvim-treesitter";
-      plugins = [ nvim-treesitter ];
-      setupFn = "require'nvim-treesitter.configs'.setup";
+      plugins = [ nvim-treesitter playground ];
+      modulePath = "nvim-treesitter.configs";
       setup = {
         highlight.enable = true;
         incremental_selection.enable = true;
@@ -187,7 +194,8 @@
           lualine_a = [ "mode" ];
           lualine_b = [ "branch" ];
           lualine_c = [ (lib.luaExpr "{'filename', path = 1}") ];
-          lualine_x = [ (lib.luaExpr "{require'lsp-status'.status}") "diff" "filetype" "b:toggle_number" ];
+          lualine_x = lib.optional (config.configs ? "lsp-status") (lib.luaExpr "{require'lsp-status'.status}")
+            ++ [ "diff" "filetype" "b:toggle_number" ];
           lualine_y = [ "progress" ];
           lualine_z = [ "location" ];
         };
@@ -237,7 +245,7 @@
       plugins = [ indentLine ];
       vars.indentLine_enabled = 0;
       vars.indentLine_char = "⎸";
-      vim = [ "autocmd FileType yaml IndentLinesEnable" ];
+      vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     }
     {
       name = "sneak";
@@ -252,31 +260,38 @@
     {
       name = "nix-lspconfig";
       lspconfig = {
-        servers = {
-          rnix = { pkg = pkgs.rnix-lsp; };
-          tsserver = { pkg = pkgs.nodePackages.typescript-language-server; };
-          rust_analyzer = { pkg = pkgs.rust-analyzer; };
-          bashls = { pkg = pkgs.nodePackages.bash-language-server; };
-          yamlls = { pkg = pkgs.nodePackages.yaml-language-server; };
-          sumneko_lua = {
-            pkg = pkgs.sumneko-lua-language-server;
-            config = {
-              cmd = [ "lua-language-server" ];
-              settings.Lua = ./sumneko_lua.config.lua;
+        servers =
+          let
+            lang_server = {
+              javascript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
+              bash.bashls.pkg = pkgs.nodePackages.bash-language-server;
+              lua.sumneko_lua = {
+                pkg = pkgs.sumneko-lua-language-server;
+                config = {
+                  cmd = [ "lua-language-server" ];
+                  settings.Lua = ./sumneko_lua.config.lua;
+                };
+              };
+              nix.rnix.pkg = pkgs.rnix-lsp;
+              rust.rust_analyzer.pkg = pkgs.rust-analyzer;
+              yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
+              xml.lemminx = {
+                pkg = pkgs.ck3dNvimPkgs.lemminx;
+                config = {
+                  cmd = [ "lemminx" ];
+                  filetypes = [ "xslt" ];
+                };
+              };
             };
-          };
-          lemminx = {
-            pkg = pkgs.ck3dNvimPkgs.lemminx;
-            config = {
-              cmd = [ "lemminx" ];
-              filetypes = [ "xslt" ];
-            };
-          };
-        };
+          in
+          builtins.foldl'
+            (old: lang: old // lang_server.${lang})
+            { }
+            (builtins.filter hasLang (builtins.attrNames lang_server));
 
         capabilities = lib.luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
-        keymaps = map (lib.toKeymap { noremap = true; silent = true; }) [
+        keymaps = map silent_noremap [
           [ "n" "gD" "<cmd>lua vim.lsp.buf.declaration()<CR>" { } ]
           [ "n" "gd" "<cmd>lua vim.lsp.buf.definition()<CR>" { } ]
           [ "n" "K" "<cmd>lua vim.lsp.buf.hover()<CR>" { } ]
@@ -302,24 +317,31 @@
 
         on_attach = ./lspconfig-on_attach.lua;
       };
-      plugins = [
-        nvim-lspconfig
-        lsp-status-nvim
-      ];
+    }
+    {
+      name = "lsp-status";
+      plugins = [ lsp-status-nvim ];
       lua = [
         "require'lsp-status'.register_progress()"
       ];
     }
+  ]
+  ++ lib.optional (hasLang "tex")
     {
       name = "vimtex";
       plugins = [ vimtex ];
       vars.tex_flavor = "latex";
     }
+  ++ [
     {
+      plugins = [
+        gruvbox-nvim
+        lush-nvim
+      ];
       name = "colorscheme-and-more";
       vim = [
         "colorscheme gruvbox"
-        (builtins.readFile ./init.vim)
+        ./init.vim
       ];
     }
   ];

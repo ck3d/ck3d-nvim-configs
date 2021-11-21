@@ -12,12 +12,38 @@
       let
         overlays = [ (import ./overlay.nix) ];
         nixpkgs' = import nixpkgs { inherit system overlays; };
-        nvimrc = nix2nvimrc.lib.toRc nixpkgs' ./config.nix;
+        adminLanguages = [ "nix" "yaml" "bash" "markdown" "json" "toml" ];
+        nvim = with nixpkgs'; name: languages: runCommandLocal
+          "nvim"
+          { nativeBuildInputs = [ makeWrapper ]; }
+          ''
+            makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
+              --add-flags "-u ${nixpkgs'.writeText ("nvimrc-" + name) (nix2nvimrc.lib.toRc nixpkgs' { inherit languages; imports = [ ./config.nix ];})}"
+          '';
+        packages = builtins.mapAttrs nvim {
+          admin = adminLanguages;
+          dev = adminLanguages ++ [
+            # treesitter
+            "lua"
+            "rust"
+            "beancount"
+            "javascript"
+            "html"
+            "c"
+            "cpp"
+            "css"
+            "make"
+            # no treesitter
+            "xml"
+            "tex"
+            "jq"
+            "graphql"
+            "plantuml"
+          ];
+        };
       in
       {
-        defaultPackage = with nixpkgs'; runCommandLocal "nvim" { nativeBuildInputs = [ makeWrapper ]; } ''
-          makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
-            --add-flags "-u ${writeText "nvimrc" nvimrc}"
-        '';
+        inherit packages;
+        defaultPackage = packages.admin;
       });
 }
