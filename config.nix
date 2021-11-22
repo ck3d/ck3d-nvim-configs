@@ -16,15 +16,14 @@ in
     ./devicons.nix
   ];
 
-  configs = with pkgs.vimPlugins; [
-    {
-      name = builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages);
+  configs = with pkgs.vimPlugins; {
+    ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
       treesitter.languages = builtins.filter
         (type: builtins.hasAttr "tree-sitter-${type}" config.treesitter.grammars)
         config.languages;
-    }
-    {
-      name = "global";
+    };
+    global = {
+      after = [ "global" ];
       plugins = [
         ale # replaced Syntastic
         # TODO: test:
@@ -107,54 +106,46 @@ in
         neovide_cursor_antialiasing = true;
         neovide_cursor_vfx_mode = "pixiedust";
       };
-    }
-    {
-      name = "gitsigns";
+    };
+    gitsigns = {
       plugins = [ gitsigns-nvim ];
       setup = { };
-    }
-    {
-      name = "nvim-tree";
+    };
+    nvim-tree = {
       plugins = [ nvim-tree-lua ];
       setup = { };
       keymaps = map silent_noremap [
         [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
       ];
-    }
-    {
-      name = "which-key";
+    };
+    which-key = {
       plugins = [ which-key-nvim ];
       setup = { };
-    }
-    {
-      name = "Comment";
+    };
+    Comment = {
       plugins = [ comment-nvim ];
       setup = { };
-    }
-    {
-      name = "toggleterm";
+    };
+    toggleterm = {
       plugins = [ toggleterm-nvim ];
       setup = { open_mapping = "<c-t>"; };
-    }
-    {
-      name = "bufferline";
+    };
+    bufferline = {
       plugins = [ bufferline-nvim ];
       setup = { options.diagnostics = "nvim_lsp"; };
       keymaps = map silent_noremap [
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
       ];
-    }
-    {
-      name = "vim-rooter";
+    };
+    vim-rooter = {
       plugins = [ vim-rooter ];
       vars.rooter_patterns = [ ".git" ]
         ++ lib.optional (hasLang "lua") ".lua-format"
         ++ lib.optional (hasLang "rust") "Cargo.toml"
         ++ lib.optionals (hasLang "nix") [ "default.nix" "flake.nix" ]
       ;
-    }
-    {
-      name = "telescope";
+    };
+    telescope = {
       plugins = [ telescope-nvim plenary-nvim popup-nvim ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       setup.defaults = {
@@ -174,9 +165,8 @@ in
         [ "n" "<Leader>fd" "<Cmd>lua require'telescope.builtin'.git_files({cwd= '~/dotfiles/'})<CR>" { } ]
         [ "n" "<Leader>fr" "<Cmd>lua require'telescope.builtin'.find_files({cwd= '%:h'})<CR>" { } ]
       ];
-    }
-    {
-      name = "nvim-treesitter";
+    };
+    nvim-treesitter = {
       plugins = [ nvim-treesitter playground ];
       modulePath = "nvim-treesitter.configs";
       setup = {
@@ -185,9 +175,8 @@ in
         textobjects.enable = true;
         playground.enable = true;
       };
-    }
-    {
-      name = "lualine";
+    };
+    lualine = {
       plugins = [ lualine-nvim ];
       setup = {
         sections = {
@@ -201,16 +190,14 @@ in
         };
         options = { theme = "gruvbox_${config.opt.background}"; };
       };
-    }
-    {
-      name = "lsp_extensions";
+    };
+    lsp_extensions = {
       plugins = [ lsp_extensions-nvim ];
       vim = [
         "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = 'Comment', enabled = {'TypeHint', 'ChainingHint', 'ParameterHint'} }"
       ];
-    }
-    {
-      name = "cmp";
+    };
+    cmp = {
       plugins = [
         nvim-cmp
         cmp-buffer
@@ -239,26 +226,23 @@ in
           { name = "spell"; keyword_length = 4; }
         ];
       };
-    }
-    {
-      name = "indentLine";
+    };
+    indentLine = {
       plugins = [ indentLine ];
       vars.indentLine_enabled = 0;
       vars.indentLine_char = "⎸";
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
-    }
-    {
-      name = "sneak";
+    };
+    sneak = {
       plugins = [ vim-sneak ];
       vars."sneak#label" = true;
-    }
-    {
-      name = "quick-scope";
+    };
+    quick-scope = {
       plugins = [ quick-scope ];
       vars.qs_highlight_on_keys = [ "f" "F" "t" "T" ];
-    }
-    {
-      name = "nix-lspconfig";
+    };
+    nix-lspconfig = {
+      after = [ "global" ];
       lspconfig = {
         servers =
           let
@@ -317,32 +301,29 @@ in
 
         on_attach = ./lspconfig-on_attach.lua;
       };
-    }
-    {
-      name = "lsp-status";
+    };
+    lsp-status = {
       plugins = [ lsp-status-nvim ];
       lua = [
         "require'lsp-status'.register_progress()"
       ];
-    }
-  ]
-  ++ lib.optional (hasLang "tex")
-    {
-      name = "vimtex";
-      plugins = [ vimtex ];
-      vars.tex_flavor = "latex";
-    }
-  ++ [
-    {
+    };
+    colorscheme-and-more = {
+      after = [ "global" ];
       plugins = [
         gruvbox-nvim
         lush-nvim
       ];
-      name = "colorscheme-and-more";
       vim = [
         "colorscheme gruvbox"
         ./init.vim
       ];
-    }
-  ];
+    };
+  }
+  // lib.optionalAttrs (hasLang "tex") {
+    vimtex = {
+      plugins = [ vimtex ];
+      vars.tex_flavor = "latex";
+    };
+  };
 }
