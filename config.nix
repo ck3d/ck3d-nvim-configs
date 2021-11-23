@@ -1,7 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, nix2nvimrc, ... }:
 let
+  inherit (nix2nvimrc) luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
-  silent_noremap = lib.toKeymap { noremap = true; silent = true; };
+  silent_noremap = nix2nvimrc.toKeymap { noremap = true; silent = true; };
 in
 {
   imports = [
@@ -73,7 +74,7 @@ in
         splitbelow = true;
         splitright = true;
         updatetime = 300;
-        formatoptions = lib.luaExpr "vim.o.formatoptions .. 'n'";
+        formatoptions = luaExpr "vim.o.formatoptions .. 'n'";
         background = "light";
         completeopt = "menu,menuone,noselect";
       };
@@ -149,8 +150,8 @@ in
       plugins = [ telescope-nvim plenary-nvim popup-nvim ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       setup.defaults = {
-        file_sorter = lib.luaExpr "require'telescope.sorters'.get_fzy_sorter";
-        generic_sorter = lib.luaExpr "require'telescope.sorters'.get_fzy_sorter";
+        file_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
+        generic_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
       };
       keymaps = map silent_noremap [
         [ "n" "<Leader>ff" "<Cmd>Telescope find_files<CR>" { } ]
@@ -182,8 +183,8 @@ in
         sections = {
           lualine_a = [ "mode" ];
           lualine_b = [ "branch" ];
-          lualine_c = [ (lib.luaExpr "{'filename', path = 1}") ];
-          lualine_x = lib.optional (config.configs ? "lsp-status") (lib.luaExpr "{require'lsp-status'.status}")
+          lualine_c = [ (luaExpr "{'filename', path = 1}") ];
+          lualine_x = lib.optional (config.configs ? "lsp-status") (luaExpr "{require'lsp-status'.status}")
             ++ [ "diff" "filetype" "b:toggle_number" ];
           lualine_y = [ "progress" ];
           lualine_z = [ "location" ];
@@ -213,7 +214,7 @@ in
       ];
       setup = {
         snippet = {
-          expand = lib.luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
+          expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
         };
         sources = [
           { name = "vsnip"; }
@@ -273,7 +274,7 @@ in
             { }
             (builtins.filter hasLang (builtins.attrNames lang_server));
 
-        capabilities = lib.luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
+        capabilities = luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
         keymaps = map silent_noremap [
           [ "n" "gD" "<cmd>lua vim.lsp.buf.declaration()<CR>" { } ]
