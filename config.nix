@@ -234,13 +234,9 @@ in
       vars.indentLine_char = "⎸";
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     };
-    sneak = {
-      plugins = [ vim-sneak ];
-      vars."sneak#label" = true;
-    };
-    quick-scope = {
-      plugins = [ quick-scope ];
-      vars.qs_highlight_on_keys = [ "f" "F" "t" "T" ];
+    lightspeed = {
+      plugins = [ lightspeed-nvim ];
+      setup = { };
     };
     nix-lspconfig = {
       after = [ "global" ];
