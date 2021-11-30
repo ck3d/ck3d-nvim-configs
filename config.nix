@@ -39,7 +39,7 @@ in
         # TODO: test neuron-vim
         # TODO: test rust-vim
       ]
-      ++ lib.optional (hasLang "beancount") vim-beancount
+      ++ lib.optional (hasLang "beancount" && pkgs.stdenv.hostPlatform.system != "aarch64-darwin") vim-beancount
       ++ lib.optional (hasLang "jq") jq-vim
       ++ lib.optional (hasLang "lua") pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
       ++ lib.optional (hasLang "graphql") vim-graphql
@@ -246,13 +246,6 @@ in
             lang_server = {
               javascript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
               bash.bashls.pkg = pkgs.nodePackages.bash-language-server;
-              lua.sumneko_lua = {
-                pkg = pkgs.sumneko-lua-language-server;
-                config = {
-                  cmd = [ "lua-language-server" ];
-                  settings.Lua = ./sumneko_lua.config.lua;
-                };
-              };
               nix.rnix.pkg = pkgs.rnix-lsp;
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
@@ -261,6 +254,15 @@ in
                 config = {
                   cmd = [ "lemminx" ];
                   filetypes = [ "xslt" ];
+                };
+              };
+            }
+            // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system != "aarch64-darwin") {
+              lua.sumneko_lua = {
+                pkg = pkgs.sumneko-lua-language-server;
+                config = {
+                  cmd = [ "lua-language-server" ];
+                  settings.Lua = ./sumneko_lua.config.lua;
                 };
               };
             };
