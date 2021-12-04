@@ -178,14 +178,19 @@ in
       };
     };
     lualine = {
+      after = [ "lsp-status" ];
       plugins = [ lualine-nvim ];
       setup = {
         sections = {
           lualine_a = [ "mode" ];
           lualine_b = [ "branch" ];
           lualine_c = [ (luaExpr "{'filename', path = 1}") ];
-          lualine_x = lib.optional (config.configs ? "lsp-status") (luaExpr "{require'lsp-status'.status}")
-            ++ [ "diff" "filetype" "b:toggle_number" ];
+          lualine_x = [
+            (luaExpr "{require'lsp-status'.status()}")
+            "diff"
+            "filetype"
+            "b:toggle_number"
+          ];
           lualine_y = [ "progress" ];
           lualine_z = [ "location" ];
         };
@@ -239,7 +244,7 @@ in
       setup = { };
     };
     nix-lspconfig = {
-      after = [ "global" ];
+      after = [ "global" "lsp-status" ];
       lspconfig = {
         servers =
           let
