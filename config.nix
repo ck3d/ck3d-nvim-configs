@@ -198,9 +198,10 @@ in
       };
     };
     lsp_extensions = {
+      after = [ "nix-lspconfig" ];
       plugins = [ lsp_extensions-nvim ];
       vim = [
-        "autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost * lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = 'Comment', enabled = {'TypeHint', 'ChainingHint', 'ParameterHint'} }"
+        "autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}"
       ];
     };
     cmp = {
