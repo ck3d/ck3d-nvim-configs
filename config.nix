@@ -87,7 +87,6 @@ in
         [ "n" "<Leader>cd" "<Cmd>lcd %:p:h<CR>" { } ]
         [ "n" "<Leader>n" "<Cmd>bnext<CR>" { } ]
         [ "n" "<Leader>p" "<Cmd>bprevious<CR>" { } ]
-        [ "n" "Y" "y$" { } ]
         [ "n" "n" "nzz" { } ]
         [ "n" "N" "Nzz" { } ]
         [ "n" "<Leader>y" "\"+y" { } ]
