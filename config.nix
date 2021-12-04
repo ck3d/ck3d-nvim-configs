@@ -14,7 +14,7 @@ in
         };
       };
     }
-    ./devicons.nix
+    #./devicons.nix
   ];
 
   configs = with pkgs.vimPlugins; {
