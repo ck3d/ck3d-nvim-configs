@@ -26,7 +26,6 @@ in
     global = {
       after = [ "global" ];
       plugins = with pkgs.vimPlugins; [
-        ale # replaced Syntastic
         # TODO: test:
         # https://github.com/TimUntersberger/neogit
         fugitive
@@ -164,6 +163,8 @@ in
         [ "n" "<Leader>fq" "<Cmd>Telescope quickfix<CR>" { } ]
         [ "n" "<Leader>fd" "<Cmd>lua require'telescope.builtin'.git_files({cwd= '~/dotfiles/'})<CR>" { } ]
         [ "n" "<Leader>fr" "<Cmd>lua require'telescope.builtin'.find_files({cwd= '%:h'})<CR>" { } ]
+        [ "n" "<Leader>fa" "<Cmd>lua require'telescope.builtin'.lsp_code_actions()<CR>" { } ]
+        [ "n" "<Leader>fA" "<Cmd>lua require'telescope.builtin'.lsp_range_code_actions()<CR>" { } ]
       ];
     };
     nvim-treesitter = {
@@ -243,8 +244,40 @@ in
       plugins = with pkgs.vimPlugins; [ lightspeed-nvim ];
       setup = { };
     };
+    null-ls = {
+      after = [ "gitsigns" ];
+      plugins = with pkgs.vimPlugins; [
+        (null-ls-nvim.overrideAttrs (s: {
+          src = pkgs.fetchFromGitHub {
+            owner = "jose-elias-alvarez";
+            repo = "null-ls.nvim";
+            rev = "73420db2b58408a60a19024be3c14b0eba8413fe";
+            sha256 = "sha256-g2R34Bsx2lYNwJqIB5f8p43YF5P7l6RvQ92k5ntTVc4=";
+          };
+        }))
+      ];
+      setup.function = "config";
+      setup.args = {
+        sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
+          [
+            "code_actions.gitsigns"
+            "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier'})"
+          ]
+          ++ lib.optionals (hasLang "bash") [
+            "code_actions.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
+            "diagnostics.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
+          ]
+          ++ lib.optional (hasLang "lua" && pkgs.stdenv.hostPlatform.system != "aarch64-darwin")
+            "formatting.lua_format.with({command = '${pkgs.luaformatter}/bin/lua-format'})"
+        );
+      };
+    };
     nix-lspconfig = {
-      after = [ "global" "lsp-status" ];
+      after = [
+        "global"
+        "lsp-status"
+        "null-ls"
+      ];
       lspconfig = {
         servers =
           let
@@ -274,7 +307,9 @@ in
           in
           builtins.foldl'
             (old: lang: old // lang_server.${lang})
-            { }
+            {
+              null-ls.pkg = null;
+            }
             (builtins.filter hasLang (builtins.attrNames lang_server));
 
         capabilities = luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
