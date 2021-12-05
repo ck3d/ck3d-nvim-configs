@@ -17,7 +17,7 @@ in
     #./devicons.nix
   ];
 
-  configs = with pkgs.vimPlugins; {
+  configs = {
     ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
       treesitter.languages = builtins.filter
         (type: builtins.hasAttr "tree-sitter-${type}" config.treesitter.grammars)
@@ -25,7 +25,7 @@ in
     };
     global = {
       after = [ "global" ];
-      plugins = [
+      plugins = with pkgs.vimPlugins; [
         ale # replaced Syntastic
         # TODO: test:
         # https://github.com/TimUntersberger/neogit
@@ -108,37 +108,37 @@ in
       };
     };
     gitsigns = {
-      plugins = [ gitsigns-nvim ];
+      plugins = with pkgs.vimPlugins; [ gitsigns-nvim ];
       setup = { };
     };
     nvim-tree = {
-      plugins = [ nvim-tree-lua ];
+      plugins = with pkgs.vimPlugins; [ nvim-tree-lua ];
       setup = { };
       keymaps = map silent_noremap [
         [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
       ];
     };
     which-key = {
-      plugins = [ which-key-nvim ];
+      plugins = with pkgs.vimPlugins; [ which-key-nvim ];
       setup = { };
     };
     Comment = {
-      plugins = [ comment-nvim ];
+      plugins = with pkgs.vimPlugins; [ comment-nvim ];
       setup = { };
     };
     toggleterm = {
-      plugins = [ toggleterm-nvim ];
-      setup = { open_mapping = "<c-t>"; };
+      plugins = with pkgs.vimPlugins; [ toggleterm-nvim ];
+      setup.args = { open_mapping = "<c-t>"; };
     };
     bufferline = {
-      plugins = [ bufferline-nvim ];
-      setup = { options.diagnostics = "nvim_lsp"; };
+      plugins = with pkgs.vimPlugins; [ bufferline-nvim ];
+      setup.args = { options.diagnostics = "nvim_lsp"; };
       keymaps = map silent_noremap [
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
       ];
     };
     vim-rooter = {
-      plugins = [ vim-rooter ];
+      plugins = with pkgs.vimPlugins; [ vim-rooter ];
       vars.rooter_patterns = [ ".git" ]
         ++ lib.optional (hasLang "lua") ".lua-format"
         ++ lib.optional (hasLang "rust") "Cargo.toml"
@@ -146,9 +146,9 @@ in
       ;
     };
     telescope = {
-      plugins = [ telescope-nvim plenary-nvim popup-nvim ];
+      plugins = with pkgs.vimPlugins; [ telescope-nvim plenary-nvim popup-nvim ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
-      setup.defaults = {
+      setup.args.defaults = {
         file_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
         generic_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
       };
@@ -167,9 +167,9 @@ in
       ];
     };
     nvim-treesitter = {
-      plugins = [ nvim-treesitter playground ];
-      modulePath = "nvim-treesitter.configs";
-      setup = {
+      plugins = with pkgs.vimPlugins; [ nvim-treesitter playground ];
+      setup.modulePath = "nvim-treesitter.configs";
+      setup.args = {
         highlight.enable = true;
         incremental_selection.enable = true;
         textobjects.enable = true;
@@ -178,8 +178,8 @@ in
     };
     lualine = {
       after = [ "lsp-status" ];
-      plugins = [ lualine-nvim ];
-      setup = {
+      plugins = with pkgs.vimPlugins; [ lualine-nvim ];
+      setup.args = {
         sections = {
           lualine_a = [ "mode" ];
           lualine_b = [ "branch" ];
@@ -198,13 +198,13 @@ in
     };
     lsp_extensions = {
       after = [ "nix-lspconfig" ];
-      plugins = [ lsp_extensions-nvim ];
+      plugins = with pkgs.vimPlugins; [ lsp_extensions-nvim ];
       vim = [
         "autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}"
       ];
     };
     cmp = {
-      plugins = [
+      plugins = with pkgs.vimPlugins; [
         nvim-cmp
         cmp-buffer
         cmp-path
@@ -217,7 +217,7 @@ in
 
         vim-vsnip
       ];
-      setup = {
+      setup.args = {
         snippet = {
           expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
         };
@@ -234,13 +234,13 @@ in
       };
     };
     indentLine = {
-      plugins = [ indentLine ];
+      plugins = with pkgs.vimPlugins; [ indentLine ];
       vars.indentLine_enabled = 0;
       vars.indentLine_char = "⎸";
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     };
     lightspeed = {
-      plugins = [ lightspeed-nvim ];
+      plugins = with pkgs.vimPlugins; [ lightspeed-nvim ];
       setup = { };
     };
     nix-lspconfig = {
@@ -307,14 +307,14 @@ in
       };
     };
     lsp-status = {
-      plugins = [ lsp-status-nvim ];
+      plugins = with pkgs.vimPlugins; [ lsp-status-nvim ];
       lua = [
         "require'lsp-status'.register_progress()"
       ];
     };
     colorscheme-and-more = {
       after = [ "global" ];
-      plugins = [
+      plugins = with pkgs.vimPlugins; [
         gruvbox-nvim
         lush-nvim
       ];
@@ -326,7 +326,7 @@ in
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
-      plugins = [ vimtex ];
+      plugins = with pkgs.vimPlugins; [ vimtex ];
       vars.tex_flavor = "latex";
     };
   };
