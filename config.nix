@@ -201,7 +201,7 @@ in
       after = [ "nix-lspconfig" ];
       plugins = with pkgs.vimPlugins; [ lsp_extensions-nvim ];
       vim = [
-        "autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}"
+        "autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }"
       ];
     };
     cmp = {
