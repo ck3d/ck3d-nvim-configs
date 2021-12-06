@@ -287,6 +287,8 @@ in
               nix.rnix.pkg = pkgs.rnix-lsp;
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
+            }
+            // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system != "aarch64-darwin") {
               xml.lemminx = {
                 pkg = pkgs.ck3dNvimPkgs.lemminx;
                 config = {
@@ -294,8 +296,6 @@ in
                   filetypes = [ "xslt" ];
                 };
               };
-            }
-            // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system != "aarch64-darwin") {
               lua.sumneko_lua = {
                 pkg = pkgs.sumneko-lua-language-server;
                 config = {
