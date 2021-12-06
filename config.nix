@@ -131,7 +131,7 @@ in
     };
     bufferline = {
       plugins = with pkgs.vimPlugins; [ bufferline-nvim ];
-      setup.args = { options.diagnostics = "nvim_lsp"; };
+      setup = { };
       keymaps = map silent_noremap [
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
       ];
@@ -183,7 +183,7 @@ in
       setup.args = {
         sections = {
           lualine_a = [ "mode" ];
-          lualine_b = [ "branch" ];
+          lualine_b = [ "branch" (luaExpr "{'diagnostics', sources={'nvim_lsp'}}") ];
           lualine_c = [ (luaExpr "{'filename', path = 1}") ];
           lualine_x = [
             (luaExpr "{require'lsp-status'.status()}")
