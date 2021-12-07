@@ -138,11 +138,13 @@ in
     };
     vim-rooter = {
       plugins = with pkgs.vimPlugins; [ vim-rooter ];
-      vars.rooter_patterns = [ ".git" ]
-        ++ lib.optional (hasLang "lua") ".lua-format"
-        ++ lib.optional (hasLang "rust") "Cargo.toml"
-        ++ lib.optionals (hasLang "nix") [ "default.nix" "flake.nix" ]
-      ;
+      vars.rooter_patterns = [
+        ".git"
+        "Cargo.toml"
+        "flake.nix"
+        ".lua-format"
+        ".envrc"
+      ];
     };
     telescope = {
       plugins = with pkgs.vimPlugins; [ telescope-nvim plenary-nvim popup-nvim ];
