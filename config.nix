@@ -262,7 +262,6 @@ in
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
-            "code_actions.gitsigns"
             "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier'})"
           ]
           ++ lib.optionals (hasLang "bash") [
