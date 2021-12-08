@@ -127,7 +127,10 @@ in
     };
     toggleterm = {
       plugins = with pkgs.vimPlugins; [ toggleterm-nvim ];
-      setup.args = { open_mapping = "<c-t>"; };
+      setup.args = {
+        open_mapping = "<c-t>";
+        shade_terminals = false;
+      };
     };
     bufferline = {
       plugins = with pkgs.vimPlugins; [ bufferline-nvim ];
@@ -349,7 +352,7 @@ in
       ];
     };
     colorscheme-and-more = {
-      after = [ "global" ];
+      after = [ "global" "toggleterm" ];
       plugins = with pkgs.vimPlugins; [
         gruvbox-nvim
         lush-nvim
