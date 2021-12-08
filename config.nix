@@ -351,6 +351,13 @@ in
         "require'lsp-status'.register_progress()"
       ];
     };
+    diffview = {
+      after = [ "global" ];
+      plugins = with pkgs.vimPlugins; [ diffview-nvim plenary-nvim ];
+      setup.args = {
+        use_icons = false;
+      };
+    };
     colorscheme-and-more = {
       after = [ "global" "toggleterm" ];
       plugins = with pkgs.vimPlugins; [
