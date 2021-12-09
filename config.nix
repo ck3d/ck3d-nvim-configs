@@ -291,6 +291,13 @@ in
               nix.rnix.pkg = pkgs.rnix-lsp;
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
+              lua.sumneko_lua = {
+                pkg = pkgs.sumneko-lua-language-server;
+                config = {
+                  cmd = [ "lua-language-server" ];
+                  settings.Lua = ./sumneko_lua.config.lua;
+                };
+              };
             }
             // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system != "aarch64-darwin") {
               xml.lemminx = {
@@ -298,13 +305,6 @@ in
                 config = {
                   cmd = [ "lemminx" ];
                   filetypes = [ "xslt" ];
-                };
-              };
-              lua.sumneko_lua = {
-                pkg = pkgs.sumneko-lua-language-server;
-                config = {
-                  cmd = [ "lua-language-server" ];
-                  settings.Lua = ./sumneko_lua.config.lua;
                 };
               };
             };
