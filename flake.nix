@@ -2,7 +2,7 @@
   description = "CK3Ds NVim configurations";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     nix2nvimrc.url = "github:ck3d/nix2nvimrc";
     utils.url = "github:numtide/flake-utils";
   };

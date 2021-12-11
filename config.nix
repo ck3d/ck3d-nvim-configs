@@ -188,7 +188,10 @@ in
       setup.args = {
         sections = {
           lualine_a = [ "mode" ];
-          lualine_b = [ "branch" (luaExpr "{'diagnostics', sources={'nvim_lsp'}}") ];
+          lualine_b = [
+            "branch"
+            (luaExpr "{'diagnostics', sources={'nvim_diagnostic'}}")
+          ];
           lualine_c = [ (luaExpr "{'filename', path = 1}") ];
           lualine_x = [
             "require'lsp-status'.status()"
@@ -271,7 +274,7 @@ in
             "code_actions.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
             "diagnostics.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
           ]
-          ++ lib.optional (hasLang "lua" && pkgs.stdenv.hostPlatform.system != "aarch64-darwin")
+          ++ lib.optional (hasLang "lua")
             "formatting.lua_format.with({command = '${pkgs.luaformatter}/bin/lua-format'})"
         );
       };
