@@ -374,6 +374,10 @@ in
         ./init.vim
       ];
     };
+    trouble = {
+      plugins = with pkgs.vimPlugins; [ trouble-nvim ];
+      setup = { };
+    };
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
