@@ -99,6 +99,8 @@ in
         [ "n" "gx" "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>" { } ]
         # https://stackoverflow.com/a/26504944
         [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { } ]
+        # Allow gf to open non-existing files
+        [ "n" "gf" "<Cmd>edit <cfile><CR>" { } ]
       ];
       vars = {
         mapleader = " ";
