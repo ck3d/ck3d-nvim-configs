@@ -99,6 +99,11 @@ in
         [ "n" "gx" "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>" { } ]
         # https://stackoverflow.com/a/26504944
         [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { } ]
+        # diagnostics
+        [ "n" "<Leader>e" "<cmd>lua vim.diagnostic.open_float()<CR>" { } ]
+        [ "n" "[d" "<cmd>lua vim.diagnostic.goto_prev()<CR>" { } ]
+        [ "n" "]d" "<cmd>lua vim.diagnostic.goto_next()<CR>" { } ]
+        [ "n" "<Leader>q" "<cmd>lua vim.diagnostic.setloclist()<CR>" { } ]
       ];
       vars = {
         mapleader = " ";
@@ -170,6 +175,8 @@ in
         [ "n" "<Leader>fr" "<Cmd>lua require'telescope.builtin'.find_files({cwd= '%:h'})<CR>" { } ]
         [ "n" "<Leader>fa" "<Cmd>lua require'telescope.builtin'.lsp_code_actions()<CR>" { } ]
         [ "n" "<Leader>fA" "<Cmd>lua require'telescope.builtin'.lsp_range_code_actions()<CR>" { } ]
+        [ "n" "<Leader>gs" "<Cmd>Telescope git_status<CR>" { } ]
+        [ "n" "<Leader>wo" "<Cmd>Telescope lsp_document_symbols<CR>" { } ]
       ];
     };
     nvim-treesitter = {
@@ -334,12 +341,8 @@ in
           [ "n" "<Leader>rn" "<cmd>lua vim.lsp.buf.rename()<CR>" { } ]
           [ "n" "<Leader>ca" "<cmd>lua vim.lsp.buf.code_action()<CR>" { } ]
           [ "n" "gr" "<cmd>lua vim.lsp.buf.references()<CR>" { } ]
-          [ "n" "<Leader>e" "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>" { } ]
-          [ "n" "[d" "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>" { } ]
-          [ "n" "]d" "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>" { } ]
-          [ "n" "<Leader>q" "<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>" { } ]
-          [ "n" "<Leader>F" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
-          [ "v" "<Leader>F" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
+          [ "n" "<Leader>f" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
+          [ "v" "<Leader>f" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
         ];
 
         # Enable completion triggered by <c-x><c-o>
