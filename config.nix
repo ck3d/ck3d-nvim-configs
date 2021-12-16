@@ -261,16 +261,7 @@ in
     };
     null-ls = {
       after = [ "gitsigns" ];
-      plugins = with pkgs.vimPlugins; [
-        (null-ls-nvim.overrideAttrs (s: {
-          src = pkgs.fetchFromGitHub {
-            owner = "jose-elias-alvarez";
-            repo = "null-ls.nvim";
-            rev = "73420db2b58408a60a19024be3c14b0eba8413fe";
-            sha256 = "sha256-g2R34Bsx2lYNwJqIB5f8p43YF5P7l6RvQ92k5ntTVc4=";
-          };
-        }))
-      ];
+      plugins = with pkgs.vimPlugins; [ null-ls-nvim ];
       setup.function = "config";
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
