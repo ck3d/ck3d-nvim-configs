@@ -5,10 +5,10 @@
 }:
 let
   pname = "lemminx";
-  version = "0.18.1";
+  version = "0.18.2";
   jar = fetchurl {
     url = "https://repo.eclipse.org/content/repositories/lemminx-releases/org/eclipse/lemminx/org.eclipse.lemminx/${version}/org.eclipse.lemminx-${version}-uber.jar";
-    sha256 = "sha256-ud3vZvOR5YIQLqK+FCDLqfRzyq6KalQTyNinbcywcrM=";
+    sha256 = "sha256-u5xEEZOlGm0D2t/LEu3DAK1l6mtHFrKDawL35nsjoek=";
   };
 in
 runCommandLocal "${pname}-${version}"
