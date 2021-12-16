@@ -155,12 +155,12 @@ in
       ];
     };
     telescope = {
-      plugins = with pkgs.vimPlugins; [ telescope-nvim plenary-nvim popup-nvim ];
+      plugins = with pkgs.vimPlugins; [ telescope-fzy-native-nvim ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
-      setup.args.defaults = {
-        file_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
-        generic_sorter = luaExpr "require'telescope.sorters'.get_fzy_sorter";
-      };
+      setup = { };
+      lua = [
+        "require'telescope'.load_extension('fzy_native')"
+      ];
       keymaps = map silent_noremap [
         [ "n" "<Leader>ff" "<Cmd>Telescope find_files<CR>" { } ]
         [ "n" "<Leader>fF" "<Cmd>Telescope git_files<CR>" { } ]
