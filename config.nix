@@ -308,8 +308,6 @@ in
                   settings.Lua = ./sumneko_lua.config.lua;
                 };
               };
-            }
-            // lib.optionalAttrs (pkgs.stdenv.hostPlatform.system != "aarch64-darwin") {
               xml.lemminx = {
                 pkg = pkgs.ck3dNvimPkgs.lemminx;
                 config = {
