@@ -33,11 +33,11 @@
             "cpp"
             "css"
             "make"
+            "graphql"
             # no treesitter
             "xml"
             "tex"
             "jq"
-            "graphql"
             "plantuml"
           ];
         };
