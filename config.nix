@@ -24,13 +24,11 @@ in
         config.languages;
     };
     global = {
-      after = [ "global" ];
       plugins = with pkgs.vimPlugins; [
         # TODO: test:
         # https://github.com/TimUntersberger/neogit
         fugitive
 
-        neoformat
         surround
         vim-speeddating # CTRL-A/CTRL-X on dates
 
@@ -38,7 +36,6 @@ in
         # TODO: test neuron-vim
         # TODO: test rust-vim
       ]
-      ++ lib.optional (hasLang "beancount" && pkgs.stdenv.hostPlatform.system != "aarch64-darwin") vim-beancount
       ++ lib.optional (hasLang "jq") jq-vim
       ++ lib.optional (hasLang "lua") pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
       ++ lib.optional (hasLang "graphql") vim-graphql
@@ -273,6 +270,8 @@ in
           ]
           ++ lib.optional (hasLang "lua")
             "formatting.lua_format.with({command = '${pkgs.luaformatter}/bin/lua-format'})"
+          ++ lib.optional (hasLang "beancount")
+            "formatting.bean_format"
         );
       };
     };
@@ -308,8 +307,7 @@ in
           in
           builtins.foldl'
             (old: lang: old // lang_server.${lang})
-            {
-            }
+            { }
             (builtins.filter hasLang (builtins.attrNames lang_server));
 
         capabilities = luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
@@ -327,8 +325,8 @@ in
           [ "n" "<Leader>rn" "<cmd>lua vim.lsp.buf.rename()<CR>" { } ]
           [ "n" "<Leader>ca" "<cmd>lua vim.lsp.buf.code_action()<CR>" { } ]
           [ "n" "gr" "<cmd>lua vim.lsp.buf.references()<CR>" { } ]
-          [ "n" "<Leader>f" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
-          [ "v" "<Leader>f" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
+          [ "n" "<Leader>F" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
+          [ "v" "<Leader>F" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
         ];
 
         # Enable completion triggered by <c-x><c-o>
