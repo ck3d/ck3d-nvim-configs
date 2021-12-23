@@ -262,7 +262,6 @@ in
     null-ls = {
       after = [ "gitsigns" ];
       plugins = with pkgs.vimPlugins; [ null-ls-nvim ];
-      setup.function = "config";
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
@@ -281,7 +280,6 @@ in
       after = [
         "global"
         "lsp-status"
-        "null-ls"
       ];
       lspconfig = {
         servers =
@@ -311,7 +309,6 @@ in
           builtins.foldl'
             (old: lang: old // lang_server.${lang})
             {
-              null-ls.pkg = null;
             }
             (builtins.filter hasLang (builtins.attrNames lang_server));
 
