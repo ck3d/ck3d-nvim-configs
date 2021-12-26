@@ -230,6 +230,7 @@ in
 
         vim-vsnip
       ];
+      # https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
       setup.args = {
         snippet = {
           expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
@@ -244,6 +245,9 @@ in
           { name = "buffer"; keyword_length = 4; }
           { name = "spell"; keyword_length = 4; }
         ];
+        mapping = {
+          "<CR>" = luaExpr "require'cmp'.mapping.confirm({ select = true })";
+        };
       };
     };
     indentLine = {
