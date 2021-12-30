@@ -19,15 +19,12 @@ in
 
   nvim-luapad = buildVimPluginFrom2Nix rec {
     pname = "nvim-luapad";
-    version = "0.2";
-    patches = [
-      ./0001-fix-temp-file.patch
-    ];
+    version = "0.3-20211229";
     src = fetchFromGitHub {
       owner = "rafcamlet";
       repo = pname;
-      rev = "v${version}";
-      sha256 = "sha256-NV6cUCBDhxG+0yFDRi12I0IJ54jOMWCYoi0HvmKSBWM=";
+      rev = "1f31c692f01edb2629f8c489e99e650633915dc2";
+      sha256 = "sha256-NLED3aEaDdnIaRKgB8YwV65GABO+lnL1NiLqqvEH+60=c";
     };
     meta.homepage = "https://github.com/rafcamlet/nvim-luapad/";
   };
