@@ -23,6 +23,7 @@ in
         (type: builtins.hasAttr "tree-sitter-${type}" config.treesitter.grammars)
         config.languages;
     };
+
     global = {
       plugins = with pkgs.vimPlugins; [
         # TODO: test:
@@ -108,10 +109,12 @@ in
         neovide_cursor_vfx_mode = "pixiedust";
       };
     };
+
     gitsigns = {
       plugins = with pkgs.vimPlugins; [ gitsigns-nvim ];
       setup = { };
     };
+
     nvim-tree = {
       plugins = with pkgs.vimPlugins; [ nvim-tree-lua ];
       setup = { };
@@ -119,14 +122,17 @@ in
         [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
       ];
     };
+
     which-key = {
       plugins = with pkgs.vimPlugins; [ which-key-nvim ];
       setup = { };
     };
+
     Comment = {
       plugins = with pkgs.vimPlugins; [ comment-nvim ];
       setup = { };
     };
+
     toggleterm = {
       plugins = with pkgs.vimPlugins; [ toggleterm-nvim ];
       setup.args = {
@@ -134,6 +140,7 @@ in
         shade_terminals = false;
       };
     };
+
     bufferline = {
       plugins = with pkgs.vimPlugins; [ bufferline-nvim ];
       setup = { };
@@ -141,6 +148,7 @@ in
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
       ];
     };
+
     vim-rooter = {
       plugins = with pkgs.vimPlugins; [ vim-rooter ];
       vars.rooter_patterns = [
@@ -151,6 +159,7 @@ in
         ".envrc"
       ];
     };
+
     telescope = {
       plugins = with pkgs.vimPlugins; [ telescope-fzy-native-nvim ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
@@ -176,6 +185,7 @@ in
         [ "n" "<Leader>wo" "<Cmd>Telescope lsp_document_symbols<CR>" { } ]
       ];
     };
+
     nvim-treesitter = {
       plugins = with pkgs.vimPlugins; [ nvim-treesitter playground ];
       setup.modulePath = "nvim-treesitter.configs";
@@ -186,6 +196,7 @@ in
         playground.enable = true;
       };
     };
+
     lualine = {
       after = [ "lsp-status" ];
       plugins = with pkgs.vimPlugins; [ lualine-nvim ];
@@ -209,6 +220,7 @@ in
         options = { theme = "gruvbox_${config.opt.background}"; };
       };
     };
+
     lsp_extensions = {
       after = [ "nix-lspconfig" ];
       plugins = with pkgs.vimPlugins; [ lsp_extensions-nvim ];
@@ -216,6 +228,7 @@ in
         "autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }"
       ];
     };
+
     cmp = {
       plugins = with pkgs.vimPlugins; [
         nvim-cmp
@@ -250,16 +263,19 @@ in
         };
       };
     };
+
     indentLine = {
       plugins = with pkgs.vimPlugins; [ indentLine ];
       vars.indentLine_enabled = 0;
       vars.indentLine_char = "⎸";
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     };
+
     lightspeed = {
       plugins = with pkgs.vimPlugins; [ lightspeed-nvim ];
       setup = { };
     };
+
     null-ls = {
       after = [ "gitsigns" ];
       plugins = with pkgs.vimPlugins; [ null-ls-nvim ];
@@ -279,6 +295,7 @@ in
         );
       };
     };
+
     nix-lspconfig = {
       after = [
         "global"
@@ -339,12 +356,14 @@ in
         on_attach = ./lspconfig-on_attach.lua;
       };
     };
+
     lsp-status = {
       plugins = with pkgs.vimPlugins; [ lsp-status-nvim ];
       lua = [
         "require'lsp-status'.register_progress()"
       ];
     };
+
     diffview = {
       after = [ "global" ];
       plugins = with pkgs.vimPlugins; [ diffview-nvim plenary-nvim ];
@@ -352,6 +371,7 @@ in
         use_icons = false;
       };
     };
+
     colorscheme-and-more = {
       after = [ "global" "toggleterm" ];
       plugins = with pkgs.vimPlugins; [
@@ -363,10 +383,12 @@ in
         ./init.vim
       ];
     };
+
     trouble = {
       plugins = with pkgs.vimPlugins; [ trouble-nvim ];
       setup = { };
     };
+
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
