@@ -240,6 +240,7 @@ in
         cmp-spell
         pkgs.ck3dNvimPkgs.vimPlugins.cmp-nvim-tags
         cmp-vsnip
+        cmp-omni
 
         vim-vsnip
       ];
@@ -249,6 +250,7 @@ in
           expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
         };
         sources = [
+          { name = "omni"; }
           { name = "vsnip"; }
           { name = "nvim_lua"; }
           { name = "nvim_lsp"; }
@@ -349,9 +351,6 @@ in
           [ "n" "<Leader>F" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
           [ "v" "<Leader>F" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
         ];
-
-        # Enable completion triggered by <c-x><c-o>
-        opts.omnifunc = "v:lua.vim.lsp.omnifunc";
 
         on_attach = ./lspconfig-on_attach.lua;
       };
