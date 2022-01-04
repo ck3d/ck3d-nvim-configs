@@ -389,6 +389,14 @@ in
       setup = { };
     };
 
+    symbols_outline = {
+      plugins = [ pkgs.vimPlugins.symbols-outline-nvim ];
+      vars.symbols_outline = { };
+      keymaps = map silent_noremap [
+        [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { } ]
+      ];
+    };
+
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
