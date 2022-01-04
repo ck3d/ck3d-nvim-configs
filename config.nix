@@ -326,6 +326,8 @@ in
                   filetypes = [ "xslt" ];
                 };
               };
+              # TODO: Check why beancount-langserver failes with exit code 7
+              # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
             };
           in
           builtins.foldl'
