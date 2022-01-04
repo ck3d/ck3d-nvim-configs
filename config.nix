@@ -279,7 +279,7 @@ in
     };
 
     null-ls = {
-      after = [ "gitsigns" ];
+      inherit (config.config.nix-lspconfig) after;
       plugins = with pkgs.vimPlugins; [ null-ls-nvim ];
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
@@ -295,6 +295,7 @@ in
           ++ lib.optional (hasLang "beancount")
             "formatting.bean_format"
         );
+        on_attach = ./lspconfig-on_attach.lua;
       };
     };
 
@@ -350,8 +351,6 @@ in
           [ "n" "<Leader>rn" "<cmd>lua vim.lsp.buf.rename()<CR>" { } ]
           [ "n" "<Leader>ca" "<cmd>lua vim.lsp.buf.code_action()<CR>" { } ]
           [ "n" "gr" "<cmd>lua vim.lsp.buf.references()<CR>" { } ]
-          [ "n" "<Leader>F" "<cmd>lua vim.lsp.buf.formatting()<CR>" { } ]
-          [ "v" "<Leader>F" "<cmd>lua vim.lsp.buf.range_formatting()<CR>" { } ]
         ];
 
         on_attach = ./lspconfig-on_attach.lua;

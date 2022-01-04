@@ -1,4 +1,4 @@
-return function (client, bufnr)
+return function(client, bufnr)
   require'lsp-status'.on_attach(client)
   if client.resolved_capabilities.document_highlight then
     vim.cmd([[
@@ -11,5 +11,18 @@ return function (client, bufnr)
               autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
             augroup END
           ]])
+  end
+
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local opts = {noremap = true, silent = true}
+
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap('n', '<Leader>F', '<cmd>lua vim.lsp.buf.formatting()<CR>',
+                   opts)
+  end
+
+  if client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap('v', '<Leader>F',
+                   '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
   end
 end
