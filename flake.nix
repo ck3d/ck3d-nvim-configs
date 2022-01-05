@@ -34,6 +34,7 @@
             "css"
             "make"
             "graphql"
+            "python"
             # no treesitter
             "xml"
             "tex"

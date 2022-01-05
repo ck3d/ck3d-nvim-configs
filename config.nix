@@ -327,6 +327,7 @@ in
                   filetypes = [ "xslt" ];
                 };
               };
+              python.pyright.pkg = pkgs.nodePackages.pyright;
               # TODO: Check why beancount-langserver failes with exit code 7
               # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
             };
