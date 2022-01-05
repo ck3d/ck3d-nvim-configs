@@ -40,6 +40,7 @@
             "tex"
             "jq"
             "plantuml"
+            "dhall"
           ];
         };
       in

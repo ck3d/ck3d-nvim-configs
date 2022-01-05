@@ -41,6 +41,7 @@ in
       ++ lib.optional (hasLang "lua") pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
       ++ lib.optional (hasLang "graphql") vim-graphql
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
+      ++ lib.optional (hasLang "dhall") dhall-vim
       ;
       opts = {
         wrapscan = false;
@@ -328,6 +329,7 @@ in
                 };
               };
               python.pyright.pkg = pkgs.nodePackages.pyright;
+              dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
               # TODO: Check why beancount-langserver failes with exit code 7
               # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
             };
