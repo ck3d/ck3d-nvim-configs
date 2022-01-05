@@ -400,6 +400,11 @@ in
       ];
     };
 
+    nvim-autopairs = {
+      plugins = [ pkgs.vimPlugins.nvim-autopairs ];
+      setup = { };
+    };
+
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
