@@ -406,7 +406,9 @@ in
 
     nvim-autopairs = {
       plugins = [ pkgs.vimPlugins.nvim-autopairs ];
-      setup = { };
+      setup.args = {
+        check_ts = config.configs ? "nvim-treesitter";
+      };
     };
 
   }
