@@ -404,13 +404,6 @@ in
       ];
     };
 
-    nvim-autopairs = {
-      plugins = [ pkgs.vimPlugins.nvim-autopairs ];
-      setup.args = {
-        check_ts = config.configs ? "nvim-treesitter";
-      };
-    };
-
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
