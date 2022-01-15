@@ -1,5 +1,6 @@
 { config, pkgs, lib, nix2nvimrc, ... }:
 let
+  inherit (pkgs) vimPlugins ck3dNvimPkgs;
   inherit (nix2nvimrc) luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
   silent_noremap = nix2nvimrc.toKeymap { noremap = true; silent = true; };
@@ -25,11 +26,7 @@ in
     };
 
     global = {
-      plugins = with pkgs.vimPlugins; [
-        # TODO: test:
-        # https://github.com/TimUntersberger/neogit
-        fugitive
-
+      plugins = with vimPlugins; [
         surround
         vim-speeddating # CTRL-A/CTRL-X on dates
 
@@ -38,8 +35,7 @@ in
         # TODO: test rust-vim
       ]
       ++ lib.optional (hasLang "jq") jq-vim
-      ++ lib.optional (hasLang "lua") pkgs.ck3dNvimPkgs.vimPlugins.nvim-luapad
-      ++ lib.optional (hasLang "graphql") vim-graphql
+      ++ lib.optional (hasLang "lua") ck3dNvimPkgs.vimPlugins.nvim-luapad
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
       ++ lib.optional (hasLang "dhall") dhall-vim
       ;
@@ -112,12 +108,12 @@ in
     };
 
     gitsigns = {
-      plugins = with pkgs.vimPlugins; [ gitsigns-nvim ];
+      plugins = [ vimPlugins.gitsigns-nvim ];
       setup = { };
     };
 
     nvim-tree = {
-      plugins = with pkgs.vimPlugins; [ nvim-tree-lua ];
+      plugins = [ vimPlugins.nvim-tree-lua ];
       setup = { };
       keymaps = map silent_noremap [
         [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
@@ -125,17 +121,17 @@ in
     };
 
     which-key = {
-      plugins = with pkgs.vimPlugins; [ which-key-nvim ];
+      plugins = [ vimPlugins.which-key-nvim ];
       setup = { };
     };
 
     Comment = {
-      plugins = with pkgs.vimPlugins; [ comment-nvim ];
+      plugins = [ vimPlugins.comment-nvim ];
       setup = { };
     };
 
     toggleterm = {
-      plugins = with pkgs.vimPlugins; [ toggleterm-nvim ];
+      plugins = [ vimPlugins.toggleterm-nvim ];
       setup.args = {
         open_mapping = "<c-t>";
         shade_terminals = false;
@@ -143,7 +139,7 @@ in
     };
 
     bufferline = {
-      plugins = with pkgs.vimPlugins; [ bufferline-nvim ];
+      plugins = [ vimPlugins.bufferline-nvim ];
       setup = { };
       keymaps = map silent_noremap [
         [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
@@ -151,23 +147,22 @@ in
     };
 
     vim-rooter = {
-      plugins = with pkgs.vimPlugins; [ vim-rooter ];
+      plugins = [ vimPlugins.vim-rooter ];
       vars.rooter_patterns = [
         ".git"
         "Cargo.toml"
         "flake.nix"
-        ".lua-format"
         ".envrc"
       ];
     };
 
     telescope = {
-      plugins = with pkgs.vimPlugins; [ telescope-fzy-native-nvim ];
-      # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
+      plugins = [ vimPlugins.telescope-fzy-native-nvim ];
       setup = { };
       lua = [
         "require'telescope'.load_extension('fzy_native')"
       ];
+      # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       keymaps = map silent_noremap [
         [ "n" "<Leader>ff" "<Cmd>Telescope find_files<CR>" { } ]
         [ "n" "<Leader>fF" "<Cmd>Telescope git_files<CR>" { } ]
@@ -188,7 +183,7 @@ in
     };
 
     nvim-treesitter = {
-      plugins = with pkgs.vimPlugins; [ nvim-treesitter playground ];
+      plugins = with vimPlugins; [ nvim-treesitter playground ];
       setup.modulePath = "nvim-treesitter.configs";
       setup.args = {
         highlight.enable = true;
@@ -200,7 +195,7 @@ in
 
     lualine = {
       after = [ "lsp-status" ];
-      plugins = with pkgs.vimPlugins; [ lualine-nvim ];
+      plugins = [ vimPlugins.lualine-nvim ];
       setup.args = {
         sections = {
           lualine_a = [ "mode" ];
@@ -224,14 +219,14 @@ in
 
     lsp_extensions = {
       after = [ "nix-lspconfig" ];
-      plugins = with pkgs.vimPlugins; [ lsp_extensions-nvim ];
+      plugins = [ vimPlugins.lsp_extensions-nvim ];
       vim = [
         "autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }"
       ];
     };
 
     cmp = {
-      plugins = with pkgs.vimPlugins; [
+      plugins = with vimPlugins; [
         nvim-cmp
         cmp-buffer
         cmp-path
@@ -239,7 +234,7 @@ in
         cmp-treesitter
         cmp-nvim-lsp
         cmp-spell
-        pkgs.ck3dNvimPkgs.vimPlugins.cmp-nvim-tags
+        ck3dNvimPkgs.vimPlugins.cmp-nvim-tags
         cmp-vsnip
         cmp-omni
 
@@ -251,11 +246,11 @@ in
           expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
         };
         sources = [
-          { name = "omni"; }
-          { name = "vsnip"; }
           { name = "nvim_lua"; }
           { name = "nvim_lsp"; }
           { name = "treesitter"; }
+          { name = "omni"; }
+          { name = "vsnip"; }
           { name = "path"; keyword_length = 2; }
           { name = "tags"; keyword_length = 4; }
           { name = "buffer"; keyword_length = 4; }
@@ -268,20 +263,20 @@ in
     };
 
     indentLine = {
-      plugins = with pkgs.vimPlugins; [ indentLine ];
+      plugins = [ vimPlugins.indentLine ];
       vars.indentLine_enabled = 0;
       vars.indentLine_char = "⎸";
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     };
 
     lightspeed = {
-      plugins = with pkgs.vimPlugins; [ lightspeed-nvim ];
+      plugins = [ vimPlugins.lightspeed-nvim ];
       setup = { };
     };
 
     null-ls = {
       inherit (config.config.nix-lspconfig) after;
-      plugins = with pkgs.vimPlugins; [ null-ls-nvim ];
+      plugins = [ vimPlugins.null-ls-nvim ];
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
@@ -308,6 +303,7 @@ in
       after = [
         "global"
         "lsp-status"
+        "cmp"
       ];
       lspconfig = {
         servers =
@@ -326,7 +322,7 @@ in
                 };
               };
               xml.lemminx = {
-                pkg = pkgs.ck3dNvimPkgs.lemminx;
+                pkg = ck3dNvimPkgs.lemminx;
                 config = {
                   cmd = [ "lemminx" ];
                   filetypes = [ "xslt" ];
@@ -365,7 +361,7 @@ in
     };
 
     lsp-status = {
-      plugins = with pkgs.vimPlugins; [ lsp-status-nvim ];
+      plugins = [ vimPlugins.lsp-status-nvim ];
       lua = [
         "require'lsp-status'.register_progress()"
       ];
@@ -373,15 +369,23 @@ in
 
     diffview = {
       after = [ "global" ];
-      plugins = with pkgs.vimPlugins; [ diffview-nvim plenary-nvim ];
+      plugins = with vimPlugins; [ diffview-nvim plenary-nvim ];
       setup.args = {
         use_icons = false;
       };
     };
 
+    neogit = {
+      after = [ "diffview" ];
+      plugins = [ vimPlugins.neogit ];
+      setup.args = {
+        integrations.diffview = config.config ? diffview;
+      };
+    };
+
     colorscheme-and-more = {
       after = [ "global" "toggleterm" ];
-      plugins = with pkgs.vimPlugins; [
+      plugins = with vimPlugins; [
         gruvbox-nvim
         lush-nvim
       ];
@@ -392,12 +396,12 @@ in
     };
 
     trouble = {
-      plugins = with pkgs.vimPlugins; [ trouble-nvim ];
+      plugins = [ vimPlugins.trouble-nvim ];
       setup = { };
     };
 
     symbols_outline = {
-      plugins = [ pkgs.vimPlugins.symbols-outline-nvim ];
+      plugins = [ vimPlugins.symbols-outline-nvim ];
       vars.symbols_outline = { };
       keymaps = map silent_noremap [
         [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { } ]
@@ -407,7 +411,7 @@ in
   }
   // lib.optionalAttrs (hasLang "tex") {
     vimtex = {
-      plugins = with pkgs.vimPlugins; [ vimtex ];
+      plugins = [ vimPlugins.vimtex ];
       vars.tex_flavor = "latex";
     };
   };
