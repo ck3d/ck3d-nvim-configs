@@ -12,7 +12,16 @@
       let
         overlays = [ (import ./overlay.nix) ];
         nixpkgs' = import nixpkgs { inherit system overlays; };
-        adminLanguages = [ "nix" "yaml" "bash" "markdown" "json" "toml" ];
+        adminLanguages = [
+          "nix"
+          "yaml"
+          "bash"
+          # activate after merge of
+          # https://github.com/NixOS/nixpkgs/pull/154767
+          # "markdown"
+          "json"
+          "toml"
+        ];
         nvim = with nixpkgs'; name: languages: runCommandLocal
           "nvim"
           { nativeBuildInputs = [ makeWrapper ]; }
