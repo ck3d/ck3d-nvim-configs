@@ -17,8 +17,7 @@
           "yaml"
           "bash"
           # activate after merge of
-          # https://github.com/NixOS/nixpkgs/pull/154767
-          # "markdown"
+          "markdown"
           "json"
           "toml"
         ];
