@@ -330,6 +330,10 @@ in
               };
               python.pyright.pkg = pkgs.nodePackages.pyright;
               dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
+              json.jsonls = {
+                pkg = pkgs.nodePackages.vscode-json-languageserver-bin;
+                config.cmd = [ "json-languageserver" "--stdio" ];
+              };
               # TODO: Check why beancount-langserver failes with exit code 7
               # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
             };
