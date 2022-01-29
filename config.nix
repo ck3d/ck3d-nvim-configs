@@ -109,7 +109,12 @@ in
 
     gitsigns = {
       plugins = [ vimPlugins.gitsigns-nvim ];
-      setup = { };
+      setup.args = {
+        current_line_blame = true;
+        current_line_blame_opts = {
+          ignore_whitespace = true;
+        };
+      };
     };
 
     nvim-tree = {
