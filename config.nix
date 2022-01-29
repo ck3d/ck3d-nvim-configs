@@ -139,10 +139,11 @@ in
     };
 
     bufferline = {
+      after = [ "global" ];
       plugins = [ vimPlugins.bufferline-nvim ];
       setup = { };
       keymaps = map silent_noremap [
-        [ "n" "gb" "<Cmd>BufferLinePick<CR>" { } ]
+        [ "n" "<Leader>b" "<Cmd>BufferLinePick<CR>" { } ]
       ];
     };
 
