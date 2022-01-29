@@ -105,6 +105,9 @@ in
         neovide_cursor_antialiasing = true;
         neovide_cursor_vfx_mode = "pixiedust";
       };
+      vim = [
+        ./init.vim
+      ];
     };
 
     gitsigns = {
@@ -393,16 +396,10 @@ in
       };
     };
 
-    colorscheme-and-more = {
+    gruvbox = {
       after = [ "global" "toggleterm" ];
-      plugins = with vimPlugins; [
-        gruvbox-nvim
-        lush-nvim
-      ];
-      vim = [
-        "colorscheme gruvbox"
-        ./init.vim
-      ];
+      plugins = [ vimPlugins.gruvbox-nvim ];
+      vim = [ "colorscheme gruvbox" ];
     };
 
     trouble = {
