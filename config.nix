@@ -50,7 +50,8 @@ in
         showmatch = true;
         undofile = true;
         visualbell = true;
-        cursorline = true;
+        # the default color scheme reduces the contrast
+        cursorline = false;
         expandtab = true;
         shiftwidth = 2;
         number = true;
@@ -400,6 +401,8 @@ in
       after = [ "global" "toggleterm" ];
       plugins = [ vimPlugins.gruvbox-nvim ];
       vim = [ "colorscheme gruvbox" ];
+      vars.gruvbox_number_column = "bg1";
+      vars.gruvbox_sign_column = "bg0";
     };
 
     trouble = {
