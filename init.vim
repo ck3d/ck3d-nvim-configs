@@ -13,7 +13,7 @@ autocmd FileType markdown setlocal iskeyword+=-
 
 " see help restore-cursor
 autocmd BufReadPost *
-     \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+     \ if line("'\"") >= 1 && line("'\"") <= line("$") && &filetype !~# 'gitcommit'
      \ |   exe "normal! g`\""
      \ | endif
 
