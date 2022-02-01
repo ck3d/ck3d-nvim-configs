@@ -50,8 +50,8 @@ in
         showmatch = true;
         undofile = true;
         visualbell = true;
-        # the default color scheme reduces the contrast
-        cursorline = false;
+        cursorline = true;
+        cursorlineopt = "number";
         expandtab = true;
         shiftwidth = 2;
         number = true;
@@ -399,7 +399,14 @@ in
 
     gruvbox = {
       after = [ "global" "toggleterm" ];
-      plugins = [ vimPlugins.gruvbox-nvim ];
+      plugins = [
+        (vimPlugins.gruvbox-nvim.overrideAttrs (s: {
+          postPatch = ''
+            sed -i lua/gruvbox/base.lua \
+              -e '/\bCursorLineNr/ s,bg1,bg0,'
+          '';
+        }))
+      ];
       vim = [ "colorscheme gruvbox" ];
       vars.gruvbox_number_column = "bg1";
       vars.gruvbox_sign_column = "bg0";
