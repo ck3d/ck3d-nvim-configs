@@ -12,10 +12,8 @@ autocmd FileType markdown,gitcommit setlocal spell
 autocmd FileType markdown setlocal iskeyword+=-
 
 " see help restore-cursor
-autocmd BufReadPost *
-     \ if line("'\"") >= 1 && line("'\"") <= line("$") && &filetype !~# 'gitcommit'
-     \ |   exe "normal! g`\""
-     \ | endif
+autocmd BufRead * autocmd FileType <buffer> ++once
+     \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
 
 " https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
 augroup highlight_yank
