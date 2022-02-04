@@ -291,6 +291,7 @@ in
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
             "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier'})"
+            "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
           ]
           ++ lib.optionals (hasLang "bash") [
             "code_actions.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
