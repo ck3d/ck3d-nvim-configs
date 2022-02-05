@@ -15,7 +15,6 @@ in
         };
       };
     }
-    #./devicons.nix
   ];
 
   configs = {
@@ -25,7 +24,15 @@ in
         config.languages;
     };
 
+    leader.vars.mapleader = " ";
+
+    neovide.vars = {
+      neovide_cursor_antialiasing = true;
+      neovide_cursor_vfx_mode = "pixiedust";
+    };
+
     global = {
+      after = [ "leader" ];
       plugins = with vimPlugins; [
         surround
         vim-speeddating # CTRL-A/CTRL-X on dates
@@ -101,14 +108,7 @@ in
         [ "n" "]d" "<cmd>lua vim.diagnostic.goto_next()<CR>" { } ]
         [ "n" "<Leader>q" "<cmd>lua vim.diagnostic.setloclist()<CR>" { } ]
       ];
-      vars = {
-        mapleader = " ";
-        neovide_cursor_antialiasing = true;
-        neovide_cursor_vfx_mode = "pixiedust";
-      };
-      vim = [
-        ./init.vim
-      ];
+      vim = [ ./init.vim ];
     };
 
     gitsigns = {
@@ -148,7 +148,7 @@ in
     };
 
     bufferline = {
-      after = [ "global" ];
+      after = [ "leader" ];
       plugins = [ vimPlugins.bufferline-nvim ];
       setup = { };
       keymaps = map silent_noremap [
@@ -167,6 +167,7 @@ in
     };
 
     telescope = {
+      after = [ "leader" ];
       plugins = [ vimPlugins.telescope-fzy-native-nvim ];
       setup = { };
       lua = [
@@ -383,10 +384,9 @@ in
     };
 
     diffview = {
-      after = [ "global" ];
       plugins = with vimPlugins; [ diffview-nvim plenary-nvim ];
       setup.args = {
-        use_icons = false;
+        use_icons = config.configs ? nvim-web-devicons;
       };
     };
 
@@ -413,9 +413,21 @@ in
       vars.gruvbox_sign_column = "bg0";
     };
 
-    trouble = {
-      plugins = [ vimPlugins.trouble-nvim ];
+    nvim-web-devicons = {
+      plugins = [ vimPlugins.nvim-web-devicons ];
       setup = { };
+    };
+
+    trouble = {
+      after = [ "leader" ];
+      plugins = [ vimPlugins.trouble-nvim ];
+      setup.args = {
+        icons = config.configs ? nvim-web-devicons;
+      };
+      keymaps = map silent_noremap [
+        [ "n" "<Leader>xx" "<Cmd>TroubleToggle<CR>" { } ]
+        [ "n" "gR" "<Cmd>TroubleToggle lsp_references<CR>" { } ]
+      ];
     };
 
     symbols_outline = {
