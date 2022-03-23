@@ -168,10 +168,14 @@ in
 
     telescope = {
       after = [ "leader" ];
-      plugins = [ vimPlugins.telescope-fzy-native-nvim ];
+      plugins = [
+        vimPlugins.telescope-fzy-native-nvim
+        vimPlugins.telescope-file-browser-nvim
+      ];
       setup = { };
       lua = [
         "require'telescope'.load_extension('fzy_native')"
+        "require'telescope'.load_extension('file_browser')"
       ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       keymaps = map silent_noremap [
@@ -180,7 +184,7 @@ in
         [ "n" "<Leader>fg" "<Cmd>Telescope live_grep<CR>" { } ]
         [ "n" "<Leader>fb" "<Cmd>Telescope buffers<CR>" { } ]
         [ "n" "<Leader>fh" "<Cmd>Telescope help_tags<CR>" { } ]
-        [ "n" "<Leader>ft" "<Cmd>lua require'telescope.builtin'.file_browser({cwd= '%:h'})<CR>" { } ]
+        [ "n" "<Leader>ft" "<Cmd>Telescope file_browser<CR>" { } ]
         [ "n" "<Leader>fT" "<Cmd>Telescope tags<CR>" { } ]
         [ "n" "<Leader>fc" "<Cmd>Telescope commands<CR>" { } ]
         [ "n" "<Leader>fq" "<Cmd>Telescope quickfix<CR>" { } ]
