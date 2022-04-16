@@ -17,6 +17,10 @@ in
     }
   ];
 
+  treesitter.grammars = (pkgs.tree-sitter.override {
+    extraGrammars.tree-sitter-scheme = lib.importJSON ./tree-sitter-scheme.json;
+  }).builtGrammars;
+
   configs = {
     ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
       treesitter.languages = builtins.filter

@@ -43,6 +43,7 @@
             "make"
             "graphql"
             "python"
+            "scheme"
             # no treesitter
             "xml"
             "tex"
