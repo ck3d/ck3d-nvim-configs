@@ -300,6 +300,7 @@ in
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
+            "code_actions.gitsigns"
             "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier'})"
             "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
           ]
