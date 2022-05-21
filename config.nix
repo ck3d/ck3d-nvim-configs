@@ -122,6 +122,7 @@ in
         current_line_blame_opts = {
           ignore_whitespace = true;
         };
+        on_attach = ./gitsigns-on_attach.lua;
       };
     };
 
