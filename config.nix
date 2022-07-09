@@ -256,26 +256,7 @@ in
 
         vim-vsnip
       ];
-      # https://github.com/hrsh7th/nvim-cmp/blob/main/lua/cmp/config/default.lua
-      setup.args = {
-        snippet = {
-          expand = luaExpr "function(args) vim.fn['vsnip#anonymous'](args.body) end";
-        };
-        sources = [
-          { name = "nvim_lua"; }
-          { name = "nvim_lsp"; }
-          { name = "treesitter"; }
-          { name = "omni"; }
-          { name = "vsnip"; }
-          { name = "path"; keyword_length = 2; }
-          { name = "tags"; keyword_length = 4; }
-          { name = "buffer"; keyword_length = 4; }
-          { name = "spell"; keyword_length = 4; }
-        ];
-        mapping = {
-          "<CR>" = luaExpr "require'cmp'.mapping.confirm({ select = true })";
-        };
-      };
+      setup.args = ./cmp_setup_args.lua;
     };
 
     indentLine = {
@@ -410,14 +391,15 @@ in
       plugins = [
         (vimPlugins.gruvbox-nvim.overrideAttrs (s: {
           postPatch = ''
-            sed -i lua/gruvbox/base.lua \
-              -e '/\bCursorLineNr/ s,bg1,bg0,'
+            sed -i lua/gruvbox/groups.lua \
+              -e '/\bCursorLineNr/ s,bg1,bg0,' \
+              -e '/\bLineNr/ s;bg4;bg4, bg = colors.bg1;' \
+              -e '/\bGruvbox.*Sign/ s,bg1,bg0,' \
+              -e '/\bSignColumn/ s,bg1,bg0,' \
           '';
         }))
       ];
       vim = [ "colorscheme gruvbox" ];
-      vars.gruvbox_number_column = "bg1";
-      vars.gruvbox_sign_column = "bg0";
     };
 
     nvim-web-devicons = {
