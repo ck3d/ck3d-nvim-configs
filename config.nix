@@ -42,7 +42,7 @@ in
         # TODO: test rust-vim
       ]
       ++ lib.optional (hasLang "jq") jq-vim
-      ++ lib.optional (hasLang "lua") ck3dNvimPkgs.vimPlugins.nvim-luapad
+      ++ lib.optional (hasLang "lua") nvim-luapad
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
       ++ lib.optional (hasLang "dhall") dhall-vim
       ;
