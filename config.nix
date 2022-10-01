@@ -250,7 +250,7 @@ in
         cmp-treesitter
         cmp-nvim-lsp
         cmp-spell
-        ck3dNvimPkgs.vimPlugins.cmp-nvim-tags
+        cmp-nvim-tags
         cmp-vsnip
         cmp-omni
 
