@@ -428,7 +428,7 @@ in
     };
 
   }
-  // lib.optionalAttrs (hasLang "tex") {
+  // lib.optionalAttrs (hasLang "latex") {
     vimtex = {
       plugins = [ vimPlugins.vimtex ];
       vars.tex_flavor = "latex";

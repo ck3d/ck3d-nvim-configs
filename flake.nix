@@ -44,9 +44,9 @@
             "graphql"
             "python"
             "scheme"
+            "latex"
             # no treesitter
             "xml"
-            "tex"
             "jq"
             "plantuml"
             "dhall"
