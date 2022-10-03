@@ -21,13 +21,20 @@
           "json"
           "toml"
         ];
-        nvim = with nixpkgs'; name: languages: runCommandLocal
-          "nvim"
-          { nativeBuildInputs = [ makeWrapper ]; }
-          ''
-            makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
-              --add-flags "-u ${nixpkgs'.writeText ("nvimrc-" + name) (nix2nvimrc.lib.toRc nixpkgs' { inherit languages; imports = [ ./config.nix ];})}"
-          '';
+        nvim = with nixpkgs'; name: languages:
+          let
+            rc = nix2nvimrc.lib.toRc nixpkgs' {
+              inherit languages;
+              imports = [ ./config.nix ];
+            };
+          in
+          runCommandLocal
+            "nvim"
+            { nativeBuildInputs = [ makeWrapper ]; }
+            ''
+              makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
+                --add-flags "-u ${nixpkgs'.writeText ("nvimrc-" + name) rc}"
+            '';
         packages = builtins.mapAttrs nvim {
           admin = adminLanguages;
           dev = adminLanguages ++ [
