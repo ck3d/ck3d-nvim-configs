@@ -52,6 +52,7 @@
             "python"
             "scheme"
             "latex"
+            "devicetree"
             # no treesitter
             "xml"
             "jq"
