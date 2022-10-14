@@ -34,7 +34,6 @@ in
     global = {
       after = [ "leader" ];
       plugins = with vimPlugins; [
-        surround
         vim-speeddating # CTRL-A/CTRL-X on dates
 
         registers-nvim
@@ -427,6 +426,10 @@ in
       ];
     };
 
+    nvim-surround = {
+      plugins = [ vimPlugins.nvim-surround ];
+      setup = { };
+    };
   }
   // lib.optionalAttrs (hasLang "latex") {
     vimtex = {
