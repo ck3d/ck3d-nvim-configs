@@ -4,6 +4,14 @@ let
   inherit (nix2nvimrc) luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
   silent_noremap = nix2nvimrc.toKeymap { noremap = true; silent = true; };
+
+  parsers = lib.mapAttrs'
+    (n: v: lib.nameValuePair
+      # remove prefix "tree-sitter-" from attribute names
+      # https://github.com/NixOS/nixpkgs/pull/198606
+      (lib.removePrefix "tree-sitter-" n)
+      "${v}/parser")
+    pkgs.tree-sitter.builtGrammars;
 in
 {
   imports = [
@@ -19,9 +27,9 @@ in
 
   configs = {
     ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
-      treesitter.languages = builtins.filter
-        (type: builtins.hasAttr "tree-sitter-${type}" config.treesitter.grammars)
-        config.languages;
+      treesitter.parsers = lib.getAttrs
+        (builtins.filter (type: builtins.hasAttr type parsers) config.languages)
+        parsers;
     };
 
     leader.vars.mapleader = " ";
