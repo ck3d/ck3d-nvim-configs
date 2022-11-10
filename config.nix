@@ -350,7 +350,7 @@ in
             { }
             (builtins.filter hasLang (builtins.attrNames lang_server));
 
-        capabilities = luaExpr "require'cmp_nvim_lsp'.update_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
+        capabilities = luaExpr "require'cmp_nvim_lsp'.default_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
         keymaps = map silent_noremap [
           [ "n" "gD" "<cmd>lua vim.lsp.buf.declaration()<CR>" { } ]
