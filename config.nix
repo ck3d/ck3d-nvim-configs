@@ -394,6 +394,15 @@ in
       };
     };
 
+    osc52 = {
+      plugins = [ ck3dNvimPkgs.vimPlugins.nvim-osc52 ];
+      setup.args = { };
+      keymaps = map (nix2nvimrc.toKeymap { }) [
+        [ "n" "<Leader>c" "<cmd>lua require'osc52'.copy_operator()<CR>" { expr = true; } ]
+        [ "x" "<Leader>c" "<cmd>lua require'osc52'.copy_visual()<CR>" { } ]
+      ];
+    };
+
     gruvbox = {
       after = [ "global" "toggleterm" ];
       plugins = [
