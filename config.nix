@@ -343,6 +343,7 @@ in
               cpp.clangd.pkg = pkgs.llvmPackages_13.clang-unwrapped;
               # TODO: Check why beancount-langserver failes with exit code 7
               # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
+              go.gopls.pkg = pkgs.gopls;
             };
           in
           builtins.foldl'

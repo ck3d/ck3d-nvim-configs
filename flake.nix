@@ -53,6 +53,7 @@
             "scheme"
             "latex"
             "devicetree"
+            "go"
             # no treesitter
             "xml"
             "jq"
