@@ -388,7 +388,7 @@ in
 
     neogit = {
       after = [ "diffview" ];
-      plugins = [ ck3dNvimPkgs.vimPlugins.neogit ];
+      plugins = [ vimPlugins.neogit ];
       setup.args = {
         integrations.diffview = config.config ? diffview;
       };
