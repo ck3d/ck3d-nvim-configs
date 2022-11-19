@@ -3,7 +3,7 @@ let
   inherit (pkgs) vimPlugins ck3dNvimPkgs;
   inherit (nix2nvimrc) luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
-  silent_noremap = nix2nvimrc.toKeymap { noremap = true; silent = true; };
+  keymap_silent = nix2nvimrc.toKeymap { silent = true; };
 
   parsers = lib.mapAttrs'
     (n: v: lib.nameValuePair
@@ -87,7 +87,7 @@ in
         background = "light";
         completeopt = "menu,menuone,noselect";
       };
-      keymaps = map silent_noremap [
+      keymaps = map keymap_silent [
         [ "" "<C-h>" "<C-w>h" { } ]
         [ "" "<C-j>" "<C-w>j" { } ]
         [ "" "<C-k>" "<C-w>k" { } ]
@@ -110,10 +110,10 @@ in
         # https://stackoverflow.com/a/26504944
         [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { } ]
         # diagnostics
-        [ "n" "<Leader>e" "<cmd>lua vim.diagnostic.open_float()<CR>" { } ]
-        [ "n" "[d" "<cmd>lua vim.diagnostic.goto_prev()<CR>" { } ]
-        [ "n" "]d" "<cmd>lua vim.diagnostic.goto_next()<CR>" { } ]
-        [ "n" "<Leader>q" "<cmd>lua vim.diagnostic.setloclist()<CR>" { } ]
+        [ "n" "<Leader>e" (luaExpr "vim.diagnostic.open_float") { } ]
+        [ "n" "[d" (luaExpr "vim.diagnostic.goto_prev") { } ]
+        [ "n" "]d" (luaExpr "vim.diagnostic.goto_next") { } ]
+        [ "n" "<Leader>q" (luaExpr "vim.diagnostic.setloclist") { } ]
       ];
       vim = [ ./init.vim ];
     };
@@ -132,7 +132,7 @@ in
     nvim-tree = {
       plugins = [ vimPlugins.nvim-tree-lua ];
       setup = { };
-      keymaps = map silent_noremap [
+      keymaps = map keymap_silent [
         [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
       ];
     };
@@ -159,7 +159,7 @@ in
       after = [ "leader" ];
       plugins = [ vimPlugins.bufferline-nvim ];
       setup = { };
-      keymaps = map silent_noremap [
+      keymaps = map keymap_silent [
         [ "n" "<Leader>b" "<Cmd>BufferLinePick<CR>" { } ]
       ];
     };
@@ -188,20 +188,20 @@ in
         "require'telescope'.load_extension('ui-select')"
       ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
-      keymaps = map silent_noremap [
-        [ "n" "<Leader>ff" "<Cmd>Telescope find_files<CR>" { } ]
-        [ "n" "<Leader>fF" "<Cmd>Telescope git_files<CR>" { } ]
-        [ "n" "<Leader>fg" "<Cmd>Telescope live_grep<CR>" { } ]
-        [ "n" "<Leader>fb" "<Cmd>Telescope buffers<CR>" { } ]
-        [ "n" "<Leader>fh" "<Cmd>Telescope help_tags<CR>" { } ]
+      keymaps = map keymap_silent [
+        [ "n" "<Leader>ff" (luaExpr "require'telescope.builtin'.find_files") { } ]
+        [ "n" "<Leader>fF" (luaExpr "require'telescope.builtin'.git_files") { } ]
+        [ "n" "<Leader>fg" (luaExpr "require'telescope.builtin'.live_grep") { } ]
+        [ "n" "<Leader>fb" (luaExpr "require'telescope.builtin'.buffers") { } ]
+        [ "n" "<Leader>fh" (luaExpr "require'telescope.builtin'.help_tags") { } ]
         [ "n" "<Leader>ft" "<Cmd>Telescope file_browser<CR>" { } ]
-        [ "n" "<Leader>fT" "<Cmd>Telescope tags<CR>" { } ]
-        [ "n" "<Leader>fc" "<Cmd>Telescope commands<CR>" { } ]
-        [ "n" "<Leader>fq" "<Cmd>Telescope quickfix<CR>" { } ]
-        [ "n" "<Leader>fd" "<Cmd>lua require'telescope.builtin'.git_files({cwd= '~/dotfiles/'})<CR>" { } ]
-        [ "n" "<Leader>fr" "<Cmd>lua require'telescope.builtin'.find_files({cwd= '%:h'})<CR>" { } ]
-        [ "n" "<Leader>gs" "<Cmd>Telescope git_status<CR>" { } ]
-        [ "n" "<Leader>wo" "<Cmd>Telescope lsp_document_symbols<CR>" { } ]
+        [ "n" "<Leader>fT" (luaExpr "require'telescope.builtin'.tags") { } ]
+        [ "n" "<Leader>fc" (luaExpr "require'telescope.builtin'.commands") { } ]
+        [ "n" "<Leader>fq" (luaExpr "require'telescope.builtin'.quickfix") { } ]
+        [ "n" "<Leader>fd" (luaExpr "function() require'telescope.builtin'.git_files({cwd= '~/dotfiles/'}) end") { } ]
+        [ "n" "<Leader>fr" (luaExpr "function() require'telescope.builtin'.find_files({cwd= '%:h'}) end") { } ]
+        [ "n" "<Leader>gs" (luaExpr "require'telescope.builtin'.git_status") { } ]
+        [ "n" "<Leader>wo" (luaExpr "require'telescope.builtin'.lsp_document_symbols") { } ]
       ];
     };
 
@@ -353,19 +353,19 @@ in
 
         capabilities = luaExpr "require'cmp_nvim_lsp'.default_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
-        keymaps = map silent_noremap [
-          [ "n" "gD" "<cmd>lua vim.lsp.buf.declaration()<CR>" { } ]
-          [ "n" "gd" "<cmd>lua vim.lsp.buf.definition()<CR>" { } ]
-          [ "n" "K" "<cmd>lua vim.lsp.buf.hover()<CR>" { } ]
-          [ "n" "gi" "<cmd>lua vim.lsp.buf.implementation()<CR>" { } ]
-          [ "n" "<C-k>" "<cmd>lua vim.lsp.buf.signature_help()<CR>" { } ]
-          [ "n" "<Leader>wa" "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>" { } ]
-          [ "n" "<Leader>wr" "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>" { } ]
-          [ "n" "<Leader>wl" "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>" { } ]
-          [ "n" "<Leader>D" "<cmd>lua vim.lsp.buf.type_definition()<CR>" { } ]
-          [ "n" "<Leader>rn" "<cmd>lua vim.lsp.buf.rename()<CR>" { } ]
-          [ "n" "<Leader>ca" "<cmd>lua vim.lsp.buf.code_action()<CR>" { } ]
-          [ "n" "gr" "<cmd>lua vim.lsp.buf.references()<CR>" { } ]
+        keymaps = map keymap_silent [
+          [ "n" "gD" (luaExpr "vim.lsp.buf.declaration") { } ]
+          [ "n" "gd" (luaExpr "vim.lsp.buf.definition") { } ]
+          [ "n" "K" (luaExpr "vim.lsp.buf.hover") { } ]
+          [ "n" "gi" (luaExpr "vim.lsp.buf.implementation") { } ]
+          [ "n" "<C-k>" (luaExpr "vim.lsp.buf.signature_help") { } ]
+          [ "n" "<Leader>wa" (luaExpr "vim.lsp.buf.add_workspace_folder") { } ]
+          [ "n" "<Leader>wr" (luaExpr "vim.lsp.buf.remove_workspace_folder") { } ]
+          [ "n" "<Leader>wl" (luaExpr "function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end") { } ]
+          [ "n" "<Leader>D" (luaExpr "vim.lsp.buf.type_definition") { } ]
+          [ "n" "<Leader>rn" (luaExpr "vim.lsp.buf.rename") { } ]
+          [ "n" "<Leader>ca" (luaExpr "vim.lsp.buf.code_action") { } ]
+          [ "n" "gr" (luaExpr "vim.lsp.buf.references") { } ]
         ];
 
         on_attach = ./lspconfig-on_attach.lua;
@@ -398,8 +398,8 @@ in
       plugins = [ ck3dNvimPkgs.vimPlugins.nvim-osc52 ];
       setup.args = { };
       keymaps = map (nix2nvimrc.toKeymap { }) [
-        [ "n" "<Leader>c" "<cmd>lua require'osc52'.copy_operator()<CR>" { expr = true; } ]
-        [ "x" "<Leader>c" "<cmd>lua require'osc52'.copy_visual()<CR>" { } ]
+        [ "n" "<Leader>c" (luaExpr "require'osc52'.copy_operator") { expr = true; } ]
+        [ "x" "<Leader>c" (luaExpr "require'osc52'.copy_visual") { } ]
       ];
     };
 
@@ -430,7 +430,7 @@ in
       setup.args = {
         icons = config.configs ? nvim-web-devicons;
       };
-      keymaps = map silent_noremap [
+      keymaps = map keymap_silent [
         [ "n" "<Leader>xx" "<Cmd>TroubleToggle<CR>" { } ]
         [ "n" "gR" "<Cmd>TroubleToggle lsp_references<CR>" { } ]
       ];
@@ -439,7 +439,7 @@ in
     symbols_outline = {
       plugins = [ vimPlugins.symbols-outline-nvim ];
       vars.symbols_outline = { };
-      keymaps = map silent_noremap [
+      keymaps = map keymap_silent [
         [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { } ]
       ];
     };

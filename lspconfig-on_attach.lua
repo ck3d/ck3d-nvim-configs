@@ -13,16 +13,15 @@ return function(client, bufnr)
           ]])
   end
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local opts = {noremap = true, silent = true}
+  local opts = {buffer = bufnr, silent = true}
 
   if client.server_capabilities.documentFormattingProvider then
-    buf_set_keymap('n', '<Leader>F', '<cmd>lua vim.lsp.buf.formatting()<CR>',
-                   opts)
+    vim.keymap.set('n', '<Leader>F',
+                   function() vim.lsp.buf.format({async = true}) end, opts)
   end
 
   if client.server_capabilities.documentRangeFormattingProvider then
-    buf_set_keymap('v', '<Leader>F',
-                   '<cmd>lua vim.lsp.buf.range_formatting()<CR>', opts)
+    vim.keymap.set('v', '<Leader>F',
+                   function() vim.lsp.buf.format({async = true}) end, opts)
   end
 end
