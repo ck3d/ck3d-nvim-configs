@@ -2,11 +2,11 @@
   "nodes": {
     "nix2nvimrc": {
       "locked": {
-        "lastModified": 1667509148,
-        "narHash": "sha256-pJDdQJc3+0wl4p2LiMqoZZan7EVlA2Lh/N+00j2iaQ4=",
+        "lastModified": 1668890923,
+        "narHash": "sha256-my0Mzv6sFEvCFvNht8On2/Y2TTcSxFcf18CwEml1i4Y=",
         "owner": "ck3d",
         "repo": "nix2nvimrc",
-        "rev": "579643cedd69322d05e388e48f40d964735a82de",
+        "rev": "df53205c412223597c161a2fe2df1f18a3a4f9c0",
         "type": "github"
       },
       "original": {
@@ -17,11 +17,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1668052847,
-        "narHash": "sha256-YSARI4eYG9oTXloOE1+PiLoU/9sC/L8T7mpvr/un9z0=",
+        "lastModified": 1668829732,
+        "narHash": "sha256-T8mzu6/rN1i7kSQIOuxCPYy0BVRxfFy0CsSuXYVq+V8=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cbb048f8d91149c3976f51083d3056fa17fc1622",
+        "rev": "c4c1866143ec02016d30eabed22cd6d0de39a10b",
         "type": "github"
       },
       "original": {
