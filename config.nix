@@ -241,7 +241,7 @@ in
     };
 
     lsp_extensions = {
-      after = [ "nix-lspconfig" ];
+      after = [ "lspconfig" ];
       plugins = [ vimPlugins.lsp_extensions-nvim ];
       vim = [
         "autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }"
@@ -279,7 +279,7 @@ in
     };
 
     null-ls = {
-      inherit (config.config.nix-lspconfig) after;
+      inherit (config.config.lspconfig) after;
       plugins = [ vimPlugins.null-ls-nvim ];
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
@@ -305,12 +305,13 @@ in
       };
     };
 
-    nix-lspconfig = {
+    lspconfig = {
       after = [
         "global"
         "lsp-status"
         "cmp"
       ];
+      plugins = [ vimPlugins.nvim-lspconfig ];
       lspconfig = {
         servers =
           let

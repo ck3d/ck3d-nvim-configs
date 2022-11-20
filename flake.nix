@@ -34,9 +34,9 @@
             "nvim"
             { nativeBuildInputs = [ makeWrapper ]; }
             ''
-              ${neovim-unwrapped}/bin/nvim -u ${rc} --headless +"q"
               makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
-                --add-flags "-u ${rc}"
+                --add-flags "-u NORC --cmd 'luafile ${rc}'"
+              $out/bin/nvim --headless +"q"
             ''
         ;
         packages = builtins.mapAttrs nvim {
