@@ -32,11 +32,21 @@
           in
           runCommandLocal
             "nvim"
-            { nativeBuildInputs = [ makeWrapper ]; }
+            {
+              nativeBuildInputs = [
+                makeWrapper
+                # needed by plugin gitsigns
+                gitMinimal
+              ];
+            }
             ''
               makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
                 --add-flags "-u NORC --cmd 'luafile ${rc}'"
-              $out/bin/nvim --headless +"q"
+              HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
+              if [ -s err ]; then
+                cat err
+                false
+              fi
             ''
         ;
         packages = builtins.mapAttrs nvim {
