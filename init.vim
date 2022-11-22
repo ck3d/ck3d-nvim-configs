@@ -15,8 +15,5 @@ autocmd FileType markdown setlocal iskeyword+=-
 autocmd BufRead * autocmd FileType <buffer> ++once
      \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
 
-" https://jdhao.github.io/2020/05/22/highlight_yank_region_nvim/
-augroup highlight_yank
-    autocmd!
-    au TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
-augroup END
+" see help lua-highlight
+au TextYankPost * silent! lua vim.highlight.on_yank()
