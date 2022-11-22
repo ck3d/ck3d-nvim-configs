@@ -340,8 +340,7 @@ in
                 config.cmd = [ "json-languageserver" "--stdio" ];
               };
               cpp.clangd.pkg = pkgs.llvmPackages_13.clang-unwrapped;
-              # TODO: Check why beancount-langserver failes with exit code 7
-              # beancount.beancount.pkg = pkgs.nodePackages.beancount-langserver;
+              beancount.beancount.pkg = pkgs.beancount-language-server;
               go.gopls.pkg = pkgs.gopls;
             };
           in
