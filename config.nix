@@ -276,11 +276,13 @@ in
       setup.args = ./cmp_setup_args.lua;
     };
 
-    indentLine = {
-      plugins = [ vimPlugins.indentLine ];
-      vars.indentLine_enabled = 0;
-      vars.indentLine_char = "⎸";
-      vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
+    indent_blankline = {
+      plugins = [ vimPlugins.indent-blankline-nvim ];
+      setup.args = {
+        char = "⎸";
+      };
+      vars.indent_blankline_enabled = 0;
+      vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentBlanklineEnable";
     };
 
     leap = {
