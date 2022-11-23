@@ -275,9 +275,11 @@ in
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IndentLinesEnable";
     };
 
-    lightspeed = {
-      plugins = [ vimPlugins.lightspeed-nvim ];
-      setup = { };
+    leap = {
+      plugins = [ vimPlugins.leap-nvim ];
+      lua = [
+        "require'leap'.add_default_mappings()"
+      ];
     };
 
     null-ls = {
