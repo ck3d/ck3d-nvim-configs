@@ -162,13 +162,17 @@ in
       ];
     };
 
-    vim-rooter = {
-      plugins = [ vimPlugins.vim-rooter ];
-      vars.rooter_patterns = [
-        ".git"
-        "Cargo.toml"
-        "flake.nix"
-        ".envrc"
+    project_nvim = {
+      after = [ "telescope" ];
+      plugins = [ vimPlugins.project-nvim ];
+      lua = [
+        "require'telescope'.load_extension('projects')"
+      ];
+      setup.args = {
+        patters = [ ".envrc" ];
+      };
+      keymaps = map keymap_silent [
+        [ "n" "<Leader>fp" "<Cmd>Telescope projects<CR>" { } ]
       ];
     };
 
