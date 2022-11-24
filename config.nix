@@ -55,7 +55,6 @@ in
       ;
       opts = {
         wrapscan = false;
-        hidden = true;
         termguicolors = true;
         colorcolumn = "80";
         winwidth = 80;
@@ -77,8 +76,7 @@ in
         sidescrolloff = 3;
         listchars = "tab:▸ ,trail:␣,nbsp:~";
         list = true;
-        guifont = "Monolisa:h9";
-        mouse = "nv";
+        guifont = "Monolisa:h13";
         signcolumn = "yes";
         splitbelow = true;
         splitright = true;
