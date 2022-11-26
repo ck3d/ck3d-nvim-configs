@@ -11,7 +11,19 @@ let
       # https://github.com/NixOS/nixpkgs/pull/198606
       (lib.removePrefix "tree-sitter-" n)
       "${v}/parser")
-    pkgs.tree-sitter.builtGrammars;
+    (pkgs.tree-sitter.builtGrammars
+      // {
+      tree-sitter-jq = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
+        language = "jq";
+        inherit (pkgs.tree-sitter) version;
+        source = pkgs.fetchFromGitHub {
+          owner = "flurie";
+          repo = "tree-sitter-jq";
+          rev = "13990f530e8e6709b7978503da9bc8701d366791";
+          hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
+        };
+      };
+    });
 in
 {
   imports = [
@@ -48,7 +60,6 @@ in
         # TODO: test neuron-vim
         # TODO: test rust-vim
       ]
-      ++ lib.optional (hasLang "jq") jq-vim
       ++ lib.optional (hasLang "lua") nvim-luapad
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
       ++ lib.optional (hasLang "dhall") dhall-vim
