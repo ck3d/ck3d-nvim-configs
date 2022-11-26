@@ -40,7 +40,10 @@ in
   configs = {
     ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
       treesitter.parsers = lib.getAttrs
-        (builtins.filter (type: builtins.hasAttr type parsers) config.languages)
+        (builtins.filter
+          # TODO: enable bash when highlight error is solved
+          (type: type != "bash" && builtins.hasAttr type parsers)
+          config.languages)
         parsers;
     };
 
