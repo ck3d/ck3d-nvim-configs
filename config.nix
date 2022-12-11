@@ -1,7 +1,7 @@
 { config, pkgs, lib, nix2nvimrc, ... }:
 let
   inherit (pkgs) vimPlugins ck3dNvimPkgs;
-  inherit (nix2nvimrc) luaExpr;
+  inherit (nix2nvimrc) toLuaFn luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
   keymap_silent = nix2nvimrc.toKeymap { silent = true; };
 
@@ -204,10 +204,10 @@ in
         vimPlugins.telescope-ui-select-nvim
       ];
       setup = { };
-      lua = [
-        "require'telescope'.load_extension('fzy_native')"
-        "require'telescope'.load_extension('file_browser')"
-        "require'telescope'.load_extension('ui-select')"
+      lua = map (a: toLuaFn "require'telescope'.load_extension" [ a ]) [
+        "fzy_native"
+        "file_browser"
+        "ui-select"
       ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       keymaps = map keymap_silent [
