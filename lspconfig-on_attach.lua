@@ -17,6 +17,8 @@ return function(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider or
     client.server_capabilities.documentRangeFormattingProvider then
+    -- TODO: fix formatting conflicts, see also:
+    --   https://neovim.discourse.group/t/how-select-server-vim-lsp-buf-format/3098
     vim.keymap.set('n', '<Leader>F', vim.lsp.buf.format, opts)
   end
 end
