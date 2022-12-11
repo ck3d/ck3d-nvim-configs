@@ -17,8 +17,29 @@ return function(client, bufnr)
 
   if client.server_capabilities.documentFormattingProvider or
     client.server_capabilities.documentRangeFormattingProvider then
-    -- TODO: fix formatting conflicts, see also:
-    --   https://neovim.discourse.group/t/how-select-server-vim-lsp-buf-format/3098
-    vim.keymap.set('n', '<Leader>F', vim.lsp.buf.format, opts)
+    vim.keymap.set('n', '<Leader>F', function()
+      local clients = vim.lsp.get_active_clients({bufnr = bufnr})
+
+      local filter = function(c)
+        return c.name ~= 'sumneko_lua' -- use lua-format
+      end
+
+      clients = vim.tbl_filter(function(c)
+        return c.supports_method('textDocument/formatting')
+      end, clients)
+      clients = vim.tbl_filter(filter, clients)
+
+      if #clients > 1 then
+        table.sort(clients, function(a, b) return a.name < b.name end)
+        clients = vim.ui.select(clients, {
+          prompt = 'Select a language server:',
+          format_item = function(c) return c.name end,
+        }, function(choise)
+          vim.lsp.buf.format({bufnr = bufnr, id = choise.id})
+        end)
+      else
+        vim.lsp.buf.format({bufnr = bufnr, filter = filter})
+      end
+    end, opts)
   end
 end

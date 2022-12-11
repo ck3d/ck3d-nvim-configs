@@ -2,10 +2,6 @@ return {
   runtime = {version = "LuaJIT"},
   path = vim.split(package.path, ';'),
   diagnostics = {enable = true, globals = {"vim"}},
-  format = {
-    -- use lua-format
-    enable = false,
-  },
   workspace = {
     library = (function()
       local result = {
