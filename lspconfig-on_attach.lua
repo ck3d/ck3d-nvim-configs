@@ -15,13 +15,8 @@ return function(client, bufnr)
 
   local opts = {buffer = bufnr, silent = true}
 
-  if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set('n', '<Leader>F',
-                   function() vim.lsp.buf.format({async = true}) end, opts)
-  end
-
-  if client.server_capabilities.documentRangeFormattingProvider then
-    vim.keymap.set('v', '<Leader>F',
-                   function() vim.lsp.buf.format({async = true}) end, opts)
+  if client.server_capabilities.documentFormattingProvider or
+    client.server_capabilities.documentRangeFormattingProvider then
+    vim.keymap.set('n', '<Leader>F', vim.lsp.buf.format, opts)
   end
 end
