@@ -320,8 +320,6 @@ in
           ]
           ++ lib.optional (hasLang "lua")
             "formatting.lua_format.with({command = '${pkgs.luaformatter}/bin/lua-format'})"
-          ++ lib.optional (hasLang "beancount")
-            "formatting.bean_format"
           ++ lib.optionals (hasLang "nix") [
             "code_actions.statix.with({command = '${pkgs.statix}/bin/statix'})"
             "diagnostics.statix.with({command = '${pkgs.statix}/bin/statix'})"
