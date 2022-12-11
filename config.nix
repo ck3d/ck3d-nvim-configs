@@ -311,7 +311,7 @@ in
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
             "code_actions.gitsigns"
-            "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier'})"
+            "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier', disabled_filetypes = {'vue'}})"
             "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
           ]
           ++ lib.optionals (hasLang "bash") [
