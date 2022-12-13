@@ -104,21 +104,21 @@ in
         [ "" "<C-j>" "<C-w>j" { } ]
         [ "" "<C-k>" "<C-w>k" { } ]
         [ "" "<C-l>" "<C-w>l" { } ]
-        [ "n" "<F2>" "<Cmd>read !uuidgen<CR>" { } ]
-        [ "n" "<Leader>cd" "<Cmd>lcd %:p:h<CR>" { } ]
+        [ "n" "<F2>" "<Cmd>read !uuidgen<CR>" { desc = "Generate uuid"; } ]
+        [ "n" "<Leader>cd" "<Cmd>lcd %:p:h<CR>" { desc = "Change working directory"; } ]
         [ "n" "<Leader>n" "<Cmd>bnext<CR>" { } ]
         [ "n" "<Leader>p" "<Cmd>bprevious<CR>" { } ]
         [ "n" "n" "nzz" { } ]
         [ "n" "N" "Nzz" { } ]
         [ [ "n" "v" ] "<Leader>y" "\"+y" { } ]
         [ "n" "<Leader>Y" "gg\"+yG" { } ]
-        [ [ "n" "v" ] "<Leader>d" "\"_d" { } ]
-        [ "v" "<" "<gv" { } ]
-        [ "v" ">" ">gv" { } ]
-        [ "t" "<Esc>" "<C-\\><C-n>" { } ]
-        [ "n" "gx" "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>" { } ]
+        [ [ "n" "v" ] "<Leader>d" "\"_d" { desc = "Delete to /dev/null"; } ]
+        [ "v" "<" "<gv" { desc = "Indent left"; } ]
+        [ "v" ">" ">gv" { desc = "Indent right"; } ]
+        [ "t" "<Esc>" "<C-\\><C-n>" { desc = "Close terminal"; } ]
+        [ "n" "gx" "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>" { desc = "Open file"; } ]
         # https://stackoverflow.com/a/26504944
-        [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { } ]
+        [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { desc = "Toggle highlight search"; } ]
         # diagnostics
         [ "n" "<Leader>e" (luaExpr "vim.diagnostic.open_float") { } ]
         [ "n" "[d" (luaExpr "vim.diagnostic.goto_prev") { } ]
@@ -211,19 +211,19 @@ in
       ];
       # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
       keymaps = map keymap_silent [
-        [ "n" "<Leader>ff" (luaExpr "require'telescope.builtin'.find_files") { } ]
-        [ "n" "<Leader>fF" (luaExpr "require'telescope.builtin'.git_files") { } ]
-        [ "n" "<Leader>fg" (luaExpr "require'telescope.builtin'.live_grep") { } ]
-        [ "n" "<Leader>fb" (luaExpr "require'telescope.builtin'.buffers") { } ]
-        [ "n" "<Leader>fh" (luaExpr "require'telescope.builtin'.help_tags") { } ]
-        [ "n" "<Leader>ft" "<Cmd>Telescope file_browser<CR>" { } ]
-        [ "n" "<Leader>fT" (luaExpr "require'telescope.builtin'.tags") { } ]
-        [ "n" "<Leader>fc" (luaExpr "require'telescope.builtin'.commands") { } ]
-        [ "n" "<Leader>fq" (luaExpr "require'telescope.builtin'.quickfix") { } ]
-        [ "n" "<Leader>fd" (luaExpr "function() require'telescope.builtin'.git_files({cwd= '~/dotfiles/'}) end") { } ]
-        [ "n" "<Leader>fr" (luaExpr "function() require'telescope.builtin'.find_files({cwd= '%:h'}) end") { } ]
-        [ "n" "<Leader>gs" (luaExpr "require'telescope.builtin'.git_status") { } ]
-        [ "n" "<Leader>wo" (luaExpr "require'telescope.builtin'.lsp_document_symbols") { } ]
+        [ "n" "<Leader>ff" (luaExpr "require'telescope.builtin'.find_files") { desc = "Find file"; } ]
+        [ "n" "<Leader>fF" (luaExpr "require'telescope.builtin'.git_files") { desc = "Find git file"; } ]
+        [ "n" "<Leader>fg" (luaExpr "require'telescope.builtin'.live_grep") { desc = "Find line"; } ]
+        [ "n" "<Leader>fb" (luaExpr "require'telescope.builtin'.buffers") { desc = "Find buffer"; } ]
+        [ "n" "<Leader>fh" (luaExpr "require'telescope.builtin'.help_tags") { desc = "Find help tag"; } ]
+        [ "n" "<Leader>ft" "<Cmd>Telescope file_browser<CR>" { desc = "Find file via browser"; } ]
+        [ "n" "<Leader>fT" (luaExpr "require'telescope.builtin'.tags") { desc = "Find help tag"; } ]
+        [ "n" "<Leader>fc" (luaExpr "require'telescope.builtin'.commands") { desc = "Find command"; } ]
+        [ "n" "<Leader>fq" (luaExpr "require'telescope.builtin'.quickfix") { desc = "Find in quickfix"; } ]
+        [ "n" "<Leader>fd" (luaExpr "function() require'telescope.builtin'.git_files({cwd= '~/dotfiles/'}) end") { desc = "Find dotfiles file"; } ]
+        [ "n" "<Leader>fr" (luaExpr "function() require'telescope.builtin'.find_files({cwd= '%:h'}) end") { desc = "Find file relative"; } ]
+        [ "n" "<Leader>gs" (luaExpr "require'telescope.builtin'.git_status") { desc = "Git status"; } ]
+        [ "n" "<Leader>wo" (luaExpr "require'telescope.builtin'.lsp_document_symbols") { desc = "Find LSP doc. symbol"; } ]
       ];
     };
 
@@ -379,18 +379,18 @@ in
         capabilities = luaExpr "require'cmp_nvim_lsp'.default_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
         keymaps = map keymap_silent [
-          [ "n" "gD" (luaExpr "vim.lsp.buf.declaration") { } ]
-          [ "n" "gd" (luaExpr "vim.lsp.buf.definition") { } ]
-          [ "n" "K" (luaExpr "vim.lsp.buf.hover") { } ]
-          [ "n" "gi" (luaExpr "vim.lsp.buf.implementation") { } ]
-          [ "n" "<C-k>" (luaExpr "vim.lsp.buf.signature_help") { } ]
-          [ "n" "<Leader>wa" (luaExpr "vim.lsp.buf.add_workspace_folder") { } ]
-          [ "n" "<Leader>wr" (luaExpr "vim.lsp.buf.remove_workspace_folder") { } ]
-          [ "n" "<Leader>wl" (luaExpr "function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end") { } ]
-          [ "n" "<Leader>D" (luaExpr "vim.lsp.buf.type_definition") { } ]
-          [ "n" "<Leader>rn" (luaExpr "vim.lsp.buf.rename") { } ]
-          [ "n" "<Leader>ca" (luaExpr "vim.lsp.buf.code_action") { } ]
-          [ "n" "gr" (luaExpr "vim.lsp.buf.references") { } ]
+          [ "n" "gD" (luaExpr "vim.lsp.buf.declaration") { desc = "Goto declaration"; } ]
+          [ "n" "gd" (luaExpr "vim.lsp.buf.definition") { desc = "Goto definition"; } ]
+          [ "n" "K" (luaExpr "vim.lsp.buf.hover") { desc = "Show hover"; } ]
+          [ "n" "gi" (luaExpr "vim.lsp.buf.implementation") { desc = "Goto implementation"; } ]
+          [ "n" "<C-k>" (luaExpr "vim.lsp.buf.signature_help") { desc = "Show signature help"; } ]
+          [ "n" "<Leader>wa" (luaExpr "vim.lsp.buf.add_workspace_folder") { desc = "Add workspace folder"; } ]
+          [ "n" "<Leader>wr" (luaExpr "vim.lsp.buf.remove_workspace_folder") { desc = "Remove workspace folder"; } ]
+          [ "n" "<Leader>wl" (luaExpr "function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end") { desc = "List workspace folder"; } ]
+          [ "n" "<Leader>D" (luaExpr "vim.lsp.buf.type_definition") { desc = "Goto definition"; } ]
+          [ "n" "<Leader>rn" (luaExpr "vim.lsp.buf.rename") { desc = "Rename"; } ]
+          [ "n" "<Leader>ca" (luaExpr "vim.lsp.buf.code_action") { desc = "Code actions"; } ]
+          [ "n" "gr" (luaExpr "vim.lsp.buf.references") { desc = "Select codGoto definition"; } ]
         ];
 
         on_attach = ./lspconfig-on_attach.lua;
@@ -423,8 +423,8 @@ in
       plugins = [ ck3dNvimPkgs.vimPlugins.nvim-osc52 ];
       setup.args = { };
       keymaps = map (nix2nvimrc.toKeymap { }) [
-        [ "n" "<Leader>c" (luaExpr "require'osc52'.copy_operator") { expr = true; } ]
-        [ "x" "<Leader>c" (luaExpr "require'osc52'.copy_visual") { } ]
+        [ "n" "<Leader>c" (luaExpr "require'osc52'.copy_operator") { expr = true; desc = "Copy to clipboard"; } ]
+        [ "x" "<Leader>c" (luaExpr "require'osc52'.copy_visual") { desc = "Copy to clipboard"; } ]
       ];
     };
 
@@ -456,8 +456,8 @@ in
         icons = config.configs ? nvim-web-devicons;
       };
       keymaps = map keymap_silent [
-        [ "n" "<Leader>xx" "<Cmd>TroubleToggle<CR>" { } ]
-        [ "n" "gR" "<Cmd>TroubleToggle lsp_references<CR>" { } ]
+        [ "n" "<Leader>xx" "<Cmd>TroubleToggle<CR>" { desc = "Toggle trouble list"; } ]
+        [ "n" "gR" "<Cmd>TroubleToggle lsp_references<CR>" { desc = "Toggle lsp reference trouble list"; } ]
       ];
     };
 
@@ -465,7 +465,7 @@ in
       plugins = [ vimPlugins.symbols-outline-nvim ];
       vars.symbols_outline = { };
       keymaps = map keymap_silent [
-        [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { } ]
+        [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { desc = "Toggle symbols outline"; } ]
       ];
     };
 
