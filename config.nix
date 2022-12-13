@@ -110,8 +110,6 @@ in
         [ "n" "<Leader>p" "<Cmd>bprevious<CR>" { } ]
         [ "n" "n" "nzz" { } ]
         [ "n" "N" "Nzz" { } ]
-        [ [ "n" "v" ] "<Leader>y" "\"+y" { } ]
-        [ "n" "<Leader>Y" "gg\"+yG" { } ]
         [ [ "n" "v" ] "<Leader>d" "\"_d" { desc = "Delete to /dev/null"; } ]
         [ "v" "<" "<gv" { desc = "Indent left"; } ]
         [ "v" ">" ">gv" { desc = "Indent right"; } ]
@@ -423,8 +421,8 @@ in
       plugins = [ ck3dNvimPkgs.vimPlugins.nvim-osc52 ];
       setup.args = { };
       keymaps = map (nix2nvimrc.toKeymap { }) [
-        [ "n" "<Leader>c" (luaExpr "require'osc52'.copy_operator") { expr = true; desc = "Copy to clipboard"; } ]
-        [ "x" "<Leader>c" (luaExpr "require'osc52'.copy_visual") { desc = "Copy to clipboard"; } ]
+        [ "n" "<Leader>y" (luaExpr "require'osc52'.copy_operator") { expr = true; desc = "Yank to clipboard"; } ]
+        [ "x" "<Leader>y" (luaExpr "require'osc52'.copy_visual") { desc = "Yank to clipboard"; } ]
       ];
     };
 
