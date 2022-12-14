@@ -332,7 +332,7 @@ in
             "code_actions.gitsigns"
             "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier', disabled_filetypes = {'vue'}})"
             "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
-            "diagnostics.proselint"
+            "diagnostics.proselint.with({command = '${pkgs.proselint}/bin/proselint'})"
           ]
           ++ lib.optionals (hasLang "bash") [
             "code_actions.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
