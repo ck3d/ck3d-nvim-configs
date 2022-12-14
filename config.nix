@@ -225,6 +225,11 @@ in
       ];
     };
 
+    treesitter-context = {
+      plugins = [ vimPlugins.nvim-treesitter-context ];
+      setup = { };
+    };
+
     nvim-treesitter = {
       plugins = with vimPlugins; [ nvim-treesitter playground ];
       setup.modulePath = "nvim-treesitter.configs";
