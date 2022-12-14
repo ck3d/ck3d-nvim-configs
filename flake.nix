@@ -16,6 +16,7 @@
           "nix"
           "yaml"
           "bash"
+          "lua"
           # activate after merge of
           "markdown"
           "json"
@@ -53,7 +54,6 @@
           admin = adminLanguages;
           dev = adminLanguages ++ [
             # treesitter
-            "lua"
             "rust"
             "beancount"
             "javascript"
