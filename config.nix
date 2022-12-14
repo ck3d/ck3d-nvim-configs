@@ -231,13 +231,29 @@ in
     };
 
     nvim-treesitter = {
-      plugins = with vimPlugins; [ nvim-treesitter playground ];
+      plugins = with vimPlugins; [
+        nvim-treesitter
+        playground
+        nvim-treesitter-textobjects
+      ];
       setup.modulePath = "nvim-treesitter.configs";
       setup.args = {
         highlight.enable = true;
         incremental_selection.enable = true;
         textobjects.enable = true;
         playground.enable = true;
+
+        # nvim-treesitter-textobjects
+        textobjects.select = {
+          enable = true;
+          lookahead = true;
+          keymaps = {
+            af = "@function.outer";
+            "if" = "@function.inner";
+            ac = "@class.outer";
+            ic = { query = "@class.inner"; desc = "Select inner part of a class region"; };
+          };
+        };
       };
     };
 
