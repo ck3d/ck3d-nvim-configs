@@ -63,7 +63,6 @@ in
         # TODO: test neuron-vim
         # TODO: test rust-vim
       ]
-      ++ lib.optional (hasLang "lua") nvim-luapad
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
       ++ lib.optional (hasLang "dhall") dhall-vim
       ;
@@ -498,5 +497,12 @@ in
       plugins = [ vimPlugins.vimtex ];
       vars.tex_flavor = "latex";
     };
-  };
+  }
+  // lib.optionalAttrs (hasLang "lua") {
+    luapad = {
+      plugins = [ vimPlugins.nvim-luapad ];
+      setup = { };
+    };
+  }
+  ;
 }
