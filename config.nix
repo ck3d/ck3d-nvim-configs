@@ -4,26 +4,6 @@ let
   inherit (nix2nvimrc) toLuaFn luaExpr;
   hasLang = lang: builtins.any (i: i == lang) config.languages;
   keymap_silent = nix2nvimrc.toKeymap { silent = true; };
-
-  parsers = lib.mapAttrs'
-    (n: v: lib.nameValuePair
-      # remove prefix "tree-sitter-" from attribute names
-      # https://github.com/NixOS/nixpkgs/pull/198606
-      (lib.removePrefix "tree-sitter-" n)
-      "${v}/parser")
-    (pkgs.tree-sitter.builtGrammars
-      // {
-      tree-sitter-jq = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
-        language = "jq";
-        inherit (pkgs.tree-sitter) version;
-        source = pkgs.fetchFromGitHub {
-          owner = "flurie";
-          repo = "tree-sitter-jq";
-          rev = "13990f530e8e6709b7978503da9bc8701d366791";
-          hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
-        };
-      };
-    });
 in
 {
   imports = [
@@ -38,15 +18,6 @@ in
   ];
 
   configs = {
-    ${builtins.concatStringsSep "-" ([ "languages" ] ++ config.languages)} = {
-      treesitter.parsers = lib.getAttrs
-        (builtins.filter
-          # TODO: enable bash when highlight error is solved
-          (type: type != "bash" && builtins.hasAttr type parsers)
-          config.languages)
-        parsers;
-    };
-
     leader.vars.mapleader = " ";
 
     neovide.vars = {
@@ -254,6 +225,40 @@ in
           };
         };
       };
+
+      lua =
+        let
+          builtGrammars = pkgs.tree-sitter.builtGrammars
+            // {
+            tree-sitter-jq = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
+              language = "jq";
+              inherit (pkgs.tree-sitter) version;
+              source = pkgs.fetchFromGitHub {
+                owner = "flurie";
+                repo = "tree-sitter-jq";
+                rev = "13990f530e8e6709b7978503da9bc8701d366791";
+                hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
+              };
+            };
+          };
+          grammars = lib.mapAttrs'
+            (n: lib.nameValuePair
+              # remove prefix "tree-sitter-" from attribute names
+              # https://github.com/NixOS/nixpkgs/pull/198606
+              (lib.removePrefix "tree-sitter-" n))
+            builtGrammars;
+          grammars' = lib.getAttrs
+            (builtins.filter
+              # TODO: enable bash when highlight error is solved
+              (type: type != "bash" && builtins.hasAttr type grammars)
+              config.languages)
+            grammars;
+        in
+        map
+          (n: toLuaFn
+            "vim.treesitter.require_language"
+            [ n "${grammars'.${n}}/parser" ])
+          (builtins.attrNames grammars');
     };
 
     lualine = {
