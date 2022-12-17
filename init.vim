@@ -6,6 +6,7 @@ autocmd BufNewFile,BufRead *.sil set filetype=tex
 autocmd BufNewFile,BufRead *.lco set filetype=tex
 autocmd BufNewFile,BufRead *.do set filetype=sh
 autocmd BufNewFile,BufRead *.jq set filetype=jq
+autocmd BufNewFile,BufRead *.dhall set filetype=dhall
 autocmd BufNewFile,BufRead .envrc set filetype=bash
 autocmd BufNewFile,BufRead flake.lock set filetype=json
 

@@ -35,7 +35,6 @@ in
         # TODO: test rust-vim
       ]
       ++ lib.optional (hasLang "plantuml") plantuml-syntax
-      ++ lib.optional (hasLang "dhall") dhall-vim
       ;
       opts = {
         wrapscan = false;
@@ -228,19 +227,28 @@ in
 
       lua =
         let
-          builtGrammars = pkgs.tree-sitter.builtGrammars
-            // {
-            tree-sitter-jq = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
-              language = "jq";
+          gen-tree-sitter-package = language: source: {
+            name = "tree-sitter-" + language;
+            value = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
               inherit (pkgs.tree-sitter) version;
-              source = pkgs.fetchFromGitHub {
-                owner = "flurie";
-                repo = "tree-sitter-jq";
-                rev = "13990f530e8e6709b7978503da9bc8701d366791";
-                hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
-              };
+              inherit language source;
             };
           };
+          builtGrammars = pkgs.tree-sitter.builtGrammars
+            // (builtins.listToAttrs [
+            (gen-tree-sitter-package "jq" (pkgs.fetchFromGitHub {
+              owner = "flurie";
+              repo = "tree-sitter-jq";
+              rev = "13990f530e8e6709b7978503da9bc8701d366791";
+              hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
+            }))
+            (gen-tree-sitter-package "dhall" (pkgs.fetchFromGitHub {
+              owner = "jbellerb";
+              repo = "tree-sitter-dhall";
+              rev = "affb6ee38d629c9296749767ab832d69bb0d9ea8";
+              hash = "sha256-q9OkKmp0Nor+YkFc8pBVAOoXoWzwjjzg9lBUKAUnjmQ=";
+            }))
+          ]);
           grammars = lib.mapAttrs'
             (n: lib.nameValuePair
               # remove prefix "tree-sitter-" from attribute names

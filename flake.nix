@@ -68,11 +68,11 @@
             "latex"
             "devicetree"
             "go"
+            "dhall"
+            "jq"
             # no treesitter
             "xml"
-            "jq"
             "plantuml"
-            "dhall"
           ];
         };
       in
