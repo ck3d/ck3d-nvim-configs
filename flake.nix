@@ -70,6 +70,7 @@
             "go"
             "dhall"
             "jq"
+            "vue"
             # no treesitter
             "xml"
             "plantuml"
