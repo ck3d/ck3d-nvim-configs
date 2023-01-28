@@ -227,11 +227,11 @@ in
 
       lua =
         let
-          gen-tree-sitter-package = language: source: {
+          gen-tree-sitter-package = language: src: {
             name = "tree-sitter-" + language;
             value = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
               inherit (pkgs.tree-sitter) version;
-              inherit language source;
+              inherit language src;
             };
           };
           builtGrammars = pkgs.tree-sitter.builtGrammars
