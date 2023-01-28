@@ -2,8 +2,7 @@
 :command! -complete=file -nargs=1 Rpdf :r !pdftotext -nopgbrk <q-args> -
 
 autocmd BufNewFile,BufRead *.sxml set filetype=scheme
-autocmd BufNewFile,BufRead *.sil set filetype=tex
-autocmd BufNewFile,BufRead *.lco set filetype=tex
+autocmd BufNewFile,BufRead *.sil,*.lco set filetype=tex
 autocmd BufNewFile,BufRead *.do set filetype=sh
 autocmd BufNewFile,BufRead *.jq set filetype=jq
 autocmd BufNewFile,BufRead *.dhall set filetype=dhall
