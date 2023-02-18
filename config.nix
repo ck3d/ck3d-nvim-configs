@@ -377,7 +377,7 @@ in
               nix.rnix.pkg = pkgs.rnix-lsp;
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
-              lua.sumneko_lua = {
+              lua.lua_ls = {
                 pkg = pkgs.sumneko-lua-language-server;
                 config = {
                   cmd = [ "lua-language-server" ];
