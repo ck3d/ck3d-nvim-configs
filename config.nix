@@ -400,7 +400,7 @@ in
               cpp.clangd.pkg = pkgs.llvmPackages_13.clang-unwrapped;
               beancount.beancount.pkg = pkgs.beancount-language-server;
               go.gopls.pkg = pkgs.gopls;
-              vue.vuels.pkg = pkgs.nodePackages.vls;
+              vue.volar.pkg = pkgs.ck3dNvimPkgs.volar."@volar/vue-language-server";
             };
           in
           builtins.foldl'

@@ -1,4 +1,5 @@
 [
   "lemminx"
   "vimPlugins"
+  "volar"
 ]
