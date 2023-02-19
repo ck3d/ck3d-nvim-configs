@@ -1,5 +1,5 @@
 [
   "lemminx"
-  "vimPlugins"
+  "nvim-osc52"
   "volar"
 ]

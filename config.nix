@@ -400,7 +400,7 @@ in
               cpp.clangd.pkg = pkgs.llvmPackages_13.clang-unwrapped;
               beancount.beancount.pkg = pkgs.beancount-language-server;
               go.gopls.pkg = pkgs.gopls;
-              vue.volar.pkg = pkgs.ck3dNvimPkgs.volar."@volar/vue-language-server";
+              vue.volar.pkg = pkgs.ck3dNvimPkgs.volar;
             };
           in
           builtins.foldl'
@@ -452,7 +452,7 @@ in
     };
 
     osc52 = {
-      plugins = [ ck3dNvimPkgs.vimPlugins.nvim-osc52 ];
+      plugins = [ ck3dNvimPkgs.nvim-osc52 ];
       setup.args = { };
       keymaps = map (nix2nvimrc.toKeymap { }) [
         [ "n" "<Leader>y" (luaExpr "require'osc52'.copy_operator") { expr = true; desc = "Yank to clipboard"; } ]

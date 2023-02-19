@@ -8,10 +8,16 @@
   };
 
   outputs = { self, nixpkgs, utils, nix2nvimrc }:
-    utils.lib.eachDefaultSystem (system:
+    let
+      overlays.default = import ./pkgs/overlay.nix;
+    in
+    { inherit overlays; }
+    // (utils.lib.eachDefaultSystem (system:
       let
-        overlays = [ (import ./overlay.nix) ];
-        nixpkgs' = import nixpkgs { inherit system overlays; };
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = builtins.attrValues overlays;
+        };
         adminLanguages = [
           "nix"
           "yaml"
@@ -22,26 +28,25 @@
           "json"
           "toml"
         ];
-        nvim = with nixpkgs'; name: languages:
+        nvim = name: languages:
           let
-            rc = nixpkgs'.writeText
+            rc = pkgs.writeText
               ("nvimrc-" + name)
-              (nix2nvimrc.lib.toRc nixpkgs' {
+              (nix2nvimrc.lib.toRc pkgs {
                 inherit languages;
                 imports = [ ./config.nix ];
               });
           in
-          runCommandLocal
-            "nvim"
+          pkgs.runCommandLocal name
             {
               nativeBuildInputs = [
-                makeWrapper
+                pkgs.makeWrapper
                 # needed by plugin gitsigns
-                gitMinimal
+                pkgs.gitMinimal
               ];
             }
             ''
-              makeWrapper ${neovim-unwrapped}/bin/nvim $out/bin/nvim \
+              makeWrapper ${pkgs.neovim-unwrapped}/bin/nvim $out/bin/nvim \
                 --add-flags "-u NORC --cmd 'luafile ${rc}'"
               HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
               if [ -s err ]; then
@@ -50,9 +55,10 @@
               fi
             ''
         ;
-        packages = builtins.mapAttrs nvim {
-          admin = adminLanguages;
-          dev = adminLanguages ++ [
+
+        nvims = builtins.mapAttrs nvim {
+          nvim-admin = adminLanguages;
+          nvim-dev = adminLanguages ++ [
             # treesitter
             "rust"
             "beancount"
@@ -76,9 +82,11 @@
             "plantuml"
           ];
         };
+
       in
       {
-        inherit packages;
-        defaultPackage = packages.admin;
-      });
+        packages = nvims
+        // { default = nvims.nvim-admin; }
+        // pkgs.ck3dNvimPkgs;
+      }));
 }

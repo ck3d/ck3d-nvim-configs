@@ -3,7 +3,7 @@ final: prev: {
     (map
       (dir: {
         name = dir;
-        value = final.callPackage (./. + "/pkgs/${dir}/") { };
+        value = final.callPackage (./. + "/${dir}/") { };
       })
-      (import ./pkgs/dirs.nix));
+      (import ./dirs.nix));
 }
