@@ -452,7 +452,7 @@ in
     };
 
     osc52 = {
-      plugins = [ ck3dNvimPkgs.nvim-osc52 ];
+      plugins = [ vimPlugins.nvim-osc52 ];
       setup.args = { };
       keymaps = map (nix2nvimrc.toKeymap { }) [
         [ "n" "<Leader>y" (luaExpr "require'osc52'.copy_operator") { expr = true; desc = "Yank to clipboard"; } ]
