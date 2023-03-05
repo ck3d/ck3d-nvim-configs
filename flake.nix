@@ -36,6 +36,7 @@
                 inherit languages;
                 imports = [ ./config.nix ];
               });
+            mainProgram = "nvim";
           in
           pkgs.runCommandLocal name
             {
@@ -44,9 +45,10 @@
                 # needed by plugin gitsigns
                 pkgs.gitMinimal
               ];
+              meta = { inherit mainProgram; };
             }
             ''
-              makeWrapper ${pkgs.neovim-unwrapped}/bin/nvim $out/bin/nvim \
+              makeWrapper ${pkgs.neovim-unwrapped}/bin/nvim $out/bin/${mainProgram} \
                 --add-flags "-u NORC --cmd 'luafile ${rc}'"
               HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
               if [ -s err ]; then
