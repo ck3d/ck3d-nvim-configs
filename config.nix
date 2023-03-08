@@ -312,7 +312,6 @@ in
         cmp-spell
         cmp-nvim-tags
         cmp-vsnip
-        cmp-omni
 
         vim-vsnip
       ];
