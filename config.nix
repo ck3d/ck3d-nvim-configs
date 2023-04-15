@@ -264,7 +264,7 @@ in
         in
         map
           (n: toLuaFn
-            "vim.treesitter.require_language"
+            "vim.treesitter.language.require_language"
             [ n "${grammars'.${n}}/parser" ])
           (builtins.attrNames grammars');
     };
