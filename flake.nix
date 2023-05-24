@@ -17,6 +17,11 @@
         pkgs = import nixpkgs {
           inherit system;
           overlays = builtins.attrValues overlays;
+
+          config.permittedInsecurePackages = [
+            "nodejs-14.21.3"
+            "openssl-1.1.1t"
+          ];
         };
         adminLanguages = [
           "nix"
