@@ -1,3 +1,3 @@
 #!/bin/sh -eux
 
-nix run nixpkgs#nodePackages.node2nix -- --composition packages.nix
+exec nix run nixpkgs#nodePackages.node2nix -- --nodejs-18 --composition packages.nix
