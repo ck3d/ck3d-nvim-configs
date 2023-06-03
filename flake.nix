@@ -20,7 +20,7 @@
 
           config.permittedInsecurePackages = [
             "nodejs-14.21.3"
-            "openssl-1.1.1t"
+            "openssl-1.1.1u"
           ];
         };
         adminLanguages = [
