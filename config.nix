@@ -370,7 +370,15 @@ in
                 config.cmd = [ "json-languageserver" "--stdio" ];
               };
               cpp.clangd.pkg = pkgs.llvmPackages_13.clang-unwrapped;
-              beancount.beancount.pkg = pkgs.beancount-language-server;
+              beancount.beancount = {
+                pkg = pkgs.beancount-language-server;
+                config = {
+                  # TODO: Check why language server failes:
+                  # Client 1 quit with exit code 101 and signal 0
+                  init_options.journal_file = "Main.beancount";
+                  root_dir = luaExpr "require'lspconfig.util'.root_pattern('default.nix')";
+                };
+              };
               go.gopls.pkg = pkgs.gopls;
               vue.volar.pkg = pkgs.ck3dNvimPkgs.volar;
             };
