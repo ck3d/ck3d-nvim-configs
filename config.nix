@@ -258,7 +258,7 @@ in
           grammars' = lib.getAttrs
             (builtins.filter
               # TODO: enable bash when highlight error is solved
-              (type: type != "bash" && type != "beancount" && builtins.hasAttr type grammars)
+              (type: type != "bash" && builtins.hasAttr type grammars)
               config.languages)
             grammars;
         in
