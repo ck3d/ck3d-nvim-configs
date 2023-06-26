@@ -227,34 +227,7 @@ in
 
       lua =
         let
-          gen-tree-sitter-package = language: src: {
-            name = "tree-sitter-" + language;
-            value = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
-              inherit (pkgs.tree-sitter) version;
-              inherit language src;
-            };
-          };
-          builtGrammars = pkgs.tree-sitter.builtGrammars
-            // (builtins.listToAttrs [
-            (gen-tree-sitter-package "jq" (pkgs.fetchFromGitHub {
-              owner = "flurie";
-              repo = "tree-sitter-jq";
-              rev = "13990f530e8e6709b7978503da9bc8701d366791";
-              hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
-            }))
-            (gen-tree-sitter-package "dhall" (pkgs.fetchFromGitHub {
-              owner = "jbellerb";
-              repo = "tree-sitter-dhall";
-              rev = "affb6ee38d629c9296749767ab832d69bb0d9ea8";
-              hash = "sha256-q9OkKmp0Nor+YkFc8pBVAOoXoWzwjjzg9lBUKAUnjmQ=";
-            }))
-          ]);
-          grammars = lib.mapAttrs'
-            (n: lib.nameValuePair
-              # remove prefix "tree-sitter-" from attribute names
-              # https://github.com/NixOS/nixpkgs/pull/198606
-              (lib.removePrefix "tree-sitter-" n))
-            builtGrammars;
+          grammars = pkgs.tree-sitter.builtGrammars;
           grammars' = lib.getAttrs
             (builtins.filter
               # TODO: enable bash when highlight error is solved
