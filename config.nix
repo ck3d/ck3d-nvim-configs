@@ -248,6 +248,12 @@ in
               rev = "1b0321ee85701d5036c334a6f04761cdc672e64c";
               hash = "sha256-ueZjazaqjbxqCM7mO8h9m0fJ6RUCaX4MuJx7StnPqyc=";
             }))
+            (gen-tree-sitter-package "lua" (pkgs.fetchFromGitHub {
+              owner = "MunifTanjim";
+              repo = "tree-sitter-lua";
+              rev = "v0.0.18";
+              hash = "sha256-GrRHbNVKijYNeICeopVW6OtHquqKhKtDDa7dK5sEMNQ=";
+            }))
           ]);
           grammars' = lib.getAttrs
             (builtins.filter
