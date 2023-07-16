@@ -242,11 +242,16 @@ in
               rev = "13990f530e8e6709b7978503da9bc8701d366791";
               hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
             }))
+            (gen-tree-sitter-package "bash" (pkgs.fetchFromGitHub {
+              owner = "tree-sitter";
+              repo = "tree-sitter-bash";
+              rev = "1b0321ee85701d5036c334a6f04761cdc672e64c";
+              hash = "sha256-ueZjazaqjbxqCM7mO8h9m0fJ6RUCaX4MuJx7StnPqyc=";
+            }))
           ]);
           grammars' = lib.getAttrs
             (builtins.filter
-              # TODO: enable bash when highlight error is solved
-              (type: type != "bash" && builtins.hasAttr type grammars)
+              (type: builtins.hasAttr type grammars)
               config.languages)
             grammars;
         in
