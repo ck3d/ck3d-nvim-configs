@@ -59,7 +59,7 @@ in
         sidescrolloff = 3;
         listchars = "tab:▸ ,trail:␣,nbsp:~";
         list = true;
-        guifont = "Monolisa:h13";
+        guifont = "Monolisa:h9";
         signcolumn = "yes";
         splitbelow = true;
         splitright = true;
