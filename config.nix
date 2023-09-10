@@ -372,7 +372,7 @@ in
             lang_server = {
               javascript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
               bash.bashls.pkg = pkgs.nodePackages.bash-language-server;
-              nix.rnix.pkg = pkgs.rnix-lsp;
+              nix.nixd.pkg = pkgs.nixd;
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
               lua.lua_ls = {
