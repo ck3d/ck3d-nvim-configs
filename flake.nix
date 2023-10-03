@@ -11,7 +11,7 @@
       forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
     in
     rec {
-      overlays.default = import ./pkgs/overlay.nix;
+      overlays.default = import ./overlay.nix;
 
       packages = forAllSystems
         (system:
