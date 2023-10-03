@@ -245,8 +245,8 @@ in
             (gen-tree-sitter-package "lua" (pkgs.fetchFromGitHub {
               owner = "MunifTanjim";
               repo = "tree-sitter-lua";
-              rev = "v0.0.18";
-              hash = "sha256-GrRHbNVKijYNeICeopVW6OtHquqKhKtDDa7dK5sEMNQ=";
+              rev = "v0.0.19";
+              hash = "sha256-w+WVQHPiS/xyRz0obdJoUHZ7QzIDAvgtSzmE98yDORY=";
             }))
           ]);
           grammars' = lib.getAttrs
