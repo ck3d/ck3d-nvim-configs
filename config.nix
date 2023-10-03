@@ -372,7 +372,14 @@ in
             lang_server = {
               javascript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
               bash.bashls.pkg = pkgs.nodePackages.bash-language-server;
-              nix.nixd.pkg = pkgs.nixd;
+              nix.nixd = {
+                pkg = pkgs.nixd;
+                # nixd ignores following configuration, but it should work, see:
+                # https://github.com/nix-community/nixd/blob/e8f144ca50fe71e74d247e5308ae7ce122f0a0e6/nixd/tools/nixd/test/workspace-configuration.md?plain=1#L75
+                # config.settings.formatting.command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+                # Workaround: Since I do not know how to extend environment
+                # variable PATH from Lua, we have to extend PATH in makeWrapper of NVim.
+              };
               rust.rust_analyzer.pkg = pkgs.rust-analyzer;
               yaml.yamlls.pkg = pkgs.nodePackages.yaml-language-server;
               lua.lua_ls = {
