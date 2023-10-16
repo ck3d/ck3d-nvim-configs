@@ -329,7 +329,7 @@ in
 
     null-ls = {
       inherit (config.config.lspconfig) after;
-      plugins = [ vimPlugins.null-ls-nvim ];
+      plugins = [ vimPlugins.none-ls-nvim ];
       setup.args = {
         sources = map (s: luaExpr ("require'null-ls.builtins'." + s)) (
           [
