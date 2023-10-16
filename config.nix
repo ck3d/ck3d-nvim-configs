@@ -470,17 +470,8 @@ in
 
     gruvbox = {
       after = [ "global" "toggleterm" ];
-      plugins = [
-        (vimPlugins.gruvbox-nvim.overrideAttrs (s: {
-          postPatch = ''
-            sed -i lua/gruvbox/groups.lua \
-              -e '/\bCursorLineNr/ s,bg1,bg0,' \
-              -e '/\bLineNr/ s;bg4;bg4, bg = colors.bg1;' \
-              -e '/\bGruvbox.*Sign/ s,bg1,bg0,' \
-              -e '/\bSignColumn/ s,bg1,bg0,' \
-          '';
-        }))
-      ];
+      plugins = [ vimPlugins.gruvbox-nvim.overrideAttrs ];
+      setup = { };
       vim = [ "colorscheme gruvbox" ];
     };
 
