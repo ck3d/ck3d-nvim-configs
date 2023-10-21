@@ -470,7 +470,7 @@ in
 
     gruvbox = {
       after = [ "global" "toggleterm" ];
-      plugins = [ vimPlugins.gruvbox-nvim.overrideAttrs ];
+      plugins = [ vimPlugins.gruvbox-nvim ];
       setup = { };
       vim = [ "colorscheme gruvbox" ];
     };
