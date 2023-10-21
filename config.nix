@@ -314,7 +314,7 @@ in
     ibl = {
       plugins = [ vimPlugins.indent-blankline-nvim ];
       setup.args = {
-        char = "⎸";
+        indent.char = "⎸";
         enabled = false;
       };
       vim = lib.optional (hasLang "yaml") "autocmd FileType yaml IBLEnable";
