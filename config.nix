@@ -445,7 +445,8 @@ in
     };
 
     diffview = {
-      plugins = with vimPlugins; [ diffview-nvim plenary-nvim ];
+      plugins = [ vimPlugins.diffview-nvim ];
+      # https://github.com/sindrets/diffview.nvim#configuration
       setup.args = {
         use_icons = config.configs ? nvim-web-devicons;
       };
