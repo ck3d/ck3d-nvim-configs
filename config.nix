@@ -471,7 +471,9 @@ in
     gruvbox = {
       after = [ "global" "toggleterm" ];
       plugins = [ vimPlugins.gruvbox-nvim ];
-      setup = { };
+      setup.args = {
+        transparent_mode = true;
+      };
       vim = [ "colorscheme gruvbox" ];
     };
 
