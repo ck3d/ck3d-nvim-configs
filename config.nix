@@ -453,10 +453,10 @@ in
     };
 
     neogit = {
-      after = [ "diffview" ];
       plugins = [ vimPlugins.neogit ];
       setup.args = {
         integrations.diffview = config.config ? diffview;
+        integrations.telescope = config.config ? telescope;
       };
     };
 
