@@ -248,6 +248,12 @@ in
               rev = "v0.0.19";
               hash = "sha256-w+WVQHPiS/xyRz0obdJoUHZ7QzIDAvgtSzmE98yDORY=";
             }))
+            (gen-tree-sitter-package "c" (pkgs.fetchFromGitHub {
+              owner = "tree-sitter";
+              repo = "tree-sitter-c";
+              rev = "v0.20.5";
+              hash = "sha256-5n9ZnslpUWyusWTo+AqJiPGB64NB0rTbc2rtfByPUC8=";
+            }))
           ]);
           grammars' = lib.getAttrs
             (builtins.filter
