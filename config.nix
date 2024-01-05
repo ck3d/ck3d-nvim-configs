@@ -228,13 +228,13 @@ in
       lua =
         let
           gen-tree-sitter-package = language: src: {
-            name = language;
+            name = "tree-sitter-" + language;
             value = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
               inherit (pkgs.tree-sitter) version;
               inherit language src;
             };
           };
-          grammars = pkgs.tree-sitter.builtGrammars
+          grammars = pkgs.tree-sitter-grammars
             // (builtins.listToAttrs [
             (gen-tree-sitter-package "jq" (pkgs.fetchFromGitHub {
               owner = "flurie";
@@ -242,29 +242,17 @@ in
               rev = "13990f530e8e6709b7978503da9bc8701d366791";
               hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
             }))
-            (gen-tree-sitter-package "lua" (pkgs.fetchFromGitHub {
-              owner = "MunifTanjim";
-              repo = "tree-sitter-lua";
-              rev = "v0.0.19";
-              hash = "sha256-w+WVQHPiS/xyRz0obdJoUHZ7QzIDAvgtSzmE98yDORY=";
-            }))
-            (gen-tree-sitter-package "c" (pkgs.fetchFromGitHub {
-              owner = "tree-sitter";
-              repo = "tree-sitter-c";
-              rev = "v0.20.5";
-              hash = "sha256-5n9ZnslpUWyusWTo+AqJiPGB64NB0rTbc2rtfByPUC8=";
-            }))
           ]);
           grammars' = lib.getAttrs
             (builtins.filter
               (type: builtins.hasAttr type grammars)
-              config.languages)
+              (map (lang: "tree-sitter-" + lang) config.languages))
             grammars;
         in
         map
           (n: toLuaFn
             "vim.treesitter.language.require_language"
-            [ n "${grammars'.${n}}/parser" ])
+            [ (lib.removePrefix "tree-sitter-" n) "${grammars'.${n}}/parser" ])
           (builtins.attrNames grammars');
     };
 
