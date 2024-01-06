@@ -227,22 +227,12 @@ in
 
       lua =
         let
-          gen-tree-sitter-package = language: src: {
-            name = "tree-sitter-" + language;
-            value = pkgs.callPackage (pkgs.path + "/pkgs/development/tools/parsing/tree-sitter/grammar.nix") { } {
-              inherit (pkgs.tree-sitter) version;
-              inherit language src;
-            };
-          };
           grammars = pkgs.tree-sitter-grammars
-            // (builtins.listToAttrs [
-            (gen-tree-sitter-package "jq" (pkgs.fetchFromGitHub {
-              owner = "flurie";
-              repo = "tree-sitter-jq";
-              rev = "13990f530e8e6709b7978503da9bc8701d366791";
-              hash = "sha256-pek2Vg1osMYAdx6DfVdZhuIDb26op3i2cfvMrf5v3xY=";
-            }))
-          ]);
+            //
+            {
+              inherit (pkgs.vimPlugins.nvim-treesitter.builtGrammars)
+                tree-sitter-jq;
+            };
           grammars' = lib.getAttrs
             (builtins.filter
               (type: builtins.hasAttr type grammars)
