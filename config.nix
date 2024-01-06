@@ -231,7 +231,11 @@ in
             //
             {
               inherit (pkgs.vimPlugins.nvim-treesitter.builtGrammars)
-                tree-sitter-jq;
+                # jq is not available in tree-sitter-grammars
+                tree-sitter-jq
+                # bash from tree-sitter-grammars raises runtime errors
+                tree-sitter-bash
+                ;
             };
           grammars' = lib.getAttrs
             (builtins.filter
