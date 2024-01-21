@@ -240,7 +240,12 @@ in
           grammars' = lib.getAttrs
             (builtins.filter
               (type: builtins.hasAttr type grammars)
-              (map (lang: "tree-sitter-" + lang) config.languages))
+              (map
+                (lang: "tree-sitter-" + lang)
+                (config.languages
+                  # nvim for unknown reason always enables c
+                  # so we have to pass always a parser, to avoid errors
+                  ++ [ "c" ])))
             grammars;
         in
         map
