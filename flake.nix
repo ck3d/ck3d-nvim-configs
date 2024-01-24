@@ -43,6 +43,15 @@
                     imports = [ ./config.nix ];
                   });
                 mainProgram = "nvim";
+
+                neovim = pkgs.neovim-unwrapped.override {
+                  # Disable bundled parsers, we manage it on our own
+                  # The bundle was not update in the last 12 month. The C
+                  # parser is not compatible with the latest nvim treesitter
+                  # plugin. See also
+                  # https://github.com/NixOS/nixpkgs/pull/227159
+                  treesitter-parsers = { };
+                };
               in
               pkgs.runCommandLocal name
                 {
@@ -54,7 +63,7 @@
                   meta = { inherit mainProgram; };
                 }
                 ''
-                  makeWrapper ${pkgs.neovim-unwrapped}/bin/nvim $out/bin/${mainProgram} \
+                  makeWrapper ${neovim}/bin/nvim $out/bin/${mainProgram} \
                     --add-flags "-u NORC --cmd 'luafile ${rc}'" \
                     --suffix PATH ":" "${pkgs.nixpkgs-fmt}/bin"
                   HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
