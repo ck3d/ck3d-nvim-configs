@@ -401,7 +401,7 @@ in
                 };
               };
               go.gopls.pkg = pkgs.gopls;
-              vue.volar.pkg = pkgs.ck3dNvimPkgs.volar;
+              vue.volar.pkg = pkgs.nodePackages.volar;
             };
           in
           builtins.foldl'
