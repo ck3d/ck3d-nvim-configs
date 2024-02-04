@@ -377,7 +377,7 @@ in
                 };
               };
               xml.lemminx = {
-                pkg = ck3dNvimPkgs.lemminx;
+                pkg = pkgs.lemminx;
                 config = {
                   cmd = [ "lemminx" ];
                   filetypes = [ "xslt" ];
