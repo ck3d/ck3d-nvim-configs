@@ -488,11 +488,11 @@ in
       ];
     };
 
-    symbols_outline = {
-      plugins = [ vimPlugins.symbols-outline-nvim ];
-      vars.symbols_outline = { };
+    outline = {
+      plugins = [ ck3dNvimPkgs.outline-nvim ];
+      setup = { };
       keymaps = map keymap_silent [
-        [ "n" "<C-o>" "<Cmd>SymbolsOutline<CR>" { desc = "Toggle symbols outline"; } ]
+        [ "n" "<C-o>" "<Cmd>Outline<CR>" { desc = "Toggle Outline"; } ]
       ];
     };
 
