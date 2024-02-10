@@ -196,7 +196,9 @@ in
 
     treesitter-context = {
       plugins = [ vimPlugins.nvim-treesitter-context ];
-      setup = { };
+      setup.args = {
+        max_lines = 8;
+      };
     };
 
     nvim-treesitter = {
