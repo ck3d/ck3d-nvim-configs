@@ -183,6 +183,7 @@ in
         [ "n" "<Leader>fg" (luaExpr "require'telescope.builtin'.live_grep") { desc = "Find line"; } ]
         [ "n" "<Leader>fb" (luaExpr "require'telescope.builtin'.buffers") { desc = "Find buffer"; } ]
         [ "n" "<Leader>fh" (luaExpr "require'telescope.builtin'.help_tags") { desc = "Find help tag"; } ]
+        [ "n" "<Leader>fm" (luaExpr "require'telescope.builtin'.keymaps") { desc = "Find key mapping"; } ]
         [ "n" "<Leader>ft" "<Cmd>Telescope file_browser<CR>" { desc = "Find file via browser"; } ]
         [ "n" "<Leader>fT" (luaExpr "require'telescope.builtin'.tags") { desc = "Find help tag"; } ]
         [ "n" "<Leader>fc" (luaExpr "require'telescope.builtin'.commands") { desc = "Find command"; } ]
