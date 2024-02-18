@@ -228,7 +228,7 @@ in
         };
       };
 
-      lua =
+      treesitter.parsers =
         let
           grammars = pkgs.tree-sitter-grammars
             //
@@ -251,11 +251,11 @@ in
                   ++ [ "c" "lua" "vim" "vimdoc" "query" ])))
             grammars;
         in
-        map
-          (n: toLuaFn
-            "vim.treesitter.language.require_language"
-            [ (lib.removePrefix "tree-sitter-" n) "${grammars'.${n}}/parser" ])
-          (builtins.attrNames grammars');
+        lib.mapAttrs'
+          (n: v: lib.nameValuePair
+            (lib.removePrefix "tree-sitter-" n)
+            "${v}/parser")
+          grammars';
     };
 
     lualine = {
