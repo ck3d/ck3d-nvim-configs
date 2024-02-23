@@ -361,6 +361,7 @@ in
           let
             lang_server = {
               javascript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
+              typescript.tsserver.pkg = pkgs.nodePackages.typescript-language-server;
               bash.bashls.pkg = pkgs.nodePackages.bash-language-server;
               nix.nixd = {
                 pkg = pkgs.nixd;

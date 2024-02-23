@@ -95,6 +95,7 @@
                 "dhall"
                 "jq"
                 "vue"
+                "typescript"
                 # no treesitter
                 "xml"
                 "plantuml"
