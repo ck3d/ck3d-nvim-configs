@@ -29,7 +29,6 @@
               "yaml"
               "bash"
               "lua"
-              # activate after merge of
               "markdown"
               "json"
               "toml"
@@ -77,7 +76,6 @@
             nvims = builtins.mapAttrs nvim {
               nvim-admin = adminLanguages;
               nvim-dev = adminLanguages ++ [
-                # treesitter
                 "rust"
                 "beancount"
                 "javascript"
@@ -96,7 +94,6 @@
                 "jq"
                 "vue"
                 "typescript"
-                # no treesitter
                 "xml"
                 "plantuml"
               ];

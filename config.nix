@@ -234,15 +234,21 @@ in
             //
             {
               inherit (pkgs.vimPlugins.nvim-treesitter.builtGrammars)
-                # jq is not available in tree-sitter-grammars
+                # following parsers from tree-sitter-grammars are not available
                 tree-sitter-jq
-                # bash from tree-sitter-grammars raises runtime errors
+                tree-sitter-vimdoc
+                tree-sitter-dhall
+                tree-sitter-xml
+                # following parsers from tree-sitter-grammars raises runtime errors
                 tree-sitter-bash
                 ;
             };
           grammars' = lib.getAttrs
             (builtins.filter
-              (type: builtins.hasAttr type grammars)
+              (type:
+                if builtins.hasAttr type grammars
+                then true
+                else builtins.trace "no tree-sitter parser for language ${type} availble" false)
               (map
                 (lang: "tree-sitter-" + lang)
                 (config.languages
