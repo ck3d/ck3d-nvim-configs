@@ -46,7 +46,7 @@
             (type:
               if builtins.hasAttr type grammars
               then true
-              else builtins.trace "no tree-sitter parser for language ${type} availble" false)
+              else builtins.trace "no tree-sitter parser for language ${type} available" false)
             (map
               (lang: "tree-sitter-" + lang)
               (config.languages
