@@ -1,16 +1,10 @@
-{ config, pkgs, lib, nix2nvimrc, ... }:
+{ nix2nvimrc, ... }:
 let
   inherit (nix2nvimrc) toLuaFn luaExpr;
 in
 {
   configs.global = {
     after = [ "leader" ];
-    plugins = with pkgs.vimPlugins; [
-      vim-speeddating # CTRL-A/CTRL-X on dates
-
-      # TODO: test neuron-vim
-      # TODO: test rust-vim
-    ];
     opts = {
       wrapscan = false;
       termguicolors = true;
