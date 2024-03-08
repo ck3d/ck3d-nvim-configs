@@ -8,7 +8,6 @@ in
     plugins = with pkgs.vimPlugins; [
       vim-speeddating # CTRL-A/CTRL-X on dates
 
-      registers-nvim
       # TODO: test neuron-vim
       # TODO: test rust-vim
     ]
