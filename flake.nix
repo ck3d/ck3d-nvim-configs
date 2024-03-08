@@ -8,10 +8,17 @@
 
   outputs = { self, nixpkgs, nix2nvimrc }:
     let
-      forAllSystems = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
+      inherit (nixpkgs) lib;
+      forAllSystems = lib.genAttrs lib.systems.flakeExposed;
+      inherit (import ./lib.nix lib) readDirNix;
     in
     rec {
+      lib = import ./lib.nix;
+
       overlays.default = import ./overlay.nix;
+
+      nix2nvimrcModules = readDirNix ./modules;
+      nix2nvimrcConfigs = readDirNix ./configs;
 
       packages = forAllSystems
         (system:
@@ -39,7 +46,8 @@
                   ("nvimrc-" + name)
                   (nix2nvimrc.lib.toRc pkgs {
                     inherit languages;
-                    imports = [ ./config.nix ];
+                    imports = builtins.attrValues nix2nvimrcModules
+                      ++ builtins.attrValues nix2nvimrcConfigs;
                   });
                 mainProgram = "nvim";
 
