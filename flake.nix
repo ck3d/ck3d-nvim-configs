@@ -69,10 +69,13 @@
                   ];
                   meta = { inherit mainProgram; };
                 }
+                # Workarounds:
+                # nixpkgs-fmt: can not set command for LSP nixd
+                # shellcheck: can not set command for LSP bashls
                 ''
                   makeWrapper ${neovim}/bin/nvim $out/bin/${mainProgram} \
                     --add-flags "-u NORC --cmd 'luafile ${rc}'" \
-                    --suffix PATH ":" "${pkgs.nixpkgs-fmt}/bin"
+                    --suffix PATH ":" "${pkgs.nixpkgs-fmt}/bin:${pkgs.shellcheck}/bin"
                   HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
                   if [ -s err ]; then
                     cat err
