@@ -10,9 +10,7 @@ in
 
       # TODO: test neuron-vim
       # TODO: test rust-vim
-    ]
-    ++ lib.optional (config.hasLang "plantuml") plantuml-syntax
-    ;
+    ];
     opts = {
       wrapscan = false;
       termguicolors = true;
