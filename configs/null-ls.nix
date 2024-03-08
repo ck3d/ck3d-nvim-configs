@@ -14,12 +14,6 @@ in
           "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
           "diagnostics.proselint.with({command = '${pkgs.proselint}/bin/proselint'})"
         ]
-        ++ lib.optionals (hasLang "bash") [
-          "code_actions.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
-          "diagnostics.shellcheck.with({command = '${pkgs.shellcheck}/bin/shellcheck'})"
-        ]
-        ++ lib.optional (hasLang "lua")
-          "formatting.lua_format.with({command = '${pkgs.luaformatter}/bin/lua-format'})"
         ++ lib.optionals (hasLang "nix") [
           "code_actions.statix.with({command = '${pkgs.statix}/bin/statix'})"
           "diagnostics.statix.with({command = '${pkgs.statix}/bin/statix'})"
