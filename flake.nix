@@ -11,14 +11,15 @@
       inherit (nixpkgs) lib;
       forAllSystems = lib.genAttrs lib.systems.flakeExposed;
       inherit (import ./lib.nix lib) readDirNix;
-    in
-    rec {
-      lib = import ./lib.nix;
 
       overlays.default = import ./overlay.nix;
-
       nix2nvimrcModules = readDirNix ./modules;
       nix2nvimrcConfigs = readDirNix ./configs;
+    in
+    {
+      lib = import ./lib.nix;
+
+      inherit overlays nix2nvimrcModules nix2nvimrcConfigs;
 
       packages = forAllSystems
         (system:
