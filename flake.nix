@@ -76,7 +76,8 @@
                 ''
                   makeWrapper ${neovim}/bin/nvim $out/bin/${mainProgram} \
                     --add-flags "-u NORC --cmd 'luafile ${rc}'" \
-                    --suffix PATH ":" "${pkgs.nixpkgs-fmt}/bin:${pkgs.shellcheck}/bin"
+                    --suffix PATH ":" ${lib.makeBinPath [ pkgs.nixpkgs-fmt pkgs.shellcheck ]}
+
                   HOME=$(pwd) $out/bin/nvim --headless +"q" 2> err
                   if [ -s err ]; then
                     cat err
