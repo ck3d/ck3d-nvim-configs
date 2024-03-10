@@ -10,16 +10,31 @@ in
       sources = map (s: nix2nvimrc.luaExpr ("require'null-ls.builtins'." + s)) (
         [
           "code_actions.gitsigns"
-          "formatting.prettier.with({command = '${pkgs.nodePackages.prettier}/bin/prettier', disabled_filetypes = {'vue'}})"
-          "diagnostics.write_good.with({command = '${pkgs.nodePackages.write-good}/bin/write-good'})"
-          "diagnostics.proselint.with({command = '${pkgs.proselint}/bin/proselint'})"
+          "formatting.prettier.with({disabled_filetypes = {'vue'}})"
+          "diagnostics.write_good"
+          "diagnostics.proselint"
+        ]
+        ++ lib.optionals (hasLang "markdown") [
+          "diagnostics.markdownlint_cli2"
+        ]
+        ++ lib.optionals (hasLang "bash") [
+          "formatting.shfmt"
         ]
         ++ lib.optionals (hasLang "nix") [
-          "code_actions.statix.with({command = '${pkgs.statix}/bin/statix'})"
-          "diagnostics.statix.with({command = '${pkgs.statix}/bin/statix'})"
+          "code_actions.statix"
+          "diagnostics.statix"
         ]
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
   };
+  wrapper.env.PATH.values = [
+    "${pkgs.proselint}/bin"
+    "${pkgs.nodePackages.prettier}/bin"
+    "${pkgs.nodePackages.write-good}/bin"
+  ]
+  ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
+  ++ lib.optional (hasLang "bash") "${pkgs.shfmt}/bin"
+  ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin"
+  ;
 }
