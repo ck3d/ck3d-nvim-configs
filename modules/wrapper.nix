@@ -82,7 +82,17 @@ in
           cat err
           false
         fi
-      '';
+      ''
+      + lib.concatMapStrings (language: ''
+        echo test ${language}
+        HOME=$(pwd) $out/bin/${mainProgram} --headless +"lua vim.wait(1, function() end)" +"q" test.${language} 2> err
+        if [ -s err ]; then
+          cat err
+          false
+        fi
+      '')
+        (config.languages or [ ])
+      ;
 
       passthru = { inherit nvimrc; };
       meta = { inherit mainProgram; };

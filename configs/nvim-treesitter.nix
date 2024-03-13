@@ -39,6 +39,8 @@
               tree-sitter-xml
               # following parsers from tree-sitter-grammars raises runtime errors
               tree-sitter-bash
+              tree-sitter-javascript
+              tree-sitter-latex
               ;
           };
         grammars' = lib.getAttrs

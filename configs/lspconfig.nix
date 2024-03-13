@@ -27,12 +27,7 @@ in
             #dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
             json.jsonls.config.cmd = [ "json-languageserver" "--stdio" ];
             cpp.clangd = { };
-            beancount.beancount.config = {
-              # TODO: Check why language server failes:
-              # Client 1 quit with exit code 101 and signal 0
-              init_options.journal_file = "Main.beancount";
-              root_dir = luaExpr "require'lspconfig.util'.root_pattern('default.nix')";
-            };
+            beancount.beancount = { };
             go.gopls = { };
             vue.volar = { };
           };
@@ -73,9 +68,9 @@ in
     ++ lib.optional (hasLang "xml") "${pkgs.lemminx}/bin"
     ++ lib.optional (hasLang "python") "${pkgs.nodePackages.pyright}/bin"
     ++ lib.optional (hasLang "json") "${pkgs.nodePackages.vscode-json-languageserver-bin}/bin"
-    ++ lib.optional (hasLang "cpp") "${pkgs.llvmPackages.clang-unwrapped}/bin"
+    ++ lib.optional (hasLang "cpp") "${pkgs.clang-tools}/bin"
     ++ lib.optional (hasLang "beancount") "${pkgs.beancount-language-server}/bin"
-    ++ lib.optional (hasLang "go") "${pkgs.gopls}/bin"
+    ++ lib.optionals (hasLang "go") [ "${pkgs.gopls}/bin" "${pkgs.go}/bin" ]
     ++ lib.optional (hasLang "vue") "${pkgs.nodePackages.volar}/bin"
   ;
 }
