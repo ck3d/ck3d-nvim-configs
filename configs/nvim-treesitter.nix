@@ -28,21 +28,10 @@
 
     treesitter.parsers =
       let
-        grammars = pkgs.tree-sitter-grammars
-          //
-          {
-            inherit (pkgs.vimPlugins.nvim-treesitter.builtGrammars)
-              # following parsers from tree-sitter-grammars are not available
-              tree-sitter-jq
-              tree-sitter-vimdoc
-              tree-sitter-dhall
-              tree-sitter-xml
-              # following parsers from tree-sitter-grammars raises runtime errors
-              tree-sitter-bash
-              tree-sitter-javascript
-              tree-sitter-latex
-              ;
-          };
+        # do not use pkgs.tree-sitter-grammars, the packages are not up to date
+        # and it misses languages like jq, vimdoc, dhall, and xml
+        grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
+
         grammars' = lib.getAttrs
           (builtins.filter
             (type:
