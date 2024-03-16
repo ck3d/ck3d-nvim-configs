@@ -31,7 +31,7 @@ in
         # The bundle was not update in the last 12 month. The C
         # parser is not compatible with the latest nvim treesitter
         # plugin. See also
-        # https://github.com/NixOS/nixpkgs/pull/227159
+        # https://github.com/NixOS/nixpkgs/pull/291678
         treesitter-parsers = { };
       };
       description = "Neovim package to wrap";
