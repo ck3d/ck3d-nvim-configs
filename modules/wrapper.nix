@@ -85,7 +85,7 @@ in
       ''
       + lib.concatMapStrings (language: ''
         echo test ${language}
-        HOME=$(pwd) $out/bin/${mainProgram} --headless +"lua vim.wait(1, function() end)" +"q" test.${language} 2> err
+        HOME=$(pwd) $out/bin/${mainProgram} --headless +"lua vim.wait(10, function() end)" +"q" test.${language} 2> err
         if [ -s err ]; then
           cat err
           false
