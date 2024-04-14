@@ -10,7 +10,7 @@ in
       "lsp-status"
       "cmp"
     ];
-    plugins = [ pkgs.vimPlugins.nvim-lspconfig ];
+    plugins = [ pkgs.ck3dNvimPkgs.nvim-lspconfig ];
     lspconfig = {
       servers =
         let
@@ -27,8 +27,7 @@ in
             #dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
             json.jsonls.config.cmd = [ "json-languageserver" "--stdio" ];
             cpp.clangd = { };
-            # https://github.com/neovim/nvim-lspconfig/pull/3107
-            #beancount.beancount = { };
+            beancount.beancount.config.init_options = { root_file = "Root.beancount"; };
             go.gopls = { };
             vue.volar = { };
           };
