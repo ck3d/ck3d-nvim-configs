@@ -27,7 +27,8 @@ in
             #dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
             json.jsonls.config.cmd = [ "json-languageserver" "--stdio" ];
             cpp.clangd = { };
-            beancount.beancount = { };
+            # https://github.com/neovim/nvim-lspconfig/pull/3107
+            #beancount.beancount = { };
             go.gopls = { };
             vue.volar = { };
           };
