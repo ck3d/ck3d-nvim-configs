@@ -6,9 +6,12 @@ lib:
     in
     builtins.listToAttrs
       (map
-        (f: {
+        (f: rec {
           name = lib.removeSuffix suffix f;
-          value = dir + "/${f}";
+          value = {
+            file = dir + "/${f}";
+            enabler = { configs.${name}.enable = lib.mkDefault true; };
+          };
         })
         (builtins.filter
           (lib.hasSuffix suffix)

@@ -2,7 +2,7 @@
 
 {
   configs.luapad = {
-    disable = !(config.hasLang "lua");
+    enable = config.hasLang "lua";
     plugins = [ pkgs.vimPlugins.nvim-luapad ];
     setup = { };
   };

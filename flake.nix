@@ -15,11 +15,17 @@
       overlays.default = import ./overlay.nix;
       nix2nvimrcModules = readDirNix ./modules;
       nix2nvimrcConfigs = readDirNix ./configs;
+
+      nvimModules = map (i: i.file)
+        ((builtins.attrValues nix2nvimrcModules)
+          ++ (builtins.attrValues nix2nvimrcConfigs));
+      enableModules = map (i: i.enabler)
+        (builtins.attrValues nix2nvimrcConfigs);
     in
     {
       lib = import ./lib.nix;
 
-      inherit overlays nix2nvimrcModules nix2nvimrcConfigs;
+      inherit overlays nvimModules;
 
       packages = forAllSystems
         (system:
@@ -48,8 +54,8 @@
                 (lib.evalModules {
                   modules =
                     (nix2nvimrc.lib.modules pkgs)
-                    ++ (builtins.attrValues nix2nvimrcModules)
-                    ++ (builtins.attrValues nix2nvimrcConfigs)
+                    ++ nvimModules
+                    ++ enableModules
                     ++ [{
                       wrapper.name = name;
                       inherit languages;
