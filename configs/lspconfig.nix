@@ -58,19 +58,33 @@ in
     };
   };
 
-  wrapper.env.PATH.values = [ ]
-    ++ lib.optional (hasLang "javascript") "${pkgs.nodePackages.typescript-language-server}/bin"
-    ++ lib.optional (hasLang "rust") "${pkgs.rust-analyzer}/bin"
-    ++ lib.optionals (hasLang "nix") [ "${pkgs.nixd}/bin" "${pkgs.nixpkgs-fmt}/bin" ]
-    ++ lib.optional (hasLang "bash") "${pkgs.nodePackages.bash-language-server}/bin"
-    ++ lib.optional (hasLang "yaml") "${pkgs.nodePackages.yaml-language-server}/bin"
-    ++ lib.optional (hasLang "lua") "${pkgs.sumneko-lua-language-server}/bin"
-    ++ lib.optional (hasLang "xml") "${pkgs.lemminx}/bin"
-    ++ lib.optional (hasLang "python") "${pkgs.nodePackages.pyright}/bin"
-    ++ lib.optional (hasLang "json") "${pkgs.nodePackages.vscode-json-languageserver-bin}/bin"
-    ++ lib.optional (hasLang "cpp") "${pkgs.clang-tools}/bin"
-    ++ lib.optional (hasLang "beancount") "${pkgs.beancount-language-server}/bin"
-    ++ lib.optionals (hasLang "go") [ "${pkgs.gopls}/bin" "${pkgs.go}/bin" ]
-    ++ lib.optional (hasLang "vue") "${pkgs.nodePackages.volar}/bin"
-  ;
+  wrapper.env.PATH.values =
+    let
+      mapLangToPkgs = with pkgs; {
+        javascript = [ nodePackages.typescript-language-server ];
+        rust = [
+          rust-analyzer
+          # default config of rust-analyzer expects cargo:
+          # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/rust_analyzer.lua#L59
+          cargo
+          # since cargo depends on rustc, lets make it available:
+          cargo.rustc
+        ];
+        nix = [ nixd nixpkgs-fmt ];
+        bash = [ nodePackages.bash-language-server ];
+        yaml = [ nodePackages.yaml-language-server ];
+        lua = [ sumneko-lua-language-server ];
+        xml = [ lemminx ];
+        python = [ nodePackages.pyright ];
+        json = [ nodePackages.vscode-json-languageserver-bin ];
+        cpp = [ clang-tools ];
+        beancount = [ beancount-language-server ];
+        go = [ gopls go ];
+        vue = [ nodePackages.volar ];
+      };
+    in
+    lib.flatten
+      (map
+        (lang: map (pkg: "${pkg}/bin") mapLangToPkgs.${lang})
+        (builtins.filter hasLang (builtins.attrNames mapLangToPkgs)));
 }
