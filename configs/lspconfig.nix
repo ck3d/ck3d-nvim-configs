@@ -10,7 +10,7 @@ in
       "lsp-status"
       "cmp"
     ];
-    plugins = [ pkgs.ck3dNvimPkgs.nvim-lspconfig ];
+    plugins = [ pkgs.vimPlugins.nvim-lspconfig ];
     lspconfig = {
       servers =
         let
