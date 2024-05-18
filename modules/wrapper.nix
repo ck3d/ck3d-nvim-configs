@@ -20,29 +20,37 @@ let
   };
 in
 {
-  options.wrapper = {
-    name = mkOption {
-      type = types.str;
-    };
-    pkg = mkOption {
-      type = types.package;
-      default = pkgs.neovim-unwrapped.override {
-        # Disable bundled parsers, we manage it on our own
-        # The bundle was not update in the last 12 month. The C
-        # parser is not compatible with the latest nvim treesitter
-        # plugin. See also
-        # https://github.com/NixOS/nixpkgs/pull/291678
-        treesitter-parsers = { };
+  options = {
+    wrapper = {
+      name = mkOption {
+        type = types.str;
       };
-      description = "Neovim package to wrap";
+      pkg = mkOption {
+        type = types.package;
+        default = pkgs.neovim-unwrapped.override {
+          # Disable bundled parsers, we manage it on our own
+          # The bundle was not update in the last 12 month. The C
+          # parser is not compatible with the latest nvim treesitter
+          # plugin. See also
+          # https://github.com/NixOS/nixpkgs/pull/291678
+          treesitter-parsers = { };
+        };
+        description = "Neovim package to wrap";
+      };
+      drv = mkOption {
+        internal = true;
+        type = types.package;
+      };
     };
-    env = mkOption {
-      type = types.attrsOf envType;
-      description = "Environment variables";
-    };
-    drv = mkOption {
-      internal = true;
-      type = types.package;
+
+    configs = mkOption {
+      type = types.attrsOf (types.submodule {
+        options.env = mkOption {
+          type = types.attrsOf envType;
+          description = "Environment variables";
+          default = { };
+        };
+      });
     };
   };
 
@@ -50,11 +58,23 @@ in
     let
       mainProgram = "nvim";
       nvimrc = pkgs.writeText (cfg.name + "-nvimrc.lua") config.out;
-      wrapperArgs = builtins.concatStringsSep " "
-        (builtins.attrValues
-          (builtins.mapAttrs
-            (n: v: "--suffix '${n}' '${v.sep}' '${builtins.concatStringsSep v.sep v.values}'")
-            cfg.env));
+      wrapperArgs =
+        let
+          envs = builtins.catAttrs "env" (builtins.attrValues config.configs);
+        in
+        [
+          "--add-flags"
+          "-u NORC --cmd 'luafile ${nvimrc}'"
+        ]
+        ++
+        (builtins.concatMap
+          (env:
+            (builtins.concatMap
+              (n:
+                let v = env.${n}; in
+                [ "--suffix" n v.sep (builtins.concatStringsSep v.sep v.values) ])
+              (builtins.attrNames env)))
+          envs);
     in
     pkgs.stdenvNoCC.mkDerivation {
       pname = cfg.name;
@@ -65,9 +85,8 @@ in
       nativeBuildInputs = [ pkgs.makeWrapper ];
 
       buildPhase = ''
-        makeWrapper ${cfg.pkg}/bin/nvim $out/bin/${mainProgram} \
-          --add-flags "-u NORC --cmd 'luafile ${nvimrc}'" \
-          ${wrapperArgs}
+        makeWrapper ${cfg.pkg}/bin/nvim "$out/bin/${mainProgram}" \
+          ${lib.escapeShellArgs wrapperArgs}
       '';
 
       doInstallCheck = true;

@@ -9,6 +9,6 @@
       };
       on_attach = ./gitsigns-on_attach.lua;
     };
+    env.PATH.values = [ "${pkgs.gitMinimal}/bin" ];
   };
-  wrapper.env.PATH.values = [ "${pkgs.gitMinimal}/bin" ];
 }

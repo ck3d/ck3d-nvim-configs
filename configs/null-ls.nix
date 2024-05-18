@@ -27,14 +27,14 @@ in
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
+    env.PATH.values = [
+      "${pkgs.proselint}/bin"
+      "${pkgs.nodePackages.prettier}/bin"
+      "${pkgs.nodePackages.write-good}/bin"
+    ]
+    ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
+    ++ lib.optional (hasLang "bash") "${pkgs.shfmt}/bin"
+    ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin"
+    ;
   };
-  wrapper.env.PATH.values = [
-    "${pkgs.proselint}/bin"
-    "${pkgs.nodePackages.prettier}/bin"
-    "${pkgs.nodePackages.write-good}/bin"
-  ]
-  ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
-  ++ lib.optional (hasLang "bash") "${pkgs.shfmt}/bin"
-  ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin"
-  ;
 }

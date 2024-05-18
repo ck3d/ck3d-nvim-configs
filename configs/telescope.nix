@@ -32,9 +32,9 @@ in
       [ "n" "<Leader>gs" (luaExpr "require'telescope.builtin'.git_status") { desc = "Git status"; } ]
       [ "n" "<Leader>wo" (luaExpr "require'telescope.builtin'.lsp_document_symbols") { desc = "Find LSP doc. symbol"; } ]
     ];
+    env.PATH.values = [
+      # https://github.com/nvim-telescope/telescope.nvim?tab=readme-ov-file#suggested-dependencies
+      "${pkgs.ripgrep}/bin"
+    ];
   };
-  wrapper.env.PATH.values = [
-    # https://github.com/nvim-telescope/telescope.nvim?tab=readme-ov-file#suggested-dependencies
-    "${pkgs.ripgrep}/bin"
-  ];
 }

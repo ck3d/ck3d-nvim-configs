@@ -56,35 +56,35 @@ in
 
       on_attach = ./lspconfig-on_attach.lua;
     };
-  };
 
-  wrapper.env.PATH.values =
-    let
-      mapLangToPkgs = with pkgs; {
-        javascript = [ nodePackages.typescript-language-server ];
-        rust = [
-          rust-analyzer
-          # default config of rust-analyzer expects cargo:
-          # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/rust_analyzer.lua#L59
-          cargo
-          # since cargo depends on rustc, lets make it available:
-          cargo.rustc
-        ];
-        nix = [ nixd nixpkgs-fmt ];
-        bash = [ nodePackages.bash-language-server ];
-        yaml = [ nodePackages.yaml-language-server ];
-        lua = [ sumneko-lua-language-server ];
-        xml = [ lemminx ];
-        python = [ nodePackages.pyright ];
-        json = [ nodePackages.vscode-json-languageserver-bin ];
-        cpp = [ clang-tools ];
-        beancount = [ beancount-language-server ];
-        go = [ gopls go ];
-        vue = [ nodePackages.volar ];
-      };
-    in
-    lib.flatten
-      (map
-        (lang: map (pkg: "${pkg}/bin") mapLangToPkgs.${lang})
-        (builtins.filter hasLang (builtins.attrNames mapLangToPkgs)));
+    env.PATH.values =
+      let
+        mapLangToPkgs = with pkgs; {
+          javascript = [ nodePackages.typescript-language-server ];
+          rust = [
+            rust-analyzer
+            # default config of rust-analyzer expects cargo:
+            # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/rust_analyzer.lua#L59
+            cargo
+            # since cargo depends on rustc, lets make it available:
+            cargo.rustc
+          ];
+          nix = [ nixd nixpkgs-fmt ];
+          bash = [ nodePackages.bash-language-server ];
+          yaml = [ nodePackages.yaml-language-server ];
+          lua = [ sumneko-lua-language-server ];
+          xml = [ lemminx ];
+          python = [ nodePackages.pyright ];
+          json = [ nodePackages.vscode-json-languageserver-bin ];
+          cpp = [ clang-tools ];
+          beancount = [ beancount-language-server ];
+          go = [ gopls go ];
+          vue = [ nodePackages.volar ];
+        };
+      in
+      lib.flatten
+        (map
+          (lang: map (pkg: "${pkg}/bin") mapLangToPkgs.${lang})
+          (builtins.filter hasLang (builtins.attrNames mapLangToPkgs)));
+  };
 }
