@@ -1,7 +1,7 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, ... }:
 {
   configs.vimtex = {
-    disable = !(config.hasLang "latex");
+    languages = [ "latex" ];
     plugins = [ pkgs.vimPlugins.vimtex ];
     vars.tex_flavor = "latex";
   };

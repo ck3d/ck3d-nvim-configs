@@ -6,11 +6,26 @@ in
   options = {
     languages = mkOption {
       type = types.listOf types.str;
-      default = [ ];
     };
     hasLang = mkOption {
       type = types.functionTo types.bool;
       default = lang: builtins.any (i: i == lang) config.languages;
     };
+
+    configs = mkOption {
+      type = types.attrsOf (types.submodule {
+        options = {
+          languages = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+          };
+        };
+      });
+    };
+  };
+
+  config = {
+    enableFn = m: (m.languages == [ ])
+      || (builtins.length (lib.intersectLists config.languages m.languages) > 0);
   };
 }

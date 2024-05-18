@@ -1,8 +1,7 @@
-{ pkgs, lib, config, nix2nvimrc, ... }:
-
+{ pkgs, ... }:
 {
   configs.luapad = {
-    disable = !(config.hasLang "lua");
+    languages = [ "lua" ];
     plugins = [ pkgs.vimPlugins.nvim-luapad ];
     setup = { };
   };

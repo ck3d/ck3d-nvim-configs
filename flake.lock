@@ -2,11 +2,11 @@
   "nodes": {
     "nix2nvimrc": {
       "locked": {
-        "lastModified": 1710088222,
-        "narHash": "sha256-ulXqevpNwFvs5My2EXA2eBzOVp1vvNxRr9K1Zc00zZc=",
+        "lastModified": 1716016377,
+        "narHash": "sha256-7xDHj2Ql062fHptf0Udnn8HpGgiHnt+7LuDiO2oDmmI=",
         "owner": "ck3d",
         "repo": "nix2nvimrc",
-        "rev": "a0e888f768854266f2c5e43036a028af2d3b37d2",
+        "rev": "7b1b71c56ba65f86471a87f21dcac1adf4dfb37e",
         "type": "github"
       },
       "original": {

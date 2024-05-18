@@ -1,8 +1,8 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   # CTRL-A/CTRL-X on dates
   configs.plantuml-syntax = {
-    disable = !(config.hasLang "plantuml");
+    languages = [ "plantuml" ];
     plugins = [ pkgs.vimPlugins.vim-speeddating ];
   };
 }
