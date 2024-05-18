@@ -27,10 +27,6 @@
             pkgs = import nixpkgs {
               inherit system;
               overlays = builtins.attrValues overlays;
-
-              config.permittedInsecurePackages = [
-                "openssl-1.1.1u"
-              ];
             };
 
             adminLanguages = [
