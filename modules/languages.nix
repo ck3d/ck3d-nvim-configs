@@ -23,9 +23,4 @@ in
       });
     };
   };
-
-  config = {
-    enableFn = m: (m.languages == [ ])
-      || (builtins.length (lib.intersectLists config.languages m.languages) > 0);
-  };
 }
