@@ -33,4 +33,8 @@ in
       [ "n" "<Leader>wo" (luaExpr "require'telescope.builtin'.lsp_document_symbols") { desc = "Find LSP doc. symbol"; } ]
     ];
   };
+  wrapper.env.PATH.values = [
+    # https://github.com/nvim-telescope/telescope.nvim?tab=readme-ov-file#suggested-dependencies
+    "${pkgs.ripgrep}/bin"
+  ];
 }
