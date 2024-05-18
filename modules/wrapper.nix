@@ -64,11 +64,6 @@ in
 
       nativeBuildInputs = [ pkgs.makeWrapper ];
 
-      nativeInstallCheckInputs = [
-        # needed by plugin gitsigns
-        pkgs.gitMinimal
-      ];
-
       buildPhase = ''
         makeWrapper ${cfg.pkg}/bin/nvim $out/bin/${mainProgram} \
           --add-flags "-u NORC --cmd 'luafile ${nvimrc}'" \
