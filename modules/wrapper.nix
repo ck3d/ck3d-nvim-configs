@@ -27,14 +27,16 @@ in
       };
       pkg = mkOption {
         type = types.package;
-        default = pkgs.neovim-unwrapped.override {
-          # Disable bundled parsers, we manage it on our own
-          # The bundle was not update in the last 12 month. The C
-          # parser is not compatible with the latest nvim treesitter
-          # plugin. See also
-          # https://github.com/NixOS/nixpkgs/pull/291678
-          treesitter-parsers = { };
-        };
+        default = pkgs.neovim-unwrapped.overrideAttrs (old: {
+          # avoid updating to 0.10.0 for now
+          version = "0.9.5";
+          src = pkgs.fetchFromGitHub {
+            owner = "neovim";
+            repo = "neovim";
+            rev = "v0.9.5";
+            hash = "sha256-CcaBqA0yFCffNPmXOJTo8c9v1jrEBiqAl8CG5Dj5YxE=";
+          };
+        });
         description = "Neovim package to wrap";
       };
       drv = mkOption {
