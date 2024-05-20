@@ -48,8 +48,6 @@
                     ++ [{
                       wrapper.name = name;
                       inherit languages;
-                      enableFn = m: (m.languages == [ ])
-                      || (builtins.length (lib.intersectLists languages m.languages) > 0);
                     }];
                 }).config.wrapper.drv)
               {
