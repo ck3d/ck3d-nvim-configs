@@ -1,0 +1,9 @@
+{
+  "name": "nvim-tsserver",
+  "version": "0.0.1",
+  "dependencies": {
+    "@vue/language-server": "^2.0.26",
+    "typescript": "^5.5.3",
+    "typescript-language-server": "^4.3.3"
+  }
+}

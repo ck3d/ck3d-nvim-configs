@@ -23,9 +23,9 @@ in
             lua.lua_ls.config.settings.Lua = ./sumneko_lua.config.lua;
             xml.lemminx.config.filetypes = [ "xslt" ];
             python.pyright = { };
-            # dhall-lsp-server is broken
-            #dhall.dhall_lsp_server.pkg = pkgs.dhall-lsp-server;
-            json.jsonls.config.cmd = [ "json-languageserver" "--stdio" ];
+            json.jsonls = { };
+            html.html = { };
+            css.cssls = { };
             cpp.clangd = { };
             beancount.beancount.config.init_options = { root_file = "Root.beancount"; };
             go.gopls = { };
@@ -60,7 +60,7 @@ in
     env.PATH.values =
       let
         mapLangToPkgs = with pkgs; {
-          javascript = [ nodePackages.typescript-language-server ];
+          javascript = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
           rust = [
             rust-analyzer
             # default config of rust-analyzer expects cargo:
@@ -74,12 +74,14 @@ in
           yaml = [ nodePackages.yaml-language-server ];
           lua = [ sumneko-lua-language-server ];
           xml = [ lemminx ];
-          python = [ nodePackages.pyright ];
-          json = [ nodePackages.vscode-json-languageserver-bin ];
+          python = [ pyright ];
+          json = [ vscode-langservers-extracted ];
+          css = [ vscode-langservers-extracted ];
+          html = [ vscode-langservers-extracted ];
           cpp = [ clang-tools ];
           beancount = [ beancount-language-server ];
           go = [ gopls go ];
-          vue = [ nodePackages.volar ];
+          vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
         };
       in
       lib.flatten
