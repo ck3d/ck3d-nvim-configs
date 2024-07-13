@@ -27,16 +27,7 @@ in
       };
       pkg = mkOption {
         type = types.package;
-        default = pkgs.neovim-unwrapped.overrideAttrs (old: {
-          # avoid updating to 0.10.0 for now
-          version = "0.9.5";
-          src = pkgs.fetchFromGitHub {
-            owner = "neovim";
-            repo = "neovim";
-            rev = "v0.9.5";
-            hash = "sha256-CcaBqA0yFCffNPmXOJTo8c9v1jrEBiqAl8CG5Dj5YxE=";
-          };
-        });
+        default = pkgs.neovim-unwrapped;
         description = "Neovim package to wrap";
       };
       drv = mkOption {
