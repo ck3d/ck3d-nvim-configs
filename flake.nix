@@ -20,6 +20,8 @@
       nix2nvimrcModules = readDirNix ./modules;
       nix2nvimrcConfigs = readDirNix ./configs;
 
+      inherit (nixpkgs) legacyPackages;
+
       packages = forAllSystems
         (system:
           let
