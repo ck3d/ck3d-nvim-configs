@@ -29,7 +29,7 @@
     treesitter.parsers =
       let
         # do not use pkgs.tree-sitter-grammars, the packages are not up to date
-        # and it misses languages like jq, vimdoc, dhall, and xml
+        # and it misses languages like jq, vimdoc, and xml
         grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
 
         grammars' = lib.getAttrs

@@ -69,7 +69,6 @@
                   "latex"
                   "devicetree"
                   "go"
-                  "dhall"
                   "jq"
                   "vue"
                   "typescript"
