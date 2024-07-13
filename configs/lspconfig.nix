@@ -15,7 +15,19 @@ in
       servers =
         let
           lang_server = {
-            javascript.tsserver = { };
+            javascript.tsserver.config = {
+              # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/tsserver.lua#L55
+              init_options = {
+                plugins = [
+                  {
+                    name = "@vue/typescript-plugin";
+                    location = "${pkgs.ck3dNvimPkgs.nvim-tsserver-vue-env}/node_modules/@vue/typescript-plugin";
+                    languages = [ "javascript" "typescript" "vue" ];
+                  }
+                ];
+              };
+              filetypes = [ "javascript" "typescript" "vue" ];
+            };
             bash.bashls = { };
             nix.nixd = { };
             rust.rust_analyzer = { };
