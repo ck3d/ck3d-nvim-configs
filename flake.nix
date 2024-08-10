@@ -81,5 +81,19 @@
           // { default = nvims.nvim-admin; }
           // pkgs.ck3dNvimPkgs
         );
+
+      checks = forAllSystems (system:
+        let
+          packages = self.packages.${system};
+        in
+        packages
+        // (builtins.foldl'
+          (acc: package: acc // (lib.mapAttrs'
+            (test: value: { name = package + "-test-" + test; inherit value; })
+            (packages.${package}.tests or { }))
+          )
+          { }
+          (builtins.attrNames packages))
+      );
     };
 }
