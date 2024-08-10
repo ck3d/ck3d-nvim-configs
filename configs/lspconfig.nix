@@ -82,7 +82,7 @@ in
             cargo.rustc
           ];
           nix = [ nixd nixpkgs-fmt ];
-          bash = [ nodePackages.bash-language-server ];
+          bash = [ ck3dNvimPkgs.bash-language-server ];
           yaml = [ nodePackages.yaml-language-server ];
           lua = [ sumneko-lua-language-server ];
           xml = [ lemminx ];
