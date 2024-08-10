@@ -89,25 +89,30 @@ in
           cat err
           false
         fi
-      ''
-      + lib.concatMapStrings
-        (language: ''
-          echo test ${language}
-          HOME=$(pwd) $out/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
-          LSP_LOG=.local/state/nvim/lsp.log
-          if [ -f "$LSP_LOG" ]; then
-            cat "$LSP_LOG"
-            rm "$LSP_LOG"
-          fi
-          if [ -s err ]; then
-            cat err
-            false
-          fi
-        '')
-        (config.languages or [ ])
-      ;
+      '';
 
-      passthru = { inherit nvimrc; };
+      passthru = {
+        inherit nvimrc;
+        tests.languages = pkgs.runCommandNoCC "test-languages" { }
+          (lib.concatMapStrings
+            (language: ''
+              echo test ${language}
+              HOME=$(pwd) ${config.wrapper.drv}/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
+              if [ -s err ]; then
+                cat err
+                LSP_LOG=.local/state/nvim/lsp.log
+                if [ -f "$LSP_LOG" ]; then
+                  cat "$LSP_LOG"
+                fi
+                false
+              fi
+            '')
+            (config.languages or [ ])
+          + ''
+            mv .local/state/nvim $out
+          ''
+          );
+      };
       meta = { inherit mainProgram; };
     };
 }
