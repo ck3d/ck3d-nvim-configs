@@ -17,9 +17,6 @@ in
         ++ lib.optionals (hasLang "markdown") [
           "diagnostics.markdownlint_cli2"
         ]
-        ++ lib.optionals (hasLang "bash") [
-          "formatting.shfmt"
-        ]
         ++ lib.optionals (hasLang "nix") [
           "code_actions.statix"
           "diagnostics.statix"
@@ -33,7 +30,6 @@ in
       "${pkgs.nodePackages.write-good}/bin"
     ]
     ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
-    ++ lib.optional (hasLang "bash") "${pkgs.shfmt}/bin"
     ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin"
     ;
   };

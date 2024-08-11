@@ -82,7 +82,8 @@ in
             cargo.rustc
           ];
           nix = [ nixd nixpkgs-fmt ];
-          bash = [ ck3dNvimPkgs.bash-language-server shellcheck ];
+          # https://github.com/bash-lsp/bash-language-server?tab=readme-ov-file#dependencies
+          bash = [ ck3dNvimPkgs.bash-language-server shellcheck shfmt ];
           yaml = [ yaml-language-server ];
           lua = [ sumneko-lua-language-server ];
           xml = [ lemminx ];
