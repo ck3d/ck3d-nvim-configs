@@ -29,7 +29,10 @@ in
               filetypes = [ "javascript" "typescript" "vue" ];
             };
             bash.bashls = { };
-            nix.nixd = { };
+            nix.nixd.config = {
+              # https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md#where-to-place-the-configuration
+              settings.nixd.formatting.command = [ "nixfmt" ];
+            };
             rust.rust_analyzer = { };
             yaml.yamlls = { };
             lua.lua_ls.config.settings.Lua = ./sumneko_lua.config.lua;
@@ -81,7 +84,7 @@ in
             # since cargo depends on rustc, lets make it available:
             cargo.rustc
           ];
-          nix = [ nixd nixpkgs-fmt ];
+          nix = [ nixd nixfmt-rfc-style ];
           # https://github.com/bash-lsp/bash-language-server?tab=readme-ov-file#dependencies
           bash = [ ck3dNvimPkgs.bash-language-server shellcheck shfmt ];
           yaml = [ yaml-language-server ];
