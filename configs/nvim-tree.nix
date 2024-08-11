@@ -12,7 +12,12 @@
       };
     };
     keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
-      [ "n" "<C-n>" "<Cmd>NvimTreeToggle<CR>" { } ]
+      [
+        "n"
+        "<C-n>"
+        "<Cmd>NvimTreeToggle<CR>"
+        { }
+      ]
     ];
   };
 }

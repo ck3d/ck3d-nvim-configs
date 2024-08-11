@@ -1,4 +1,9 @@
-{ pkgs, config, nix2nvimrc, ... }:
+{
+  pkgs,
+  config,
+  nix2nvimrc,
+  ...
+}:
 let
   inherit (nix2nvimrc) luaExpr;
 in
@@ -23,7 +28,9 @@ in
         lualine_y = [ "progress" ];
         lualine_z = [ "location" ];
       };
-      options = { theme = "gruvbox_${config.opt.background}"; };
+      options = {
+        theme = "gruvbox_${config.opt.background}";
+      };
     };
   };
 }

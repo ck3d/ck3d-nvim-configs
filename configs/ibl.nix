@@ -6,8 +6,6 @@
       indent.char = "⎸";
       enabled = false;
     };
-    vim = [
-      "autocmd FileType yaml IBLEnable"
-    ];
+    vim = [ "autocmd FileType yaml IBLEnable" ];
   };
 }

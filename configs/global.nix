@@ -37,28 +37,131 @@ in
       completeopt = "menu,menuone,noselect";
     };
     keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
-      [ "" "<C-h>" "<C-w>h" { } ]
-      [ "" "<C-j>" "<C-w>j" { } ]
-      [ "" "<C-k>" "<C-w>k" { } ]
-      [ "" "<C-l>" "<C-w>l" { } ]
-      [ "n" "<F2>" "<Cmd>read !uuidgen<CR>" { desc = "Generate uuid"; } ]
-      [ "n" "<Leader>cd" "<Cmd>lcd %:p:h<CR>" { desc = "Change working directory"; } ]
-      [ "n" "<Leader>n" "<Cmd>bnext<CR>" { } ]
-      [ "n" "<Leader>p" "<Cmd>bprevious<CR>" { } ]
-      [ "n" "n" "nzz" { } ]
-      [ "n" "N" "Nzz" { } ]
-      [ [ "n" "v" ] "<Leader>d" "\"_d" { desc = "Delete to /dev/null"; } ]
-      [ "v" "<" "<gv" { desc = "Indent left"; } ]
-      [ "v" ">" ">gv" { desc = "Indent right"; } ]
-      [ "t" "<Esc>" "<C-\\><C-n>" { desc = "Close terminal"; } ]
-      [ "n" "gx" "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>" { desc = "Open file"; } ]
+      [
+        ""
+        "<C-h>"
+        "<C-w>h"
+        { }
+      ]
+      [
+        ""
+        "<C-j>"
+        "<C-w>j"
+        { }
+      ]
+      [
+        ""
+        "<C-k>"
+        "<C-w>k"
+        { }
+      ]
+      [
+        ""
+        "<C-l>"
+        "<C-w>l"
+        { }
+      ]
+      [
+        "n"
+        "<F2>"
+        "<Cmd>read !uuidgen<CR>"
+        { desc = "Generate uuid"; }
+      ]
+      [
+        "n"
+        "<Leader>cd"
+        "<Cmd>lcd %:p:h<CR>"
+        { desc = "Change working directory"; }
+      ]
+      [
+        "n"
+        "<Leader>n"
+        "<Cmd>bnext<CR>"
+        { }
+      ]
+      [
+        "n"
+        "<Leader>p"
+        "<Cmd>bprevious<CR>"
+        { }
+      ]
+      [
+        "n"
+        "n"
+        "nzz"
+        { }
+      ]
+      [
+        "n"
+        "N"
+        "Nzz"
+        { }
+      ]
+      [
+        [
+          "n"
+          "v"
+        ]
+        "<Leader>d"
+        "\"_d"
+        { desc = "Delete to /dev/null"; }
+      ]
+      [
+        "v"
+        "<"
+        "<gv"
+        { desc = "Indent left"; }
+      ]
+      [
+        "v"
+        ">"
+        ">gv"
+        { desc = "Indent right"; }
+      ]
+      [
+        "t"
+        "<Esc>"
+        "<C-\\><C-n>"
+        { desc = "Close terminal"; }
+      ]
+      [
+        "n"
+        "gx"
+        "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>"
+        { desc = "Open file"; }
+      ]
       # https://stackoverflow.com/a/26504944
-      [ "n" "<Leader>h" "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>" { desc = "Toggle highlight search"; } ]
+      [
+        "n"
+        "<Leader>h"
+        "<Cmd>let &hls=(&hls == 1 ? 0 : 1)<CR>"
+        { desc = "Toggle highlight search"; }
+      ]
       # diagnostics
-      [ "n" "<Leader>e" (luaExpr "vim.diagnostic.open_float") { } ]
-      [ "n" "[d" (luaExpr "vim.diagnostic.goto_prev") { } ]
-      [ "n" "]d" (luaExpr "vim.diagnostic.goto_next") { } ]
-      [ "n" "<Leader>q" (luaExpr "vim.diagnostic.setloclist") { } ]
+      [
+        "n"
+        "<Leader>e"
+        (luaExpr "vim.diagnostic.open_float")
+        { }
+      ]
+      [
+        "n"
+        "[d"
+        (luaExpr "vim.diagnostic.goto_prev")
+        { }
+      ]
+      [
+        "n"
+        "]d"
+        (luaExpr "vim.diagnostic.goto_next")
+        { }
+      ]
+      [
+        "n"
+        "<Leader>q"
+        (luaExpr "vim.diagnostic.setloclist")
+        { }
+      ]
     ];
     vim = [ ./global.vim ];
   };

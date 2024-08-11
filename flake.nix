@@ -6,7 +6,12 @@
     nix2nvimrc.url = "github:ck3d/nix2nvimrc";
   };
 
-  outputs = { self, nixpkgs, nix2nvimrc }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      nix2nvimrc,
+    }:
     let
       inherit (nixpkgs) lib;
       forAllSystems = lib.genAttrs lib.systems.flakeExposed;
@@ -24,36 +29,41 @@
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
-      packages = forAllSystems
-        (system:
-          let
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = builtins.attrValues self.overlays;
-            };
+      packages = forAllSystems (
+        system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = builtins.attrValues self.overlays;
+          };
 
-            adminLanguages = [
-              "nix"
-              "yaml"
-              "bash"
-              "lua"
-              "markdown"
-              "json"
-              "toml"
-            ];
+          adminLanguages = [
+            "nix"
+            "yaml"
+            "bash"
+            "lua"
+            "markdown"
+            "json"
+            "toml"
+          ];
 
-            nvims = builtins.mapAttrs
-              (name: languages:
+          nvims =
+            builtins.mapAttrs
+              (
+                name: languages:
                 (lib.evalModules {
                   modules =
                     (nix2nvimrc.lib.modules pkgs)
                     ++ (builtins.attrValues self.nix2nvimrcModules)
                     ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                    ++ [{
-                      wrapper.name = name;
-                      inherit languages;
-                    }];
-                }).config.wrapper.drv)
+                    ++ [
+                      {
+                        wrapper.name = name;
+                        inherit languages;
+                      }
+                    ];
+                }).config.wrapper.drv
+              )
               {
                 nvim-admin = adminLanguages;
                 nvim-dev = adminLanguages ++ [
@@ -78,24 +88,24 @@
                   "plantuml"
                 ];
               };
-          in
-          nvims
-          // { default = nvims.nvim-admin; }
-          // pkgs.ck3dNvimPkgs
-        );
+        in
+        nvims // { default = nvims.nvim-admin; } // pkgs.ck3dNvimPkgs
+      );
 
-      checks = forAllSystems (system:
+      checks = forAllSystems (
+        system:
         let
           packages = self.packages.${system};
         in
         packages
-        // (builtins.foldl'
-          (acc: package: acc // (lib.mapAttrs'
-            (test: value: { name = package + "-test-" + test; inherit value; })
-            (packages.${package}.tests or { }))
-          )
-          { }
-          (builtins.attrNames packages))
+        // (builtins.foldl' (
+          acc: package:
+          acc
+          // (lib.mapAttrs' (test: value: {
+            name = package + "-test-" + test;
+            inherit value;
+          }) (packages.${package}.tests or { }))
+        ) { } (builtins.attrNames packages))
       );
     };
 }

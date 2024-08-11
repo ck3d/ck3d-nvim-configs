@@ -1,3 +1,1 @@
-{
-  configs.leader.vars.mapleader = " ";
-}
+{ configs.leader.vars.mapleader = " "; }

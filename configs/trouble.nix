@@ -1,4 +1,9 @@
-{ config, pkgs, nix2nvimrc, ... }:
+{
+  config,
+  pkgs,
+  nix2nvimrc,
+  ...
+}:
 {
   configs.trouble = {
     after = [ "leader" ];

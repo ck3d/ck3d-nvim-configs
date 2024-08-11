@@ -1,4 +1,10 @@
-{ config, pkgs, lib, nix2nvimrc, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  nix2nvimrc,
+  ...
+}:
 let
   inherit (config) hasLang;
 in
@@ -14,9 +20,7 @@ in
           "diagnostics.write_good"
           "diagnostics.proselint"
         ]
-        ++ lib.optionals (hasLang "markdown") [
-          "diagnostics.markdownlint_cli2"
-        ]
+        ++ lib.optionals (hasLang "markdown") [ "diagnostics.markdownlint_cli2" ]
         ++ lib.optionals (hasLang "nix") [
           "code_actions.statix"
           "diagnostics.statix"
@@ -24,13 +28,13 @@ in
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
-    env.PATH.values = [
-      "${pkgs.proselint}/bin"
-      "${pkgs.nodePackages.prettier}/bin"
-      "${pkgs.nodePackages.write-good}/bin"
-    ]
-    ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
-    ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin"
-    ;
+    env.PATH.values =
+      [
+        "${pkgs.proselint}/bin"
+        "${pkgs.nodePackages.prettier}/bin"
+        "${pkgs.nodePackages.write-good}/bin"
+      ]
+      ++ lib.optional (hasLang "markdown") "${pkgs.markdownlint-cli2}/bin"
+      ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin";
   };
 }

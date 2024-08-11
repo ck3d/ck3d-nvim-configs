@@ -9,7 +9,10 @@
         "n"
         "<Leader>y"
         (nix2nvimrc.luaExpr "require'osc52'.copy_operator")
-        { expr = true; desc = "Yank to clipboard"; }
+        {
+          expr = true;
+          desc = "Yank to clipboard";
+        }
       ]
       [
         "x"

@@ -1,6 +1,4 @@
-{ vimUtils
-, fetchFromGitHub
-}:
+{ vimUtils, fetchFromGitHub }:
 vimUtils.buildVimPlugin {
   pname = "cmp-yank";
   version = "2024-01-13";

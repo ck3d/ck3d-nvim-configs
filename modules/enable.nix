@@ -5,9 +5,7 @@ in
 {
   options = {
     configs = mkOption {
-      type = types.attrsOf (types.submodule {
-        options.enable = mkEnableOption "Enable Configuration";
-      });
+      type = types.attrsOf (types.submodule { options.enable = mkEnableOption "Enable Configuration"; });
     };
   };
 }

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   inherit (lib) mkOption types;
 
@@ -22,9 +27,7 @@ in
 {
   options = {
     wrapper = {
-      name = mkOption {
-        type = types.str;
-      };
+      name = mkOption { type = types.str; };
       pkg = mkOption {
         type = types.package;
         default = pkgs.neovim-unwrapped;
@@ -37,13 +40,15 @@ in
     };
 
     configs = mkOption {
-      type = types.attrsOf (types.submodule {
-        options.env = mkOption {
-          type = types.attrsOf envType;
-          description = "Environment variables";
-          default = { };
-        };
-      });
+      type = types.attrsOf (
+        types.submodule {
+          options.env = mkOption {
+            type = types.attrsOf envType;
+            description = "Environment variables";
+            default = { };
+          };
+        }
+      );
     };
   };
 
@@ -59,15 +64,21 @@ in
           "--add-flags"
           "-u NORC --cmd 'luafile ${nvimrc}'"
         ]
-        ++
-        (builtins.concatMap
-          (env:
-            (builtins.concatMap
-              (n:
-                let v = env.${n}; in
-                [ "--suffix" n v.sep (builtins.concatStringsSep v.sep v.values) ])
-              (builtins.attrNames env)))
-          envs);
+        ++ (builtins.concatMap (
+          env:
+          (builtins.concatMap (
+            n:
+            let
+              v = env.${n};
+            in
+            [
+              "--suffix"
+              n
+              v.sep
+              (builtins.concatStringsSep v.sep v.values)
+            ]
+          ) (builtins.attrNames env))
+        ) envs);
     in
     pkgs.stdenvNoCC.mkDerivation {
       pname = cfg.name;
@@ -93,26 +104,26 @@ in
 
       passthru = {
         inherit nvimrc;
-        tests.languages = pkgs.runCommandNoCC "test-languages" { }
-          (lib.concatMapStrings
-            (language: ''
-              echo test ${language}
-              HOME=$(pwd) ${config.wrapper.drv}/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
-              if [ -s err ]; then
-                cat err
-                LSP_LOG=.local/state/nvim/lsp.log
-                if [ -f "$LSP_LOG" ]; then
-                  cat "$LSP_LOG"
-                fi
-                false
+        tests.languages = pkgs.runCommandNoCC "test-languages" { } (
+          lib.concatMapStrings (language: ''
+            echo test ${language}
+            HOME=$(pwd) ${config.wrapper.drv}/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
+            if [ -s err ]; then
+              cat err
+              LSP_LOG=.local/state/nvim/lsp.log
+              if [ -f "$LSP_LOG" ]; then
+                cat "$LSP_LOG"
               fi
-            '')
-            (config.languages or [ ])
+              false
+            fi
+          '') (config.languages or [ ])
           + ''
             mv .local/state/nvim $out
           ''
-          );
+        );
       };
-      meta = { inherit mainProgram; };
+      meta = {
+        inherit mainProgram;
+      };
     };
 }
