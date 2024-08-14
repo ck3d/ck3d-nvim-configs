@@ -33,7 +33,7 @@ in
       ];
     in
     pkgs.stdenvNoCC.mkDerivation {
-      pname = cfg.pkg.pname + "-bubblewrap";
+      pname = cfg.pkg.pname + "-bwrap";
       inherit (cfg.pkg) version;
 
       dontUnpack = true;

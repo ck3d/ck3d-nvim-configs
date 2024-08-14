@@ -37,62 +37,63 @@
             overlays = builtins.attrValues self.overlays;
           };
 
-          nvims =
-            builtins.mapAttrs
-              (
-                name: languages:
-                let
-                  evaluation = lib.evalModules {
-                    modules =
-                      (nix2nvimrc.lib.modules pkgs)
-                      ++ (builtins.attrValues self.nix2nvimrcModules)
-                      ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                      ++ [
-                        {
-                          wrapper.name = name;
-                          inherit languages;
-                        }
-                      ];
-                  };
-                in
-                if nixpkgs.legacyPackages.${system}.stdenv.isLinux then
-                  evaluation.config.bubblewrap.drv
-                else
-                  evaluation.config.wrapper.drv
-              )
-              rec {
-                nvim-admin = [
-                  "nix"
-                  "yaml"
-                  "bash"
-                  "lua"
-                  "markdown"
-                  "json"
-                  "toml"
-                ];
+          grouped-languages = rec {
+            nvim-admin = [
+              "nix"
+              "yaml"
+              "bash"
+              "lua"
+              "markdown"
+              "json"
+              "toml"
+            ];
 
-                nvim-dev = nvim-admin ++ [
-                  "rust"
-                  "beancount"
-                  "javascript"
-                  "html"
-                  "c"
-                  "cpp"
-                  "css"
-                  "make"
-                  "graphql"
-                  "python"
-                  "scheme"
-                  "latex"
-                  "devicetree"
-                  "go"
-                  "jq"
-                  "vue"
-                  "typescript"
-                  "xml"
-                  "plantuml"
-                ];
+            nvim-dev = nvim-admin ++ [
+              "rust"
+              "beancount"
+              "javascript"
+              "html"
+              "c"
+              "cpp"
+              "css"
+              "make"
+              "graphql"
+              "python"
+              "scheme"
+              "latex"
+              "devicetree"
+              "go"
+              "jq"
+              "vue"
+              "typescript"
+              "xml"
+              "plantuml"
+            ];
+          };
+
+          nvims = lib.concatMapAttrs (
+            group: languages:
+            let
+              evaluation = lib.evalModules {
+                modules =
+                  (nix2nvimrc.lib.modules pkgs)
+                  ++ (builtins.attrValues self.nix2nvimrcModules)
+                  ++ (builtins.attrValues self.nix2nvimrcConfigs)
+                  ++ [
+                    {
+                      wrapper.name = group;
+                      inherit languages;
+                    }
+                  ];
               };
+            in
+            {
+              "${evaluation.config.wrapper.drv.pname}" = evaluation.config.wrapper.drv;
+            }
+            // lib.optionalAttrs nixpkgs.legacyPackages.${system}.stdenv.isLinux {
+              "${evaluation.config.bubblewrap.drv.pname}" = evaluation.config.bubblewrap.drv;
+            }
+          ) grouped-languages;
         in
         nvims // { default = nvims.nvim-admin; } // pkgs.ck3dNvimPkgs
       );
