@@ -62,7 +62,7 @@
                         inherit languages;
                       }
                     ];
-                }).config.wrapper.drv
+                }).config.bubblewrap.drv
               )
               {
                 nvim-admin = adminLanguages;
