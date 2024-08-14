@@ -51,18 +51,24 @@
             builtins.mapAttrs
               (
                 name: languages:
-                (lib.evalModules {
-                  modules =
-                    (nix2nvimrc.lib.modules pkgs)
-                    ++ (builtins.attrValues self.nix2nvimrcModules)
-                    ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                    ++ [
-                      {
-                        wrapper.name = name;
-                        inherit languages;
-                      }
-                    ];
-                }).config.bubblewrap.drv
+                let
+                  evaluation = lib.evalModules {
+                    modules =
+                      (nix2nvimrc.lib.modules pkgs)
+                      ++ (builtins.attrValues self.nix2nvimrcModules)
+                      ++ (builtins.attrValues self.nix2nvimrcConfigs)
+                      ++ [
+                        {
+                          wrapper.name = name;
+                          inherit languages;
+                        }
+                      ];
+                  };
+                in
+                if nixpkgs.legacyPackages.${system}.stdenv.isLinux then
+                  evaluation.config.bubblewrap.drv
+                else
+                  evaluation.config.wrapper.drv
               )
               {
                 nvim-admin = adminLanguages;
