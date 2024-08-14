@@ -37,16 +37,6 @@
             overlays = builtins.attrValues self.overlays;
           };
 
-          adminLanguages = [
-            "nix"
-            "yaml"
-            "bash"
-            "lua"
-            "markdown"
-            "json"
-            "toml"
-          ];
-
           nvims =
             builtins.mapAttrs
               (
@@ -70,9 +60,18 @@
                 else
                   evaluation.config.wrapper.drv
               )
-              {
-                nvim-admin = adminLanguages;
-                nvim-dev = adminLanguages ++ [
+              rec {
+                nvim-admin = [
+                  "nix"
+                  "yaml"
+                  "bash"
+                  "lua"
+                  "markdown"
+                  "json"
+                  "toml"
+                ];
+
+                nvim-dev = nvim-admin ++ [
                   "rust"
                   "beancount"
                   "javascript"
