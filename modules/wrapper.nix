@@ -62,7 +62,7 @@ in
         in
         [
           "--add-flags"
-          "-u NORC --cmd 'luafile ${nvimrc}'"
+          "-u ${nvimrc}"
         ]
         ++ (builtins.concatMap (
           env:
