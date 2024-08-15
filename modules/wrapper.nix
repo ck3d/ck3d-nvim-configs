@@ -129,6 +129,7 @@ in
       };
       meta = {
         inherit mainProgram;
+        inherit (cfg.pkg.meta) platforms;
       };
     };
 }

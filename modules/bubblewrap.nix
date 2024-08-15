@@ -53,6 +53,7 @@ in
 
       meta = {
         inherit mainProgram;
+        inherit (pkgs.bubblewrap.meta) platforms;
       };
     };
 }
