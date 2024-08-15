@@ -51,17 +51,15 @@
           )
           (
             map (lang: "tree-sitter-" + lang) (
-              config.languages
-              # Add neovim recommended parsers
-              # see also:
-              # https://github.com/neovim/neovim/blob/4447cefa4815bd55f1511d3a655c21ac5e1c090f/cmake.deps/deps.txt#L44
-              ++ [
+              # https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/by-name/ne/neovim-unwrapped/treesitter-parsers.nix
+              lib.subtractLists [
                 "c"
                 "lua"
                 "vim"
                 "vimdoc"
                 "query"
-              ]
+                "markdown"
+              ] config.languages
             )
           )
         ) grammars;
