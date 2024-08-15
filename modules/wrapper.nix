@@ -94,6 +94,7 @@ in
       '';
 
       doInstallCheck = true;
+      nativeInstallCheckInputs = [ pkgs.gitMinimal ];
       installCheckPhase = ''
         HOME=$(pwd) $out/bin/${mainProgram} --headless +"q" 2> err
         if [ -s err ]; then
@@ -104,23 +105,25 @@ in
 
       passthru = {
         inherit nvimrc;
-        tests.languages = pkgs.runCommandNoCC "test-languages" { } (
-          lib.concatMapStrings (language: ''
-            echo test ${language}
-            HOME=$(pwd) ${config.wrapper.drv}/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
-            if [ -s err ]; then
-              cat err
-              LSP_LOG=.local/state/nvim/lsp.log
-              if [ -f "$LSP_LOG" ]; then
-                cat "$LSP_LOG"
-              fi
-              false
-            fi
-          '') (config.languages or [ ])
-          + ''
-            mv .local/state/nvim $out
-          ''
-        );
+        tests.languages =
+          pkgs.runCommandNoCC "test-languages" { nativeBuildInputs = [ pkgs.gitMinimal ]; }
+            (
+              lib.concatMapStrings (language: ''
+                echo test ${language}
+                HOME=$(pwd) ${config.wrapper.drv}/bin/${mainProgram} --headless +"lua vim.wait(20, function() end)" +"q" test.${language} 2> err
+                if [ -s err ]; then
+                  cat err
+                  LSP_LOG=.local/state/nvim/lsp.log
+                  if [ -f "$LSP_LOG" ]; then
+                    cat "$LSP_LOG"
+                  fi
+                  false
+                fi
+              '') (config.languages or [ ])
+              + ''
+                mv .local/state/nvim $out
+              ''
+            );
       };
       meta = {
         inherit mainProgram;
