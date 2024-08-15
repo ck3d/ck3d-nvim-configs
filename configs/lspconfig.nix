@@ -165,7 +165,7 @@ in
           ];
           # https://github.com/bash-lsp/bash-language-server?tab=readme-ov-file#dependencies
           bash = [
-            ck3dNvimPkgs.bash-language-server
+            bash-language-server
             shellcheck
             shfmt
           ];
