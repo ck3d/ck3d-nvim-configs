@@ -2,14 +2,12 @@
   config,
   pkgs,
   lib,
-  nix2nvimrc,
   ...
 }:
 {
   configs.nvim-treesitter = {
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter
-      playground
       nvim-treesitter-textobjects
     ];
     setup.modulePath = "nvim-treesitter.configs";
@@ -17,7 +15,6 @@
       highlight.enable = true;
       incremental_selection.enable = true;
       textobjects.enable = true;
-      playground.enable = true;
 
       # nvim-treesitter-textobjects
       textobjects.select = {
