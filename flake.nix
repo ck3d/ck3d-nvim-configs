@@ -88,13 +88,12 @@
                     }
                   ];
               };
+              drv2attr = drv: { ${drv.pname} = drv; };
             in
-            {
-              "${evaluation.config.wrapper.drv.pname}" = evaluation.config.wrapper.drv;
-            }
-            // lib.optionalAttrs nixpkgs.legacyPackages.${system}.stdenv.isLinux {
-              "${evaluation.config.bubblewrap.drv.pname}" = evaluation.config.bubblewrap.drv;
-            }
+            (drv2attr evaluation.config.wrapper.drv)
+            // lib.optionalAttrs nixpkgs.legacyPackages.${system}.stdenv.isLinux (
+              drv2attr evaluation.config.bubblewrap.drv
+            )
           ) grouped-languages;
         in
         nvims // { default = nvims.nvim-admin; } // pkgs.ck3dNvimPkgs
