@@ -16,7 +16,7 @@ in
       sources = map (s: nix2nvimrc.luaExpr ("require'null-ls.builtins'." + s)) (
         [
           "code_actions.gitsigns"
-          "formatting.prettier.with({disabled_filetypes = {'vue'}})"
+          "formatting.prettier"
           "diagnostics.write_good"
           "diagnostics.proselint"
         ]
