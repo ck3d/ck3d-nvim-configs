@@ -38,6 +38,8 @@
           };
 
           grouped-languages = rec {
+            nvim-min = [ ];
+
             nvim-admin = [
               "nix"
               "yaml"
