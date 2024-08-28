@@ -73,25 +73,37 @@
             ];
           };
 
-          nvims = lib.concatMapAttrs (
-            group: languages:
-            let
-              evaluation = lib.evalModules {
-                modules =
-                  (nix2nvimrc.lib.modules pkgs)
-                  ++ (builtins.attrValues self.nix2nvimrcModules)
-                  ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                  ++ [
-                    {
-                      wrapper.name = group;
-                      inherit languages;
-                    }
-                  ];
-              };
-              drv2attr = drv: lib.optionalAttrs (builtins.elem system drv.meta.platforms) { ${drv.pname} = drv; };
-            in
-            (drv2attr evaluation.config.wrapper.drv) // (drv2attr evaluation.config.bubblewrap.drv)
-          ) grouped-languages;
+          nvims = builtins.listToAttrs (
+            builtins.concatMap (
+              group:
+              let
+                evaluation = lib.evalModules {
+                  modules =
+                    (nix2nvimrc.lib.modules pkgs)
+                    ++ (builtins.attrValues self.nix2nvimrcModules)
+                    ++ (builtins.attrValues self.nix2nvimrcConfigs)
+                    ++ [
+                      {
+                        wrapper.name = group;
+                        languages = grouped-languages.${group};
+                      }
+                    ];
+                };
+              in
+              builtins.concatMap
+                (
+                  drv:
+                  lib.optional (builtins.elem system drv.meta.platforms) {
+                    name = drv.pname;
+                    value = drv;
+                  }
+                )
+                [
+                  evaluation.config.wrapper.drv
+                  evaluation.config.bubblewrap.drv
+                ]
+            ) (builtins.attrNames grouped-languages)
+          );
         in
         nvims // { default = nvims.nvim-admin; } // pkgs.ck3dNvimPkgs
       );
