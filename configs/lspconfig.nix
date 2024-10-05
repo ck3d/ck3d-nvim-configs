@@ -21,8 +21,8 @@ in
       servers =
         let
           lang_server = {
-            javascript.tsserver.config = {
-              # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/tsserver.lua#L55
+            javascript.ts_ls.config = {
+              # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/ts_ls.lua#L59
               init_options = {
                 plugins = [
                   {
