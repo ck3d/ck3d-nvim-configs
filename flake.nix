@@ -70,6 +70,7 @@
               "typescript"
               "xml"
               "plantuml"
+              "typst"
             ];
           };
 
