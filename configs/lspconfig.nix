@@ -61,6 +61,7 @@ in
             };
             go.gopls = { };
             vue.volar = { };
+            typst.typst_lsp = { };
           };
         in
         builtins.foldl' (old: lang: old // lang_server.${lang}) { } (
@@ -183,6 +184,7 @@ in
             go
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
+          typst = [ typst-lsp typstfmt typst ];
         };
       in
       lib.flatten (
