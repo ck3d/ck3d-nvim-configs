@@ -61,7 +61,7 @@ in
             };
             go.gopls = { };
             vue.volar = { };
-            typst.typst_lsp = { };
+            typst.typst_lsp.config.autostart = false;
           };
         in
         builtins.foldl' (old: lang: old // lang_server.${lang}) { } (
