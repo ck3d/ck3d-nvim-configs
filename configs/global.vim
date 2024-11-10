@@ -9,7 +9,7 @@ autocmd BufNewFile,BufRead .envrc set filetype=bash
 autocmd BufNewFile,BufRead flake.lock set filetype=json
 autocmd BufNewFile,BufRead *.typst set filetype=typst
 
-autocmd FileType markdown,gitcommit setlocal spell
+autocmd FileType markdown,gitcommit,typst,latex setlocal spell
 autocmd FileType markdown setlocal iskeyword+=-
 
 " see help restore-cursor
