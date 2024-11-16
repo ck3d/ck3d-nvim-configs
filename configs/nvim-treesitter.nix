@@ -7,7 +7,7 @@
 {
   configs.nvim-treesitter = {
     plugins = with pkgs.vimPlugins; [
-      nvim-treesitter
+      nvim-treesitter.withAllGrammars
       nvim-treesitter-textobjects
     ];
     setup.modulePath = "nvim-treesitter.configs";
