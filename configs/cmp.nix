@@ -11,7 +11,6 @@
       cmp-spell
       cmp-nvim-tags
       cmp-vsnip
-      pkgs.ck3dNvimPkgs.cmp-yank
 
       vim-vsnip
     ];
