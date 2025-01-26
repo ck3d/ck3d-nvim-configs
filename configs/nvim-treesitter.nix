@@ -43,6 +43,9 @@
             type:
             if builtins.hasAttr type grammars then
               true
+            # disable trace for following languages
+            else if builtins.any (lang: type == lang) [ "tree-sitter-plantuml" ] then
+              false
             else
               builtins.trace "no tree-sitter parser for language ${type} available" false
           )
