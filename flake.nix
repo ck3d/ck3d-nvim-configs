@@ -48,6 +48,7 @@
               "markdown"
               "json"
               "toml"
+              "dockerfile"
             ];
 
             nvim-dev = nvim-admin ++ [
