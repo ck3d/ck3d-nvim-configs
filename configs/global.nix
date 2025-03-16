@@ -162,6 +162,30 @@ in
         (luaExpr "vim.diagnostic.setloclist")
         { }
       ]
+      [
+        "n"
+        "<Leader>y"
+        "\"*y"
+        { desc = "copy to primary selection"; }
+      ]
+      [
+        "n"
+        "<Leader>Y"
+        "\"+y"
+        { desc = "copy to clipboard selection"; }
+      ]
+      [
+        "n"
+        "<Leader>p"
+        "\"*p"
+        { desc = "paste from primary selection"; }
+      ]
+      [
+        "n"
+        "<Leader>P"
+        "\"+p"
+        { desc = "paste from clipboard selection"; }
+      ]
     ];
     vim = [ ./global.vim ];
   };
