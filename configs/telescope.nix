@@ -6,6 +6,7 @@ in
   configs.telescope = {
     after = [ "leader" ];
     plugins = with pkgs.vimPlugins; [
+      telescope-nvim
       telescope-fzy-native-nvim
       telescope-file-browser-nvim
       telescope-ui-select-nvim

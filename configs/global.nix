@@ -36,6 +36,12 @@ in
       background = "light";
       completeopt = "menu,menuone,noselect";
     };
+    lua = [
+      ''
+        -- https://github.com/neovim/neovim/issues/28845#issuecomment-2119058319
+        vim.deprecate = vim.islist;
+      ''
+    ];
     keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
       [
         ""
