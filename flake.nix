@@ -72,6 +72,7 @@
               "xml"
               "plantuml"
               "typst"
+              "csv"
             ];
           };
 
