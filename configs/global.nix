@@ -81,18 +81,6 @@ in
       ]
       [
         "n"
-        "<Leader>n"
-        "<Cmd>bnext<CR>"
-        { }
-      ]
-      [
-        "n"
-        "<Leader>p"
-        "<Cmd>bprevious<CR>"
-        { }
-      ]
-      [
-        "n"
         "n"
         "nzz"
         { }
