@@ -46,6 +46,7 @@
               "bash"
               "lua"
               "markdown"
+              "markdown_inline"
               "json"
               "toml"
               "dockerfile"
