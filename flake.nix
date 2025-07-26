@@ -74,6 +74,7 @@
               "plantuml"
               "typst"
               "csv"
+              "dhall"
             ];
           };
 

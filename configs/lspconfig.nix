@@ -62,6 +62,7 @@ in
             go.gopls = { };
             vue.volar = { };
             typst.tinymist = { };
+            dhall.dhall_lsp_server = { };
           };
         in
         builtins.foldl' (old: lang: old // lang_server.${lang}) { } (
@@ -185,6 +186,7 @@ in
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
           typst = [ tinymist typstfmt typst ];
+          dhall = [ dhall-lsp-server dhall ];
         };
       in
       lib.flatten (
