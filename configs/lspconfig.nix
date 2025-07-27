@@ -186,7 +186,7 @@ in
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
           typst = [ tinymist typstfmt typst ];
-          dhall = [ dhall-lsp-server dhall ];
+          dhall = [ dhall-lsp-server dhall dhall-json dhall-nix ];
         };
       in
       lib.flatten (
