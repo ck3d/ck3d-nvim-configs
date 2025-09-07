@@ -8,6 +8,7 @@ autocmd BufNewFile,BufRead *.jq set filetype=jq
 autocmd BufNewFile,BufRead .envrc set filetype=bash
 autocmd BufNewFile,BufRead flake.lock set filetype=json
 autocmd BufNewFile,BufRead *.typst set filetype=typst
+autocmd BufNewFile,BufRead *.ncl set filetype=nickel
 
 autocmd FileType markdown,gitcommit,typst,latex setlocal spell
 autocmd FileType markdown setlocal iskeyword+=-
