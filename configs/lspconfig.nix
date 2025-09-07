@@ -62,7 +62,7 @@ in
             go.gopls = { };
             vue.volar = { };
             typst.tinymist = { };
-            dhall.dhall_lsp_server = { };
+            nickel.nickel_ls = { };
           };
         in
         builtins.foldl' (old: lang: old // lang_server.${lang}) { } (
@@ -186,7 +186,7 @@ in
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
           typst = [ tinymist typstfmt typst ];
-          dhall = [ dhall-lsp-server dhall dhall-json dhall-nix ];
+          nickel = [ nls nickel ];
         };
       in
       lib.flatten (

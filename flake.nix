@@ -74,7 +74,7 @@
               "plantuml"
               "typst"
               "csv"
-              "dhall"
+              "nickel"
             ];
           };
 
