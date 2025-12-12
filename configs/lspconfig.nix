@@ -172,7 +172,7 @@ in
             shfmt
           ];
           yaml = [ yaml-language-server ];
-          lua = [ sumneko-lua-language-server ];
+          lua = [ lua-language-server ];
           xml = [ lemminx ];
           python = [ pyright ];
           json = [ vscode-langservers-extracted ];
@@ -185,7 +185,7 @@ in
             go
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
-          typst = [ tinymist typstfmt typst ];
+          typst = [ tinymist typstyle typst ];
           nickel = [ nls nickel ];
         };
       in

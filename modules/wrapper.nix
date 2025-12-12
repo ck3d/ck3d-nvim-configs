@@ -107,7 +107,7 @@ in
         inherit nvimrc;
         tests = lib.optionalAttrs (config.languages != [ ]) {
           languages =
-            pkgs.runCommandNoCC "${pname}-test-languages" { nativeBuildInputs = nativeInstallCheckInputs; }
+            pkgs.runCommand "${pname}-test-languages" { nativeBuildInputs = nativeInstallCheckInputs; }
               (
                 lib.concatMapStrings (language: ''
                   echo test ${language}
