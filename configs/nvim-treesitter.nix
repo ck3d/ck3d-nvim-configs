@@ -10,7 +10,6 @@
       nvim-treesitter.withAllGrammars
       nvim-treesitter-textobjects
     ];
-    setup.modulePath = "nvim-treesitter.configs";
     setup.args = {
       highlight.enable = true;
       incremental_selection.enable = true;
