@@ -86,24 +86,6 @@ in
         ]
         [
           "n"
-          "K"
-          (luaExpr "vim.lsp.buf.hover")
-          { desc = "Show hover"; }
-        ]
-        [
-          "n"
-          "gi"
-          (luaExpr "vim.lsp.buf.implementation")
-          { desc = "Goto implementation"; }
-        ]
-        [
-          "n"
-          "<C-k>"
-          (luaExpr "vim.lsp.buf.signature_help")
-          { desc = "Show signature help"; }
-        ]
-        [
-          "n"
           "<Leader>wa"
           (luaExpr "vim.lsp.buf.add_workspace_folder")
           { desc = "Add workspace folder"; }
@@ -119,30 +101,6 @@ in
           "<Leader>wl"
           (luaExpr "function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end")
           { desc = "List workspace folder"; }
-        ]
-        [
-          "n"
-          "<Leader>D"
-          (luaExpr "vim.lsp.buf.type_definition")
-          { desc = "Goto definition"; }
-        ]
-        [
-          "n"
-          "<Leader>rn"
-          (luaExpr "vim.lsp.buf.rename")
-          { desc = "Rename"; }
-        ]
-        [
-          "n"
-          "<Leader>ca"
-          (luaExpr "vim.lsp.buf.code_action")
-          { desc = "Code actions"; }
-        ]
-        [
-          "n"
-          "gr"
-          (luaExpr "vim.lsp.buf.references")
-          { desc = "Select codGoto definition"; }
         ]
       ];
 
