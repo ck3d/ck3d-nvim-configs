@@ -114,7 +114,7 @@ in
           rust = [
             rust-analyzer
             # default config of rust-analyzer expects cargo:
-            # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/rust_analyzer.lua#L59
+            # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/rust_analyzer.lua#L58
             cargo
             # since cargo depends on rustc, lets make it available:
             cargo.rustc
