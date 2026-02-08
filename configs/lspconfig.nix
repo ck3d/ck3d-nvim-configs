@@ -143,8 +143,15 @@ in
             go
           ];
           vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
-          typst = [ tinymist typstyle typst ];
-          nickel = [ nls nickel ];
+          typst = [
+            tinymist
+            typstyle
+            typst
+          ];
+          nickel = [
+            nls
+            nickel
+          ];
         };
       in
       lib.flatten (
