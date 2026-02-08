@@ -27,7 +27,7 @@
 
       inherit (nixpkgs) legacyPackages;
 
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
 
       packages = forAllSystems (
         system:

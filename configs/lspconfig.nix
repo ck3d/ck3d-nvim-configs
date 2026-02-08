@@ -121,7 +121,7 @@ in
           ];
           nix = [
             nixd
-            nixfmt-rfc-style
+            nixfmt
           ];
           # https://github.com/bash-lsp/bash-language-server?tab=readme-ov-file#dependencies
           bash = [
