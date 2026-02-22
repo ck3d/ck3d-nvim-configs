@@ -2,6 +2,9 @@
 {
   configs."blink.cmp" = {
     plugins = [ pkgs.vimPlugins.blink-cmp ];
-    setup = { };
+    setup.args = {
+      # https://cmp.saghen.dev/configuration/keymap#enter
+      keymap.preset = "enter";
+    };
   };
 }
