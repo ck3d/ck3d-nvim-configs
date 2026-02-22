@@ -14,7 +14,7 @@ in
     after = [
       "global"
       "lsp-status"
-      "cmp"
+      "blink.cmp"
     ];
     plugins = [ pkgs.vimPlugins.nvim-lspconfig ];
     lspconfig = {
@@ -69,7 +69,7 @@ in
           builtins.filter hasLang (builtins.attrNames lang_server)
         );
 
-      capabilities = luaExpr "require'cmp_nvim_lsp'.default_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
+      capabilities = luaExpr "require'blink.cmp'.get_lsp_capabilities(vim.tbl_extend('keep', vim.lsp.protocol.make_client_capabilities(), require'lsp-status'.capabilities))";
 
       keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
         [
