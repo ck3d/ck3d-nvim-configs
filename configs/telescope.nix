@@ -81,6 +81,12 @@ in
       ]
       [
         "n"
+        "<Leader>fD"
+        (luaExpr "require'telescope.builtin'.diagnostics")
+        { desc = "Find in diagnostics"; }
+      ]
+      [
+        "n"
         "<Leader>fr"
         (luaExpr "function() require'telescope.builtin'.find_files({cwd= '%:h'}) end")
         { desc = "Find file relative"; }
