@@ -133,7 +133,7 @@ in
         };
       in
       lib.flatten (
-        map (lang: map (pkg: "${pkg}/bin") mapLangToPkgs.${lang}) (
+        map (lang: map (x: "${lib.getBin x}/bin") mapLangToPkgs.${lang}) (
           builtins.filter hasLang (builtins.attrNames mapLangToPkgs)
         )
       );

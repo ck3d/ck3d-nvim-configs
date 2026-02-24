@@ -15,10 +15,10 @@ in
     setup.args = {
       sources = map (s: nix2nvimrc.luaExpr ("require'null-ls.builtins'." + s)) (
         [ "code_actions.gitsigns" ]
-        ++ lib.optionals (hasLang "markdown") [
-          "diagnostics.markdownlint_cli2"
-        ]
-        ++ lib.optionals (hasLang "javascript") [ "formatting.prettier" ]
+        ++ lib.optional (builtins.any hasLang [
+          "javascript"
+          "markdown"
+        ]) "formatting.prettier"
         ++ lib.optionals (hasLang "nix") [
           "code_actions.statix"
           "diagnostics.statix"
@@ -26,11 +26,9 @@ in
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
-    env.PATH.values =
-      lib.optionals (hasLang "markdown") [
-        "${pkgs.markdownlint-cli2}/bin"
-      ]
-      ++ lib.optional (hasLang "javascript") "${pkgs.nodePackages.prettier}/bin"
-      ++ lib.optional (hasLang "nix") "${pkgs.statix}/bin";
+    env.PATH.values = map (x: "${lib.getBin x}/bin") (
+      lib.optional (hasLang "javascript") pkgs.nodePackages.prettier
+      ++ lib.optional (hasLang "nix") pkgs.statix
+    );
   };
 }
