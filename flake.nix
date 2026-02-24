@@ -24,8 +24,6 @@
     {
       lib = import ./lib.nix;
 
-      overlays.default = import ./overlay.nix;
-
       nix2nvimrcModules = readDirNix ./modules;
       nix2nvimrcConfigs = readDirNix ./configs;
 
@@ -36,10 +34,7 @@
       packages = forAllSystems (
         system:
         let
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = builtins.attrValues self.overlays;
-          };
+          pkgs = self.legacyPackages.${system};
 
           grouped-languages = rec {
             nvim-min = [ ];
