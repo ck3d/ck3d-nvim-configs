@@ -21,27 +21,7 @@ in
       servers =
         let
           lang_server = {
-            javascript.ts_ls.config = {
-              # https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/configs/ts_ls.lua#L59
-              init_options = {
-                plugins = [
-                  {
-                    name = "@vue/typescript-plugin";
-                    location = "${pkgs.ck3dNvimPkgs.nvim-tsserver-vue-env}/node_modules/@vue/typescript-plugin";
-                    languages = [
-                      "javascript"
-                      "typescript"
-                      "vue"
-                    ];
-                  }
-                ];
-              };
-              filetypes = [
-                "javascript"
-                "typescript"
-                "vue"
-              ];
-            };
+            javascript.ts_ls.config = { };
             bash.bashls = { };
             nix.nixd.config = {
               # https://github.com/nix-community/nixd/blob/main/nixd/docs/configuration.md#where-to-place-the-configuration
@@ -60,7 +40,6 @@ in
               root_file = "Root.beancount";
             };
             go.gopls = { };
-            vue.volar = { };
             typst.tinymist = { };
             nickel.nickel_ls = { };
           };
@@ -110,7 +89,7 @@ in
     env.PATH.values =
       let
         mapLangToPkgs = with pkgs; {
-          javascript = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
+          javascript = [ pkgs.typescript-language-server ];
           rust = [
             rust-analyzer
             # default config of rust-analyzer expects cargo:
@@ -142,7 +121,6 @@ in
             gopls
             go
           ];
-          vue = [ ck3dNvimPkgs.nvim-tsserver-vue-env ];
           typst = [
             tinymist
             typstyle

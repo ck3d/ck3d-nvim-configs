@@ -72,7 +72,6 @@
               "devicetree"
               "go"
               "jq"
-              "vue"
               "typescript"
               "xml"
               "plantuml"
@@ -114,7 +113,7 @@
             ) (builtins.attrNames grouped-languages)
           );
         in
-        nvims // { default = nvims.nvim-admin; } // pkgs.ck3dNvimPkgs
+        nvims // { default = nvims.nvim-admin; }
       );
 
       checks = forAllSystems (
