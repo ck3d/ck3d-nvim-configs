@@ -1,4 +1,4 @@
-{ pkgs, nix2nvimrc, ... }:
+{ pkgs, ... }:
 {
   configs.nvim-tree = {
     plugins = [ pkgs.vimPlugins.nvim-tree-lua ];
@@ -11,13 +11,10 @@
         update_root = true;
       };
     };
-    keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
-      [
-        "n"
-        "<C-n>"
-        "<Cmd>NvimTreeToggle<CR>"
-        { }
-      ]
+    lua = [
+      ''
+        vim.keymap.set("n", "<C-n>", "<Cmd>NvimTreeToggle<CR>")
+      ''
     ];
   };
 }
