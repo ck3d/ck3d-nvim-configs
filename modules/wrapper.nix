@@ -12,14 +12,12 @@ let
   envType = types.submodule {
     options = {
       values = mkOption {
-        type = types.listOf types.str;
+        type = types.listOf types.package;
         default = [ ];
-        description = "List of values";
       };
-      sep = mkOption {
-        type = types.str;
-        default = ":";
-        description = "Value separator";
+      function = mkOption {
+        type = types.functionTo types.str;
+        default = lib.makeBinPath;
       };
     };
   };
@@ -56,29 +54,26 @@ in
     let
       mainProgram = "nvim";
       nvimrc = pkgs.writeText (cfg.name + "-nvimrc.lua") config.out;
-      wrapperArgs =
-        let
-          envs = builtins.catAttrs "env" (builtins.attrValues config.configs);
-        in
-        [
-          "--add-flags"
-          "-u ${nvimrc}"
-        ]
-        ++ (builtins.concatMap (
-          env:
-          (builtins.concatMap (
-            n:
-            let
-              v = env.${n};
-            in
-            [
-              "--suffix"
-              n
-              v.sep
-              (builtins.concatStringsSep v.sep v.values)
-            ]
-          ) (builtins.attrNames env))
-        ) envs);
+      envs = builtins.catAttrs "env" (builtins.attrValues config.configs);
+      wrapperArgs = [
+        "--add-flags"
+        "-u ${nvimrc}"
+      ]
+      ++ (builtins.concatMap (
+        env:
+        (builtins.concatMap (
+          n:
+          let
+            v = env.${n};
+          in
+          [
+            "--suffix"
+            n
+            ":"
+            (v.function v.values)
+          ]
+        ) (builtins.attrNames env))
+      ) envs);
     in
     pkgs.stdenvNoCC.mkDerivation rec {
       pname = cfg.name;
@@ -104,7 +99,7 @@ in
       '';
 
       passthru = {
-        inherit nvimrc;
+        inherit nvimrc envs;
         tests = lib.optionalAttrs (config.languages != [ ]) {
           languages =
             pkgs.runCommand "${pname}-test-languages" { nativeBuildInputs = nativeInstallCheckInputs; }

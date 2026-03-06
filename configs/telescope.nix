@@ -106,7 +106,7 @@ in
     ];
     env.PATH.values = [
       # https://github.com/nvim-telescope/telescope.nvim?tab=readme-ov-file#suggested-dependencies
-      "${pkgs.ripgrep}/bin"
+      pkgs.ripgrep
     ];
   };
 }
