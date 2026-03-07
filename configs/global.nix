@@ -1,6 +1,6 @@
 { nix2nvimrc, ... }:
 let
-  inherit (nix2nvimrc) toLuaFn luaExpr;
+  inherit (nix2nvimrc) luaExpr;
 in
 {
   configs.global = {
