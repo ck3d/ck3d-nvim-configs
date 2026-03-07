@@ -11,8 +11,15 @@ autocmd FileType markdown,gitcommit,typst,latex setlocal spell
 autocmd FileType markdown setlocal iskeyword+=-
 
 " see help restore-cursor
-autocmd BufRead * autocmd FileType <buffer> ++once
-     \ if &ft !~# 'commit\|rebase' && line("'\"") > 1 && line("'\"") <= line("$") | exe 'normal! g`"' | endif
+augroup RestoreCursor
+  autocmd!
+  autocmd BufReadPre * autocmd FileType <buffer> ++once
+    \ let s:line = line("'\"")
+    \ | if s:line >= 1 && s:line <= line("$") && &filetype !~# 'commit'
+    \      && index(['xxd', 'gitrebase'], &filetype) == -1
+    \ |   execute "normal! g`\""
+    \ | endif
+augroup END
 
 " see help lua-highlight
 au TextYankPost * silent! lua vim.highlight.on_yank()
