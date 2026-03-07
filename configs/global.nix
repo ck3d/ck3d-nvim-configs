@@ -20,7 +20,7 @@ in
       expandtab = true;
       shiftwidth = 2;
       number = true;
-      relativenumber = true;
+      relativenumber = false;
       foldmethod = "indent";
       foldlevelstart = 99;
       linebreak = true;
