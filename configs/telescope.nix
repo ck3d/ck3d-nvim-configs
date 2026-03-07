@@ -8,13 +8,11 @@ in
     plugins = with pkgs.vimPlugins; [
       telescope-nvim
       telescope-fzy-native-nvim
-      telescope-file-browser-nvim
       telescope-ui-select-nvim
     ];
     setup = { };
     lua = map (a: toLuaFn "require'telescope'.load_extension" [ a ]) [
       "fzy_native"
-      "file_browser"
       "ui-select"
     ];
     # https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua
@@ -54,12 +52,6 @@ in
         "<Leader>fm"
         (luaExpr "require'telescope.builtin'.keymaps")
         { desc = "Find key mapping"; }
-      ]
-      [
-        "n"
-        "<Leader>ft"
-        "<Cmd>Telescope file_browser<CR>"
-        { desc = "Find file via browser"; }
       ]
       [
         "n"
