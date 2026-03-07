@@ -157,28 +157,52 @@ in
         { }
       ]
       [
-        "n"
+        [
+          "n"
+          "v"
+        ]
         "<Leader>y"
-        "\"*y"
-        { desc = "copy to primary selection"; }
+        "\"+y"
+        { desc = "yank motion/selection to clipboard"; }
       ]
       [
-        "n"
+        [
+          "n"
+          "v"
+        ]
         "<Leader>Y"
-        "\"+y"
-        { desc = "copy to clipboard selection"; }
+        "\"+Y"
+        { desc = "yank line to clipboard"; }
+      ]
+      [
+        [
+          "n"
+          "v"
+        ]
+        "<Leader>d"
+        "\"+d"
+        { desc = "delete motion/selection to clipboard"; }
+      ]
+      [
+        [
+          "n"
+          "v"
+        ]
+        "<Leader>D"
+        "\"+D"
+        { desc = "delete line to clipboard"; }
       ]
       [
         "n"
         "<Leader>p"
-        "\"*p"
-        { desc = "paste from primary selection"; }
+        "\"+p"
+        { desc = "paste from clipboard after cursor"; }
       ]
       [
         "n"
         "<Leader>P"
-        "\"+p"
-        { desc = "paste from clipboard selection"; }
+        "\"+P"
+        { desc = "paste from clipboard before cursor"; }
       ]
     ];
     vim = [ ./global.vim ];
