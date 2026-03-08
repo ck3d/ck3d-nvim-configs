@@ -1,4 +1,4 @@
-{ nix2nvimrc, ... }:
+{ pkgs, nix2nvimrc, ... }:
 let
   inherit (nix2nvimrc) luaExpr;
 in
@@ -206,5 +206,12 @@ in
       ]
     ];
     vim = [ ./global.vim ];
+
+    env.PATH.values = [
+      (pkgs.hunspell.withDicts (di: [
+        di.de-de
+        di.en-us
+      ]))
+    ];
   };
 }
