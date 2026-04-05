@@ -27,7 +27,7 @@ in
       on_attach = ./lspconfig-on_attach.lua;
     };
     env.PATH.values =
-      lib.optional (hasLang "javascript") pkgs.nodePackages.prettier
+      lib.optional (hasLang "javascript") pkgs.prettier
       ++ lib.optional (hasLang "nix") pkgs.statix;
   };
 }
