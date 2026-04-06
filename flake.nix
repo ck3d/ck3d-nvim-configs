@@ -49,6 +49,7 @@
               "json"
               "toml"
               "dockerfile"
+              "regex"
             ];
 
             nvim-dev = nvim-admin ++ [
