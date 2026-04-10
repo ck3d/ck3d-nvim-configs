@@ -64,5 +64,9 @@
         ) grammars;
       in
       lib.mapAttrs' (n: v: lib.nameValuePair (lib.removePrefix "tree-sitter-" n) "${v}/parser") grammars';
+
+    env.PATH.values = [
+      pkgs.tree-sitter
+    ];
   };
 }
