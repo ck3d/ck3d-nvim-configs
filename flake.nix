@@ -50,6 +50,7 @@
               "toml"
               "dockerfile"
               "regex"
+              "kdm"
             ];
 
             nvim-dev = nvim-admin ++ [
