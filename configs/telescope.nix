@@ -85,6 +85,12 @@ in
       ]
       [
         "n"
+        "<Leader>fR"
+        (luaExpr "require'telescope.builtin'.registers")
+        { desc = "Find in registers"; }
+      ]
+      [
+        "n"
         "<Leader>gs"
         (luaExpr "require'telescope.builtin'.git_status")
         { desc = "Git status"; }
