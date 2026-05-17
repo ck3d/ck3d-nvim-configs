@@ -7,6 +7,11 @@
 }:
 let
   inherit (config) hasLang;
+  statixCfg = pkgs.writers.writeTOML "statix.yaml" {
+    disabled = [
+      "repeated_keys"
+    ];
+  };
 in
 {
   configs.null-ls = {
@@ -21,13 +26,12 @@ in
         ]) "formatting.prettier"
         ++ lib.optionals (hasLang "nix") [
           "code_actions.statix"
-          "diagnostics.statix"
+          "diagnostics.statix.with({ extra_args = { '--config', '${statixCfg}' }})"
         ]
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
     env.PATH.values =
-      lib.optional (hasLang "javascript") pkgs.prettier
-      ++ lib.optional (hasLang "nix") pkgs.statix;
+      lib.optional (hasLang "javascript") pkgs.prettier ++ lib.optional (hasLang "nix") pkgs.statix;
   };
 }
