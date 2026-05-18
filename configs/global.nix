@@ -96,7 +96,7 @@ in
           "n"
           "v"
         ]
-        "<Leader>d"
+        "<Leader>x"
         "\"_d"
         { desc = "Delete to /dev/null"; }
       ]
@@ -117,12 +117,6 @@ in
         "<Esc>"
         "<C-\\><C-n>"
         { desc = "Close terminal"; }
-      ]
-      [
-        "n"
-        "gx"
-        "<Cmd>call jobstart(['xdg-open', expand('<cfile>')])<CR>"
-        { desc = "Open file"; }
       ]
       # https://stackoverflow.com/a/26504944
       [

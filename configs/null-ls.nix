@@ -16,11 +16,13 @@ in
 {
   configs.null-ls = {
     inherit (config.config.lspconfig) after;
-    plugins = [ pkgs.vimPlugins.none-ls-nvim ];
+    plugins = [
+      pkgs.vimPlugins.none-ls-nvim
+      pkgs.vimPlugins.plenary-nvim
+    ];
     setup.args = {
       sources = map (s: nix2nvimrc.luaExpr ("require'null-ls.builtins'." + s)) (
-        [ "code_actions.gitsigns" ]
-        ++ lib.optional (builtins.any hasLang [
+        lib.optional (builtins.any hasLang [
           "javascript"
           "markdown"
         ]) "formatting.prettier"
