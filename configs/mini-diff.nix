@@ -5,6 +5,11 @@
     setup.args = {
       view = {
         style = "sign";
+        signs = {
+          add = "+";
+          change = "~";
+          delete = "-";
+        };
       };
     };
   };
