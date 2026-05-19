@@ -12,7 +12,6 @@ in
       notifier.enable = true;
       terminal.enable = true;
       lazygit.enable = true;
-      indent.enable = true;
       words.enable = true;
       dashboard = {
         enable = true;
