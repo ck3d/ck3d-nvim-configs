@@ -26,6 +26,7 @@ in
       };
       scroll.enable = true;
       statuscolumn.enable = true;
+      gitblame.enable = true;
     };
     keymaps = map (toKeymap { silent = true; }) [
       [
@@ -105,6 +106,12 @@ in
         "<Leader>gg"
         (luaExpr "function() require('snacks').lazygit() end")
         { desc = "Lazygit"; }
+      ]
+      [
+        "n"
+        "<Leader>gb"
+        (luaExpr "function() require('snacks').git.blame_line() end")
+        { desc = "Git blame line"; }
       ]
       [
         "n"
