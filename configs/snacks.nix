@@ -13,17 +13,7 @@ in
       terminal.enable = true;
       lazygit.enable = true;
       words.enable = true;
-      dashboard = {
-        enable = true;
-        sections = [
-          { section = "header"; }
-          {
-            section = "keys";
-            gap = 1;
-            padding = 1;
-          }
-        ];
-      };
+      image.enable = true;
       scroll.enable = true;
       statuscolumn.enable = true;
       gitblame.enable = true;
@@ -138,5 +128,6 @@ in
         { desc = "Toggle Terminal"; }
       ]
     ];
+    env.PATH.values = [ pkgs.mermaid-cli ];
   };
 }
