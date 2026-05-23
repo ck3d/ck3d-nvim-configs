@@ -40,6 +40,10 @@ in
       ''
         -- https://github.com/neovim/neovim/issues/28845#issuecomment-2119058319
         vim.deprecate = vim.islist;
+        vim.g.loaded_perl_provider = 0;
+        vim.g.loaded_ruby_provider = 0;
+        vim.g.loaded_python3_provider = 0;
+        vim.g.loaded_node_provider = 0;
       ''
     ];
     keymaps = map (nix2nvimrc.toKeymap { silent = true; }) [
