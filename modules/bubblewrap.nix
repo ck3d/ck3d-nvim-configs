@@ -34,7 +34,7 @@ in
     in
     pkgs.stdenvNoCC.mkDerivation {
       pname = cfg.pkg.pname + "-bwrap";
-      inherit (cfg.pkg) version;
+      inherit (cfg.pkg) version passthru;
 
       dontUnpack = true;
 
@@ -43,7 +43,7 @@ in
         pkgs.versionCheckHook
       ];
 
-      versionCheckProgram = "${builtins.placeholder "out"}/bin/${mainProgram}";
+      versionCheckProgram = "${placeholder "out"}/bin/${mainProgram}";
       doInstallCheck = true;
 
       buildPhase = ''
