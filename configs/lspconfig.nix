@@ -88,7 +88,10 @@ in
     env.PATH.values =
       let
         mapLangToPkgs = with pkgs; {
-          javascript = [ pkgs.typescript-language-server ];
+          javascript = [
+            typescript-language-server
+            nodejs
+          ];
           rust = [
             rust-analyzer
             # default config of rust-analyzer expects cargo:
@@ -110,7 +113,10 @@ in
           yaml = [ yaml-language-server ];
           lua = [ lua-language-server ];
           xml = [ lemminx ];
-          python = [ pyright ];
+          python = [
+            pyright
+            python3
+          ];
           json = [ vscode-langservers-extracted ];
           css = [ vscode-langservers-extracted ];
           html = [ vscode-langservers-extracted ];
