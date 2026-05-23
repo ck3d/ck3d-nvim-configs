@@ -73,18 +73,6 @@ in
       ]
       [
         "n"
-        "<F2>"
-        "<Cmd>read !uuidgen<CR>"
-        { desc = "Generate uuid"; }
-      ]
-      [
-        "n"
-        "<Leader>cd"
-        "<Cmd>lcd %:p:h<CR>"
-        { desc = "Change working directory"; }
-      ]
-      [
-        "n"
         "n"
         "nzz"
         { }
