@@ -7,11 +7,11 @@
 let
   inherit (lib) mkOption types;
 
-  cfg = config.sandbox-exec;
+  cfg = config.sandbox;
 in
 {
   options = {
-    sandbox-exec = {
+    sandbox = {
       pkg = mkOption {
         type = types.package;
         default = config.wrapper.drv;
@@ -24,12 +24,11 @@ in
     };
   };
 
-  config.sandbox-exec.drv =
+  config.sandbox.drv =
     let
       inherit (cfg.pkg.meta) mainProgram;
+      isDarwin = pkgs.stdenvNoCC.hostPlatform.isDarwin;
 
-      # macOS Seatbelt profile: read-only access to the whole filesystem,
-      # with network denied. Similar to bwrap's --dev-bind / / --unshare-net.
       sandboxProfile = pkgs.writeText "nvim-sandbox.sb" ''
         (version 1)
 
@@ -70,6 +69,11 @@ in
         ; Allow shared memory
         (allow system-socket)
       '';
+
+      wrapperArgs = [
+        "--add-flags"
+        "--dev-bind / / --unshare-net ${lib.getExe cfg.pkg}"
+      ];
     in
     pkgs.stdenvNoCC.mkDerivation {
       pname = cfg.pkg.pname + "-sandbox";
@@ -77,23 +81,39 @@ in
 
       dontUnpack = true;
 
-      nativeBuildInputs = [ pkgs.makeWrapper ];
+      nativeBuildInputs = lib.optionals (!isDarwin) [
+        pkgs.makeWrapper
+        pkgs.versionCheckHook
+      ];
 
-      buildPhase = ''
-        mkdir -p "$out/bin"
-        cat > "$out/bin/${mainProgram}" <<'SCRIPT'
-        #!${pkgs.bash}/bin/bash
-        exec /usr/bin/sandbox-exec -f ${sandboxProfile} ${lib.getExe cfg.pkg} "$@"
-        SCRIPT
-        chmod +x "$out/bin/${mainProgram}"
-      '';
+      versionCheckProgram = "${placeholder "out"}/bin/${mainProgram}";
+
+      buildPhase =
+        if isDarwin then
+          ''
+            mkdir -p "$out/bin"
+            cat > "$out/bin/${mainProgram}" <<'SCRIPT'
+            #!${pkgs.bash}/bin/bash
+            exec /usr/bin/sandbox-exec -f ${sandboxProfile} ${lib.getExe cfg.pkg} "$@"
+            SCRIPT
+            chmod +x "$out/bin/${mainProgram}"
+          ''
+        else
+          ''
+            makeWrapper ${lib.getExe pkgs.bubblewrap} "$out/bin/${mainProgram}" \
+              ${lib.escapeShellArgs wrapperArgs}
+          '';
 
       meta = {
         inherit mainProgram;
-        platforms = [
-          "aarch64-darwin"
-          "x86_64-darwin"
-        ];
+        platforms =
+          if isDarwin then
+            [
+              "aarch64-darwin"
+              "x86_64-darwin"
+            ]
+          else
+            pkgs.bubblewrap.meta.platforms;
       };
     };
 }

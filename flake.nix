@@ -105,8 +105,7 @@
                 )
                 [
                   evaluation.config.wrapper.drv
-                  evaluation.config.bubblewrap.drv
-                  evaluation.config.sandbox-exec.drv
+                  evaluation.config.sandbox.drv
                 ]
             ) (builtins.attrNames grouped-languages)
           );
