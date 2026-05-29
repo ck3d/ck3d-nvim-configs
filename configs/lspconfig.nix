@@ -91,6 +91,8 @@ in
           javascript = [
             typescript-language-server
             nodejs
+            bun
+            tsx
           ];
           rust = [
             rust-analyzer
