@@ -8,27 +8,10 @@
   configs.nvim-treesitter = {
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter
-      nvim-treesitter-textobjects
     ];
     setup.args = {
       highlight.enable = true;
       incremental_selection.enable = true;
-      textobjects.enable = true;
-
-      # nvim-treesitter-textobjects
-      textobjects.select = {
-        enable = true;
-        lookahead = true;
-        keymaps = {
-          af = "@function.outer";
-          "if" = "@function.inner";
-          ac = "@class.outer";
-          ic = {
-            query = "@class.inner";
-            desc = "Select inner part of a class region";
-          };
-        };
-      };
     };
 
     treesitter.parsers =
