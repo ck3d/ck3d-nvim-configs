@@ -3,7 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix2nvimrc.url = "github:ck3d/nix2nvimrc";
+    nix2nvimrc = {
+      url = "github:ck3d/nix2nvimrc";
+      flake = false;
+    };
   };
 
   outputs =
@@ -84,7 +87,7 @@
               let
                 evaluation = lib.evalModules {
                   modules =
-                    (nix2nvimrc.lib.modules pkgs)
+                    ((import nix2nvimrc).modules pkgs)
                     ++ (builtins.attrValues self.nix2nvimrcModules)
                     ++ (builtins.attrValues self.nix2nvimrcConfigs)
                     ++ [
