@@ -5,15 +5,7 @@
   ...
 }:
 {
-  configs.nvim-treesitter = {
-    plugins = with pkgs.vimPlugins; [
-      nvim-treesitter
-    ];
-    setup.args = {
-      highlight.enable = true;
-      incremental_selection.enable = true;
-    };
-
+  configs.treesitter = {
     treesitter.parsers =
       let
         # do not use pkgs.tree-sitter-grammars, the packages are not up to date
