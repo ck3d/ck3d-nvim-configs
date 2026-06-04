@@ -12,18 +12,6 @@
         # and it misses languages like jq, vimdoc, and xml
         grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
 
-        # Exclude built-in parsers (https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/by-name/ne/neovim-unwrapped/treesitter-parsers.nix)
-        excluded = [
-          "c"
-          "lua"
-          "vim"
-          "vimdoc"
-          "query"
-          "markdown"
-        ];
-
-        languages = lib.subtractLists excluded config.languages;
-
         makeParserEntry =
           lang:
           let
@@ -36,7 +24,7 @@
           else
             builtins.trace "no tree-sitter parser for language ${lang} available" [ ];
       in
-      lib.listToAttrs (lib.concatMap makeParserEntry languages);
+      lib.listToAttrs (lib.concatMap makeParserEntry config.languages);
 
     env.PATH.values = [ pkgs.tree-sitter ];
   };
