@@ -113,7 +113,7 @@ in
             shfmt
           ];
           yaml = [ yaml-language-server ];
-          lua = [ lua-language-server ];
+          lua = [ lua-language-server ] ++ lib.optional (config ? wrapper.pkg.lua) config.wrapper.pkg.lua;
           xml = [ lemminx ];
           python = [
             pyright
