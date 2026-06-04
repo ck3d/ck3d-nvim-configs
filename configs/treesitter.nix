@@ -4,27 +4,24 @@
   lib,
   ...
 }:
+let
+  # do not use pkgs.tree-sitter-grammars, the packages are not up to date
+  # and it misses languages like jq, vimdoc, and xml
+  grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
+
+  supportedLanguages = lib.filter (
+    lang:
+    if grammars ? ${lang} then
+      true
+    else if lang == "plantuml" then
+      false # disable trace for plantuml
+    else
+      builtins.trace "no tree-sitter parser for language ${lang} available" false
+  ) config.languages;
+in
 {
   configs.treesitter = {
-    treesitter.parsers =
-      let
-        # do not use pkgs.tree-sitter-grammars, the packages are not up to date
-        # and it misses languages like jq, vimdoc, and xml
-        grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
-
-        makeParserEntry =
-          lang:
-          let
-            name = "tree-sitter-${lang}";
-          in
-          if grammars ? ${name} then
-            [ (lib.nameValuePair lang "${grammars.${name}}/parser") ]
-          else if lang == "plantuml" then
-            [ ] # disable trace for plantuml
-          else
-            builtins.trace "no tree-sitter parser for language ${lang} available" [ ];
-      in
-      lib.listToAttrs (lib.concatMap makeParserEntry config.languages);
+    treesitter.parsers = lib.genAttrs supportedLanguages (lang: "${grammars.${lang}}/parser");
 
     env.PATH.values = [ pkgs.tree-sitter ];
   };
