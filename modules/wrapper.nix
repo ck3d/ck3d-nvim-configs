@@ -59,21 +59,17 @@ in
         "--add-flags"
         "-u ${nvimrc}"
       ]
-      ++ (builtins.concatMap (
+      ++ lib.concatMap (
         env:
-        (builtins.concatMap (
-          n:
-          let
-            v = env.${n};
-          in
-          [
+        lib.concatLists (
+          lib.mapAttrsToList (n: v: [
             "--suffix"
             n
             ":"
             (v.function v.values)
-          ]
-        ) (builtins.attrNames env))
-      ) envs);
+          ]) env
+        )
+      ) envs;
     in
     pkgs.stdenvNoCC.mkDerivation rec {
       pname = cfg.name;
@@ -100,7 +96,7 @@ in
 
       passthru = {
         inherit nvimrc envs;
-        packages = builtins.concatLists (map (env: env.PATH.values or [ ]) envs);
+        packages = lib.concatMap (env: env.PATH.values or [ ]) envs;
         tests = lib.optionalAttrs (config.languages != [ ]) {
           languages =
             pkgs.runCommand "${pname}-test-languages" { nativeBuildInputs = nativeInstallCheckInputs; }
