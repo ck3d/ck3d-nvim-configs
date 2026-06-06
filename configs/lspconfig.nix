@@ -62,24 +62,6 @@ in
           (luaExpr "vim.lsp.buf.definition")
           { desc = "Goto definition"; }
         ]
-        [
-          "n"
-          "<Leader>wa"
-          (luaExpr "vim.lsp.buf.add_workspace_folder")
-          { desc = "Add workspace folder"; }
-        ]
-        [
-          "n"
-          "<Leader>wr"
-          (luaExpr "vim.lsp.buf.remove_workspace_folder")
-          { desc = "Remove workspace folder"; }
-        ]
-        [
-          "n"
-          "<Leader>wl"
-          (luaExpr "function() print(vim.inspect(vim.lsp.buf.list_workspace_folders())) end")
-          { desc = "List workspace folder"; }
-        ]
       ];
 
       on_attach = ./lspconfig-on_attach.lua;
