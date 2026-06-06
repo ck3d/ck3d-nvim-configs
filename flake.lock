@@ -3,11 +3,11 @@
     "nix2nvimrc": {
       "flake": false,
       "locked": {
-        "lastModified": 1780576060,
-        "narHash": "sha256-D14qvSZwzhSWdJ0M+JRd4Mh6YfACa86sM7fmXJkMYoU=",
+        "lastModified": 1780745451,
+        "narHash": "sha256-bPPH5ReZ9jChr3WUKHYkK894w4gSxl10Nc4fWqsXCT0=",
         "owner": "ck3d",
         "repo": "nix2nvimrc",
-        "rev": "92d19d495279edd2f85670330ae896f06b52f2bb",
+        "rev": "cf697ba074414537fd31b97c4222dfcd57baf875",
         "type": "github"
       },
       "original": {
