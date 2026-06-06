@@ -5,23 +5,27 @@
   ...
 }:
 let
-  # do not use pkgs.tree-sitter-grammars, the packages are not up to date
-  # and it misses languages like jq, vimdoc, and xml
-  grammars = pkgs.vimPlugins.nvim-treesitter.builtGrammars;
+  inherit (pkgs.vimPlugins.nvim-treesitter) parsers queries;
 
-  supportedLanguages = lib.filter (
-    lang:
-    if grammars ? ${lang} then
-      true
-    else if lang == "plantuml" then
-      false # disable trace for plantuml
-    else
-      builtins.trace "no tree-sitter parser for language ${lang} available" false
-  ) config.languages;
+  activeFor =
+    set:
+    lib.concatMap (
+      lang:
+      if set ? ${lang} then
+        [ set.${lang} ]
+      else if
+        lib.elem lang [
+          "plantuml"
+        ]
+      then
+        [ ]
+      else
+        lib.warn "treesitter set does not contain ${lang}" [ ]
+    ) config.languages;
 in
 {
   configs.treesitter = {
-    treesitter.parsers = lib.genAttrs supportedLanguages (lang: "${grammars.${lang}}/parser");
+    plugins = activeFor parsers ++ activeFor queries;
 
     env.PATH.values = [ pkgs.tree-sitter ];
   };
