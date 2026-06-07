@@ -30,10 +30,15 @@ in
           "code_actions.statix"
           "diagnostics.statix.with({ extra_args = { '--config', '${statixCfg}' }})"
         ]
+        ++ lib.optionals (hasLang "lua") [
+          "formatting.stylua"
+        ]
       );
       on_attach = ./lspconfig-on_attach.lua;
     };
     env.PATH.values =
-      lib.optional (hasLang "javascript") pkgs.prettier ++ lib.optional (hasLang "nix") pkgs.statix;
+      lib.optional (hasLang "javascript") pkgs.prettier
+      ++ lib.optional (hasLang "nix") pkgs.statix
+      ++ lib.optional (hasLang "lua") pkgs.stylua;
   };
 }
