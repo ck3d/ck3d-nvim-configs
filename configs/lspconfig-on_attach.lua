@@ -10,7 +10,7 @@ return function(client, bufnr)
       local clients = get_clients({ bufnr = bufnr })
 
       local filter = function(c)
-        return c.name ~= "sumneko_lua" -- use lua-format
+        return c.name ~= "lua_ls" and c.name ~= "sumneko_lua"
       end
 
       clients = vim.tbl_filter(function(c)
