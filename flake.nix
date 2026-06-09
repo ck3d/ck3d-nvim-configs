@@ -88,37 +88,32 @@
               "nickel"
             ];
           };
+
+          baseModules =
+            ((import nix2nvimrc).modules final)
+            ++ (builtins.attrValues self.nix2nvimrcModules)
+            ++ (builtins.attrValues self.nix2nvimrcConfigs);
         in
         {
           ${namespace} =
-            builtins.listToAttrs (
-              builtins.concatMap (
-                group:
-                let
-                  evaluation = lib.evalModules {
-                    modules =
-                      ((import nix2nvimrc).modules final)
-                      ++ (builtins.attrValues self.nix2nvimrcModules)
-                      ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                      ++ [
-                        {
-                          wrapper.name = group;
-                          languages = grouped-languages.${group};
-                        }
-                      ];
-                  };
-                in
-                map
-                  (drv: {
-                    name = drv.pname;
-                    value = drv;
-                  })
-                  [
-                    evaluation.config.wrapper.drv
-                    evaluation.config.sandbox.drv
-                  ]
-              ) (builtins.attrNames grouped-languages)
-            )
+            (lib.concatMapAttrs (
+              group: languages:
+              let
+                evaluation = lib.evalModules {
+                  modules = baseModules ++ [
+                    {
+                      wrapper.name = group;
+                      inherit languages;
+                    }
+                  ];
+                };
+                inherit (evaluation.config) wrapper sandbox;
+              in
+              {
+                "${wrapper.drv.pname}" = wrapper.drv;
+                "${sandbox.drv.pname}" = sandbox.drv;
+              }
+            ) grouped-languages)
             // {
               default = final.${namespace}.nvim-admin;
             };
@@ -128,16 +123,15 @@
         system:
         let
           packages = self.packages.${system};
+          tests = lib.concatMapAttrs (
+            name: pkg:
+            lib.mapAttrs' (test: value: {
+              name = "${name}-test-${test}";
+              inherit value;
+            }) (pkg.tests or { })
+          ) packages;
         in
-        packages
-        // (builtins.foldl' (
-          acc: package:
-          acc
-          // (lib.mapAttrs' (test: value: {
-            name = package + "-test-" + test;
-            inherit value;
-          }) (packages.${package}.tests or { }))
-        ) { } (builtins.attrNames packages))
+        packages // tests
       );
     };
 }
