@@ -23,6 +23,8 @@
         "aarch64-darwin"
       ];
       inherit (import ./lib.nix lib) readDirNix;
+
+      namespace = "ck3d-nvim-configs";
     in
     {
       lib = import ./lib.nix;
@@ -30,15 +32,21 @@
       nix2nvimrcModules = readDirNix ./modules;
       nix2nvimrcConfigs = readDirNix ./configs;
 
-      inherit (nixpkgs) legacyPackages;
-
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
-
-      packages = forAllSystems (
+      legacyPackages = forAllSystems (
         system:
-        let
-          pkgs = self.legacyPackages.${system};
+        import nixpkgs {
+          inherit system;
+          overlays = builtins.attrValues self.overlays;
+        }
+      );
 
+      packages = forAllSystems (system: self.legacyPackages.${system}.${namespace});
+
+      formatter = forAllSystems (system: self.legacyPackages.${system}.nixfmt-tree);
+
+      overlays.default =
+        final: prev:
+        let
           grouped-languages = rec {
             nvim-min = [ ];
 
@@ -80,41 +88,41 @@
               "nickel"
             ];
           };
-
-          nvims = builtins.listToAttrs (
-            builtins.concatMap (
-              group:
-              let
-                evaluation = lib.evalModules {
-                  modules =
-                    ((import nix2nvimrc).modules pkgs)
-                    ++ (builtins.attrValues self.nix2nvimrcModules)
-                    ++ (builtins.attrValues self.nix2nvimrcConfigs)
-                    ++ [
-                      {
-                        wrapper.name = group;
-                        languages = grouped-languages.${group};
-                      }
-                    ];
-                };
-              in
-              builtins.concatMap
-                (
-                  drv:
-                  lib.optional (builtins.elem system drv.meta.platforms) {
+        in
+        {
+          ${namespace} =
+            builtins.listToAttrs (
+              builtins.concatMap (
+                group:
+                let
+                  evaluation = lib.evalModules {
+                    modules =
+                      ((import nix2nvimrc).modules final)
+                      ++ (builtins.attrValues self.nix2nvimrcModules)
+                      ++ (builtins.attrValues self.nix2nvimrcConfigs)
+                      ++ [
+                        {
+                          wrapper.name = group;
+                          languages = grouped-languages.${group};
+                        }
+                      ];
+                  };
+                in
+                map
+                  (drv: {
                     name = drv.pname;
                     value = drv;
-                  }
-                )
-                [
-                  evaluation.config.wrapper.drv
-                  evaluation.config.sandbox.drv
-                ]
-            ) (builtins.attrNames grouped-languages)
-          );
-        in
-        nvims // { default = nvims.nvim-admin; }
-      );
+                  })
+                  [
+                    evaluation.config.wrapper.drv
+                    evaluation.config.sandbox.drv
+                  ]
+              ) (builtins.attrNames grouped-languages)
+            )
+            // {
+              default = final.${namespace}.nvim-admin;
+            };
+        };
 
       checks = forAllSystems (
         system:
