@@ -97,7 +97,7 @@ in
       passthru = {
         inherit nvimrc envs;
         packages = lib.concatMap (env: env.PATH.values or [ ]) envs;
-        tests = lib.optionalAttrs (config.languages != [ ]) {
+        checks = lib.optionalAttrs (config.languages != [ ]) {
           languages =
             pkgs.runCommand "${pname}-test-languages" { nativeBuildInputs = nativeInstallCheckInputs; }
               (

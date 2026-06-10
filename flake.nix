@@ -123,15 +123,15 @@
         system:
         let
           packages = self.packages.${system};
-          tests = lib.concatMapAttrs (
+          packages-checks = lib.concatMapAttrs (
             name: pkg:
             lib.mapAttrs' (test: value: {
               name = "${name}-test-${test}";
               inherit value;
-            }) (pkg.tests or { })
+            }) (pkg.checks or { })
           ) packages;
         in
-        packages // tests
+        packages // packages-checks
       );
     };
 }
