@@ -128,7 +128,7 @@
             lib.mapAttrs' (test: value: {
               name = "${name}-test-${test}";
               inherit value;
-            }) (pkg.checks or { })
+            }) (pkg.tests or { })
           ) packages;
         in
         packages // packages-checks
