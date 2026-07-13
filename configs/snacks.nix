@@ -128,6 +128,5 @@ in
         { desc = "Toggle Terminal"; }
       ]
     ];
-    env.PATH.values = [ pkgs.mermaid-cli ];
   };
 }
