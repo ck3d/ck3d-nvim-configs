@@ -134,10 +134,7 @@
         packages
         // packages-checks
         // {
-          format = self.legacyPackages.${system}.runCommandLocal "format" { } ''
-            ${lib.getExe self.formatter.${system}} --ci ${self}
-            touch $out
-          '';
+          format = self.formatter.${system}.check self;
         }
       );
     };
