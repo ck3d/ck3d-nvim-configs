@@ -33,10 +33,7 @@ let
     };
     go = {
       servers.gopls = { };
-      packages = [
-        pkgs.gopls
-        pkgs.go
-      ];
+      packages = [ pkgs.gopls ];
     };
     html = {
       servers.html = { };
@@ -47,7 +44,6 @@ let
       packages = [
         pkgs.typescript-language-server
         pkgs.nodejs
-        pkgs.bun
         pkgs.tsx
       ];
     };
